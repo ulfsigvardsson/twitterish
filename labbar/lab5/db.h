@@ -6,11 +6,12 @@ struct item {
   char *descr;
   int price;
   char *shelf;
+  int amount;
 };
 
 typedef struct item item_t;
 
-item_t make_item(char *name, char *descr, int price, char *shelf);
+item_t make_item(char *name, char *descr, int price, char *shelf, int amount);
 item_t input_item();
 char *ask_question_shelf(char *question);
 bool is_valid_shelf(char *str);

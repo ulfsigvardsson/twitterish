@@ -20,19 +20,21 @@ void print_item(item_t *item) {
   printf("Desc: %s\n", item->descr);
   printf("Price: %d.%d SEK\n", kronor, oren);
   printf("Shelf: %s\n", item->shelf);
+  printf("Amount: %s\n", item->amount);
 }
 
-item_t make_item(char *name, char *descr, int price, char *shelf) {
-  item_t item ={ .name = name, .descr = descr, .price = price, .shelf = shelf };
+item_t make_item(char *name, char *descr, int price, char *shelf, int amount) {
+  item_t item ={ .name = name, .descr = descr, .price = price, .shelf = shelf, .amount = amount };
   return item;
 }
 
 item_t input_item() {
-  char *name  = ask_question_string("Ange namn på vara:\n");
-  char *descr = ask_question_string("Ange en beskrivning av varan:\n");
-  int price   = ask_question_int("Ange pris på varan:\n");
-  char *shelf = ask_question_shelf("Ange hyllplats:\n");
-  item_t item = make_item(name, descr, price, shelf);
+  char *name  = ask_question_string("Ange namn på vara: \n");
+  char *descr = ask_question_string("Ange en beskrivning av varan: \n");
+  int price   = ask_question_int("Ange pris på varan: \n");
+  char *shelf = ask_question_shelf("Ange hyllplats: \n");
+  int amount  = ask_question_int("Ange antal varor: \n");
+  item_t item = make_item(name, descr, price, shelf, amount);
   return item;
 }
 
@@ -131,6 +133,11 @@ void edit_db(item_t *items, int no_items) {
       items[num -1].shelf = new_shelf;
       break;
     }
+     else if (strcmp("Amount", choice) == 0) {
+      char *new_amount = ask_question_int("Ange nytt antal\n");
+      items[num -1].amount = new_amount;
+      break;
+     }
   }
 }
 
