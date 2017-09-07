@@ -100,7 +100,6 @@ void event_loop(item_t *db, int *db_size, int buf_size) {
   do {
     print_menu();
     choice = toupper(ask_question_menu());
-    printf("Du valde %c\n", choice);
     if (choice == 'L') {
       add_item_to_db(db, db_size, buf_size);
     }
@@ -111,7 +110,7 @@ void event_loop(item_t *db, int *db_size, int buf_size) {
       edit_db(db, *db_size);
     }
     else if (choice == 'G') {
-      printf("Not yet implemented!\n");
+      printf("Not yet implemented!\n\n");
     }
     else if (choice == 'H') {
       list_db(db, *db_size);

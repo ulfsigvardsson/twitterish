@@ -20,7 +20,7 @@ void print_item(item_t *item) {
   printf("Desc: %s\n", item->descr);
   printf("Price: %d.%d SEK\n", kronor, oren);
   printf("Shelf: %s\n", item->shelf);
-  printf("Amount: %s\n", item->amount);
+  printf("Amount: %d\n", item->amount);
 }
 
 item_t make_item(char *name, char *descr, int price, char *shelf, int amount) {
@@ -134,7 +134,7 @@ void edit_db(item_t *items, int no_items) {
       break;
     }
      else if (strcmp("Amount", choice) == 0) {
-      char *new_amount = ask_question_int("Ange nytt antal\n");
+      int new_amount = ask_question_int("Ange nytt antal\n");
       items[num -1].amount = new_amount;
       break;
      }
@@ -144,8 +144,8 @@ void edit_db(item_t *items, int no_items) {
 void add_item_to_db(item_t *db, int *db_size, int buf_size) {
   item_t new_item = input_item();
   if (*db_size < buf_size) {
-    *db_size =+1;     
-    *db = new_item;
+    ++(*db_size);
+    db[*db_size-1] = new_item;
   }
 }
 
