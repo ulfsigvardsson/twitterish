@@ -84,7 +84,7 @@ char ask_question_char(char *question) {
 }
 
 char *chardup(char *str) {
-  return *str;
+  return (char)*str;
 }
 
 bool is_single_char(char *c) {

@@ -1,26 +1,40 @@
 #ifndef DB_H
 #define DB_H
 
+
+struct shelf {
+  char *id;
+};
+
+typedef struct shelf shelf_t;
+
 struct item {
   char *name;
   char *descr;
-  int price;
-  char *shelf;
+  int price;;
+  int amount;
+  shelf_t shelf; // Ska vara en lista av shelves
 };
 
 typedef struct item item_t;
+typedef struct pair { item_t *edited; item_t original; } pair_t;
 
-item_t make_item(char *name, char *descr, int price, char *shelf);
-item_t input_item();
-char *ask_question_shelf(char *question);
-bool is_valid_shelf(char *str);
-int add_to_string(char *arr[], char *buf, int index);
+struct action
+{
+  enum { NOTHING, ADD, REMOVE, EDIT } type;
+  pair_t p; // EDIT
+};
+
+typedef struct action action_t;
+
+
+item_t make_item(char *name, char *descr, int price, shelf_t shelf, int amount);
 char *magick(char *arr1[], char *arr2[], char *arr3[]);
-int add_to_string(char *arr[], char *buf, int index);
 void list_db(item_t *items, int no_items);
 void edit_db(item_t *items, int no_items);
-void remove_item_from_db(item_t *db, int *db_size, int buf_size);
+void remove_item_from_db(item_t *db, int *db_size);
 void add_item_to_db(item_t *db, int *db_size, int buf_size);
-char ask_question_menu(char *question, char *menu_choices);
-
+char ask_question_menu(char *menu, char *menu_choices);
+item_t *create_db(int size);
 #endif
+

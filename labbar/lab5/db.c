@@ -109,7 +109,7 @@ void edit_db(item_t *items, int no_items) {
     num = ask_question_int("Ange index för varan du vill ersätta\n");
   } while (num < 1 || num > no_items);
   
-  print_item(&items[num-1]);  // Hur kan jag skapa en variabel av items[num-1] och skriva till rätt adress?
+  print_item(&items[num-1]);
 
   while (true) {
     char *choice = ask_question_string("Ange vilken del du vill ersätta\n");
@@ -156,8 +156,8 @@ void remove_item_from_db(item_t *db, int *db_size, int buf_size) {
     num = ask_question_int("Ange index för varan du vill ta bort\n");
   } while (num < 1 || num > *db_size);
 
-  for (int i = num -1; i < *db_size; ++i) {
-    db[i+1] = db[i];
+  for (int i = num -1; i < *db_size-1; ++i) {
+    db[i] = db[i+1];
   }
-  *db_size =-1;
+  --(*db_size);
 }

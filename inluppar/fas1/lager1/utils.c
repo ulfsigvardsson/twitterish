@@ -1,6 +1,27 @@
 #include "utils.h"
 
+typedef union {
+  int   i;
+  float f;
+  char *s;
+  char c;
+} answer_t;
+
+
+typedef bool(*check_func)(char *);
+typedef answer_t(*convert_func)(char *);
 extern char *strdup(const char *);
+
+bool is_float(char *str);
+bool is_number(char *str);
+bool not_empty(char *str);
+bool is_single_char(char *c);
+void clear_input_buffer();
+answer_t ask_question(char *question, check_func check, convert_func convert);
+answer_t make_float(char *str);
+bool is_valid_shelf(char *str);
+shelf_t to_shelf(char *shelf);
+char chardup(char *str);
 
 answer_t make_float(char *str) {
   return (answer_t) { .f = atof(str) };
@@ -9,6 +30,35 @@ answer_t make_float(char *str) {
 double ask_question_float(char *question) {
 // Asks the user for a float and returns it as a float
   return ask_question(question, is_float, make_float).f;
+}
+
+char *ask_question_shelf(char *question) {
+  char *answer;
+  answer = ask_question(question, is_valid_shelf, (convert_func) to_shelf).s;
+  return answer;
+}
+
+// Kontrollfunktion för korrekt format på hyllor
+bool is_valid_shelf(char *str) {
+// Determines whether or not a string is a valid shelf number
+  int length = strlen(str);
+  if (!isupper(str[0])) {
+    return false;
+  }
+  for (int i=1; i < length; ++i) {
+    // If the first character is valid,
+    // the rest of the string is evaluated.
+    if (!isdigit(str[i])) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// Konverteringsfunktion för shelves
+shelf_t to_shelf(char *shelf) {
+  shelf_t s = {.id = shelf };
+  return s;
 }
 
 bool is_float(char *str) {
@@ -44,7 +94,6 @@ void clear_input_buffer() {
   while (c != '\n' && c != EOF); 
   putchar('\n');
 }
-
 
 bool not_empty(char *str) {
   return strlen(str) > 0;
@@ -86,7 +135,7 @@ char ask_question_char(char *question) {
   return answer;
 }
 
-char *chardup(char *str) {
+char chardup(char *str) {
   return *str;
 }
 
@@ -120,7 +169,6 @@ int read_string(char *buf, int buf_siz) {
   }
   return charcount;
 }
-
 
 bool is_number(char *str) {
 // Determines whether or not a string is a number

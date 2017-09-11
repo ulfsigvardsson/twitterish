@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <ctype.h>
+//#include <ctype.h>
 #include "utils.h"
 #include "db.h"
 
@@ -13,12 +13,11 @@ void event_loop(item_t *db, int *db_size, int buf_size);
 
 
 
-int main(int argc, char *argv[])
-{
-  int array_size = SIZE;
+int main(int argc, char *argv[]) {
+  int buf_size = SIZE;
   item_t db[SIZE];  // Databas med plats för 16 objekt
   int db_size = 0;
-  event_loop(db, &db_size, array_size);
+  event_loop(db, &db_size, buf_size);
   return 0;
 }
 
@@ -26,7 +25,7 @@ int main(int argc, char *argv[])
 void cp(char *source, char *dest) {
   FILE *s = fopen(source, "r");
   FILE *d = fopen(dest, "w");
-  int c = fgetc(s);
+  int c   = fgetc(s);
  
   while (c != EOF) {
     fputc(c, d);
@@ -36,12 +35,13 @@ void cp(char *source, char *dest) {
   fclose(d);
 }
 
-void cat(char *filename, int *row)
-{
+// Skriver ut innehållet i en textfil på skärmen
+void cat(char *filename, int *row) {
   printf("==== %s ====\n", filename);
   FILE *f = fopen(filename, "r");
-  int c = fgetc(f);
+  int c   = fgetc(f);
   printf("%d. ", *row);
+  
   while (c != EOF)
   { 
     // Om karaktären är newline ökas radräknaren och skrivs
@@ -49,7 +49,7 @@ void cat(char *filename, int *row)
     if (c == '\n') {
       ++*row;
       fputc(c, stdout);
-      c = fgetc(f);
+      c = fgetc(f);  // fgetc() popar också c från input buffern
       if (c != EOF) {
         printf("%d. ", *row);
       }
@@ -62,38 +62,34 @@ void cat(char *filename, int *row)
   fclose(f);
 }
 
-
-
-
-
+// Huvudloop för programmet. ACHIEVEMENT: Börja här och stega igenom processen för att lägga till en vara,
+// och redogör för ask_question_menu som procedural abstraktion. 
 
 void event_loop(item_t *db, int *db_size, int buf_size) {
-  char choice;
-  char *menu = "[L]ägga till en vara\n"\
-    "[T]a bort en vara\n"\
-    "[R]edigera en vara\n"\
-    "Ån[g]ra senaste ändringen\n"\
-    "Lista [h]ela varukatalogen\n"\
-    "[A]vsluta\n\n";
+  char user_choice;
+  action_t undo ={ .type = NOTHING };
+  char *menu = "\n[L]ägga till en vara\n"\
+                 "[T]a bort en vara\n"\
+                 "[R]edigera en vara\n"\
+                 "Ån[g]ra senaste ändringen\n"\
+                 "Lista [h]ela varukatalogen\n"\
+                 "[A]vsluta\n\n";
   
-  do {
-    print_menu(menu);
-    choice = toupper(ask_question_menu("Ange ett menyval: ", "LTRGHA"));
-    printf("Du valde %c\n", choice);
-    if (choice == 'L') {
-      add_item_to_db(db, db_size, buf_size);
-    }
-    else if (choice == 'T') {
-      remove_item_from_db(db, db_size, buf_size);
-    }
-    else if (choice == 'R') {
-      edit_db(db, *db_size);
-    }
-    else if (choice == 'G') {
-      printf("Not yet implemented!\n");
-    }
-    else if (choice == 'H') {
-      list_db(db, *db_size);
-    }
-  } while (choice != 'A');
-}
+    do {
+      // skickar db_size som pointer i fallen då den måste justeras
+      print_menu(menu);
+      user_choice = toupper(ask_question_menu("Ange ett menyval: ", "LTRGHA"));
+ 
+      switch (user_choice) {
+      case 'L': {add_item_to_db(db, db_size, buf_size);
+                   undo.type = ADD;
+                   break;}
+        case 'T': {remove_item_from_db(db, db_size);           break;}
+        case 'R': {edit_db(db, *db_size);                      break;}
+        case 'G': {undo_last_action(&undo, db, db_size);      break;}
+        case 'H': {list_db(db, *db_size);                      break;}
+        default:  printf("Avslutar...\n");                     break;}
+    } while (user_choice != 'A');
+}  
+
+
