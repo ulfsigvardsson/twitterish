@@ -24,6 +24,7 @@ item_t input_item();
 shelf_t to_shelf(char *shelf);
 void edit_description(item_t *items, int index);
 void add_item_to_db(item_t *db, int *db_size, int buf_size);
+void edit_db(item_t *items, int no_items, action_t *last_action);
 void edit_price(item_t *items, int index);
 void edit_description(item_t *items, int index);
 void edit_shelf(item_t *items, int index);
@@ -119,7 +120,7 @@ void list_db(item_t *items, int no_items) {
 }
 
 // Editerar en databas
-void edit_db(item_t *items, int no_items) {
+void edit_db(item_t *items, int no_items, action_t *last_action) {
   if (no_items == 0) {
     printf("\nInga objekt i databasen!\n\n");
     return;
@@ -138,6 +139,9 @@ void edit_db(item_t *items, int no_items) {
                    "[P]ris\n"\
                    "[H]ylla\n"\
                    "Välj ett alternativ eller [a]vbryt: ";
+
+    (last_action->p).edited = &items[index-1];   //sparar adressen innan vi tar bort item.
+    (last_action->p).original = items[index-1]; //sparar item innan vi tar bort item.
     
     char choice = toupper(ask_question_menu(menu, "BbPpHhAa"));
 
@@ -148,6 +152,7 @@ void edit_db(item_t *items, int no_items) {
       case 'H': {edit_shelf(items, index-1);       break;}
     }
   }
+  last_action->type = EDIT;
 }
 
 // Hjälpfunktion för edit_db, ändrar på objektsbeskrivningen
@@ -225,7 +230,7 @@ void save_item(item_t *db, int *db_size, item_t item) {
 }
 
 // Tar bort ett objekt från databasen
-void remove_item_from_db(item_t *db, int *db_size) {
+void remove_item_from_db(item_t *db, int *db_size, action_t *last_action) {
   list_db(db, *db_size);
   if (*db_size == 0) {
     printf("Inga objekt i databasen!\n");
@@ -235,11 +240,15 @@ void remove_item_from_db(item_t *db, int *db_size) {
   do {
     num = ask_question_int("Ange index för varan du vill ta bort\n");
   } while (num < 1 || num >  *db_size); //Felaktig kod! Ska vara
+  
+  (last_action->p).edited = &db[num-1];   //sparar adressen innan vi tar bort item.
+  (last_action->p).original = db[num-1]; //sparar item innan vi tar bort item.
 
   for (int i = num -1; i < *db_size; ++i) {
-    db[i+1] = db[i];
+    db[i] = db[i+1];
   }
   --(*db_size);
+  last_action->type = REMOVE;
 }
 
 char ask_question_menu(char *menu, char *menu_choices) {
@@ -267,6 +276,18 @@ void print_menu(char *menu) {
   printf("%s", menu);
 }
 
+void help_undo_remove(action_t *last_action, item_t *db, int *db_size){
+  pair_t items = last_action->p;
+  int size = *db_size;
+  while (items.edited < (db+size)) {
+    db[size] = db[size-1];
+    --size;
+  }
+  *items.edited = items.original;
+  ++*db_size;
+  printf("%d", *db_size);
+}
+
 void undo_last_action(action_t *last_action, item_t *db, int *db_size) {
   if (last_action->type == NOTHING) {
     printf("Det finns inget att ångra!\n");
@@ -281,8 +302,11 @@ void undo_last_action(action_t *last_action, item_t *db, int *db_size) {
         *items.edited = items.original;
         break;
       }
-      case REMOVE: {}
+      case REMOVE: {
+        help_undo_remove(last_action, db, db_size);
+        break;
+      }
     }
     last_action->type = NOTHING;  
-  }T
+  }
 }

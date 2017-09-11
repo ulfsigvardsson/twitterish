@@ -84,9 +84,9 @@ void event_loop(item_t *db, int *db_size, int buf_size) {
       case 'L': {add_item_to_db(db, db_size, buf_size);
                    undo.type = ADD;
                    break;}
-        case 'T': {remove_item_from_db(db, db_size);           break;}
-        case 'R': {edit_db(db, *db_size);                      break;}
-        case 'G': {undo_last_action(&undo, db, db_size);      break;}
+        case 'T': {remove_item_from_db(db, db_size, &undo);    break;}
+        case 'R': {edit_db(db, *db_size, &undo);               break;}
+        case 'G': {undo_last_action(&undo, db, db_size);       break;}
         case 'H': {list_db(db, *db_size);                      break;}
         default:  printf("Avslutar...\n");                     break;}
     } while (user_choice != 'A');
