@@ -1,0 +1,17 @@
+#include <stdlib.h>
+#include "list.h"
+#include "db.h"
+
+struct link {
+  T elem;
+  struct link next;
+} 
+
+struct list {
+  
+};
+
+list_t *list_new() {
+  list_t *new = calloc(1, sizeof(shelf_t));
+  return new;
+}

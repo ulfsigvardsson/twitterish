@@ -2,6 +2,7 @@
 //#include <ctype.h>
 #include "utils.h"
 #include "db.h"
+#include "list.h"
 
 #define SIZE 16
 
@@ -14,6 +15,15 @@ void event_loop(item_t *db, int *db_size, int buf_size);
 
 
 int main(int argc, char *argv[]) {
+  list_t *lista = list_new();
+  list_prepend(lista, 2);
+  list_append(lista, 1);
+  L kuk = list_first(lista);
+  printf("%d\n", kuk);
+  int grej = list_length(lista);
+  
+  printf("längden är:  %d\n", grej);
+  
   int buf_size = SIZE;
   item_t db[SIZE];  // Databas med plats för 16 objekt
   int db_size = 0;

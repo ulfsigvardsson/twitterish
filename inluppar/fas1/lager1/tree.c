@@ -1,10 +1,13 @@
 #include "tree.h"
-#include "db.h"
+#include "list.h"
 
-typedef struct tree_node node_t;
-
-struct tree_node {
-  node_t left;
-  node_t right;
-  char *key;
+struct tree {
+  tree_t left;
+  tree_t right;
+  K key;
+  list_t l;
 };
+
+tree t = { .left = nåt, .right = nåt, .key ="Vara", l = ['A23,', 'B5'] };
+
+t.l
