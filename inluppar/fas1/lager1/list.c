@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include "list.h"
 #include "db.h"
+#include <stdio.h> // for printfunktionen, kan tas bort om den tas bort
+
+bool not_empty_list(list_t *list);
+void initiate_list(list_t *list, L  elem);
 
 struct link {
   L elem;
@@ -17,55 +21,89 @@ list_t *list_new() {
   return new;
 }
 
+void initiate_list(list_t *list, L elem) {
+  link_t *new =calloc(1, sizeof(link_t));
+  new->elem = elem;
+  list->first = new;
+  list->last = new;
+}
+
+bool not_empty_list(list_t *list) {
+  return list->first;
+}
+
+void list_append(list_t *list, L elem) {
+  link_t *current = list->first;
+  if (not_empty_list(list)) {
+    while (current->next != NULL) {
+      current = current->next; // Vi stegar oss fram till det sista elementet
+    }
+    current->next = calloc(1, sizeof(link_t));
+    current->next->elem = elem;
+    current->next->next = NULL;
+  }
+  else {
+    initiate_list(list, elem);
+  }
+}
+
 void list_prepend(list_t *list, L elem) {
   link_t *current_first = list->first;
   link_t *new_first = calloc(1, sizeof(link_t));
   new_first->elem   = elem;
 
-  if (current_first) {
-    new_first->next   = current_first; 
+  // Om listan inte är tom pekar vårt nya första listobjekt på det gamla första objektet
+  if (not_empty_list(list)) { 
+    new_first->next = current_first; 
     list->first = new_first;
   }
+  // Annars är det nya elementet det enda är både första och sista elementet
   else {
-    list->first = new_first; // Detta kodstycke kan vi bryta ut, återanvänds...
-    list->last = new_first;
+    initiate_list(list, elem);
   }
 }
 
-void list_append(list_t *list, L elem) {
-  link_t *current_last = list->last;
-  link_t *new_last = calloc(1, sizeof(link_t));
-  new_last->elem  = elem;
-  
-  if (current_last) {
-    current_last->next  = new_last;
-    list->last = new_last;
+void print_list(list_t *list) {
+
+  link_t *current = list->first;
+  int i =1;
+  while (current !=NULL) {
+    printf("Värde plats %d: %d\n", i, current->elem);
+    current = current->next;
+    ++i;
   }
-  else {
-    list->first = new_last;
-    list->last = new_last;
-  } 
 }
 
 int list_length(list_t *list) {
-  int count = 0;
-  if (list->first) {
-     while (list->first[count].next) {
-         ++count;
-     }
+  int count = 0; // räknare för längden
+  link_t *current = list->first;
+
+  while (current !=NULL) {
+    ++count;
+    current = current->next;
   }
   return count;
 }
-  
+
 
 bool list_remove(list_t *list, int index, L *elem) {
-  if ( index < list_length(list) && index >= 0) {
-     *elem = list->first[index].elem;
-     ++(list->first[index-1].next);
-     return true;
+  if (not_empty_list) {
+    int i = 0;
+    int retval;
+    link_t *current = list->first;
+
+    for (int i = 0; i < index-1; ++i) {
+      if (current->next == NULL) {
+        return false;
+      }
+      current = current->next;
+    }
+    link_t *temp = current->next;
+    retval = temp->elem;
+    current->next = temp->next;
+    free(temp);
+    return true;
   }
-  else
-    { return false; }  // felaktigt index, finns ej i listan.
 }
 
 L list_get(list_t *list, int index) {

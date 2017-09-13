@@ -16,7 +16,6 @@ void event_loop(item_t *db, int *db_size, int buf_size);
 
 int main(int argc, char *argv[]) {
   list_t *lista = list_new();
-
   int buf_size = SIZE;
   item_t db[SIZE];  // Databas med plats för 16 objekt
   int db_size = 0;
