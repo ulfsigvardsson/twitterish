@@ -33,14 +33,11 @@ bool not_empty_list(list_t *list) {
 }
 
 void list_append(list_t *list, L elem) {
-  link_t *current = list->first;
-  if (not_empty_list(list)) {
-    while (current->next != NULL) {
-      current = current->next; // Vi stegar oss fram till det sista elementet
-    }
-    current->next = calloc(1, sizeof(link_t));
-    current->next->elem = elem;
-    current->next->next = NULL;
+  if (list->last) {
+  link_t *new_last = calloc(1, sizeof(link_t));
+  new_last->elem = elem;
+  list->last->next = new_last;
+  list->last = new_last;
   }
   else {
     initiate_list(list, elem);
@@ -48,29 +45,24 @@ void list_append(list_t *list, L elem) {
 }
 
 void list_prepend(list_t *list, L elem) {
-  link_t *current_first = list->first;
-  link_t *new_first = calloc(1, sizeof(link_t));
-  new_first->elem   = elem;
-
-  // Om listan inte är tom pekar vårt nya första listobjekt på det gamla första objektet
-  if (not_empty_list(list)) { 
-    new_first->next = current_first; 
-    list->first = new_first;
-  }
-  // Annars är det nya elementet det enda är både första och sista elementet
-  else {
-    initiate_list(list, elem);
-  }
+ link_t *new_first = calloc(1, sizeof(link_t));
+ new_first->elem   = elem;
+ new_first->next   = list->first;
+ list->first       = new_first;
 }
 
 void print_list(list_t *list) {
-
-  link_t *current = list->first;
-  int i =1;
-  while (current !=NULL) {
-    printf("Värde plats %d: %d\n", i, current->elem);
-    current = current->next;
-    ++i;
+  if (not_empty_list(list)) {
+    link_t *current = list->first;
+    int i =1;
+    while (current !=NULL) {
+      printf("Värde plats %d: %d\n", i, current->elem);
+      current = current->next;
+      ++i;
+    } 
+  }
+  else {
+    printf("Tom lista!\n");
   }
 }
 
@@ -87,28 +79,55 @@ int list_length(list_t *list) {
 
 
 bool list_remove(list_t *list, int index, L *elem) {
-  if (not_empty_list) {
-    int i = 0;
-    int retval;
-    link_t *current = list->first;
+  if (!not_empty_list(list)) {
+    return false;
+  }
+  else if (index == 0) { //corner case för pop, bryt ut denna till en pop();
 
-    for (int i = 0; i < index-1; ++i) {
-      if (current->next == NULL) {
-        return false;
-      }
-      current = current->next;
+    if (list_length(list) == 1) { // cc för singletons
+      *elem = list->first->elem;
+      list->first = list->last = NULL;
+      return true; 
     }
-    link_t *temp = current->next;
-    retval = temp->elem;
-    current->next = temp->next;
-    free(temp);
-    return true;
+    else {
+      link_t *tmp =list->first;
+      *elem = tmp->elem;
+      list->first = list->first->next;
+      free(tmp);
+      return true;
+    }
+  }
+  else {
+    link_t *current = list->first;
+    int i = 0;
+    while (current->next != NULL && i < index-1) {
+      current = current->next;
+      ++i;
+    }
+    link_t *tmp = current->next;
+    *elem = tmp->elem;
+    current->next = current->next->next;
+    free(tmp);
   }
 }
 
+bool_list_insert(list_t *list, int index, L elem) {
+  int i = 0;
+  link_t *cursor = list->first
+
+  
+}
+
+
+// Inte definierad för tomma listor
 L list_get(list_t *list, int index) {
-  L val = list->first[index].elem;
-  return val;
+  int i=0;
+  link_t *cursor = list->first;
+  while (cursor && i < index) {
+    cursor = cursor->next;
+    ++i;
+  }
+  return cursor->elem;
 }
 
 L list_first(list_t *list) {

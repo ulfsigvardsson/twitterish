@@ -104,6 +104,8 @@ int add_to_string(char *arr[], char *buf, int index) {
   return index;
 }
 
+
+
 // Skriver ut namnen på alla objekt i en databas
 void list_db(item_t *items, int no_items) {
   char *name;

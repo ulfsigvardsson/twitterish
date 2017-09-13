@@ -16,7 +16,22 @@ void event_loop(item_t *db, int *db_size, int buf_size);
 
 int main(int argc, char *argv[]) {
   list_t *lista = list_new();
-
+  L elem;
+  for (int i = 0; i < 5; ++i) {
+    list_append(lista, i);
+  }
+  printf("Originallistan: \n");
+  print_list(lista);
+  list_remove(lista, 0, &elem);
+  printf("Efter att ha tagit bort index 0\n");
+  print_list(lista);
+  L test = list_get(lista, 1);
+  printf("Elementet på index 1: %d\n", test);
+  elem = list_first(lista);
+  printf("Första elementet: %d\n", elem);
+  elem = list_last(lista);
+  printf("Sista elementet: %d\n", elem);
+  
   int buf_size = SIZE;
   item_t db[SIZE];  // Databas med plats för 16 objekt
   int db_size = 0;
@@ -65,8 +80,7 @@ void cat(char *filename, int *row) {
   fclose(f);
 }
 
-// Huvudloop för programmet. ACHIEVEMENT: Börja här och stega igenom processen för att lägga till en vara,
-// och redogör för ask_question_menu som procedural abstraktion. 
+// Huvudloop för programmet. ACHIEVEMENT: vädeöverföring via pekare görs med pekare till db
 
 void event_loop(item_t *db, int *db_size, int buf_size) {
   char user_choice;
