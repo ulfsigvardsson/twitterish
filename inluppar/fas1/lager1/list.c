@@ -108,16 +108,34 @@ bool list_remove(list_t *list, int index, L *elem) {
     *elem = tmp->elem;
     current->next = current->next->next;
     free(tmp);
+    return true;
   }
 }
 
-bool_list_insert(list_t *list, int index, L elem) {
-  int i = 0;
-  link_t *cursor = list->first
-
+bool list_insert(list_t *list, int index, L elem) {
+  int size = list_length(list); 
+  if (index < 0) {
+    index = size + 1 + index;   // Om angivet index är negativt -> gör det positivt.
+  }
+  if (index == 0) {
+    list_prepend(list, elem);   // Vid insert på plats 1, används prepend.
+  }
+  if (!(0 < index && index < size)) {
+    return false;              // ogiltigt index, ingen insert sker.
+  }
   
+  int i = 1;
+  link_t *cursor = list->first;
+  while (i < index) {
+    cursor = cursor->next;
+    ++i;
+  }
+  link_t *new_insert = calloc(1, sizeof(link_t));
+  new_insert->elem = elem;
+  new_insert->next = cursor->next;
+  cursor->next = new_insert;
+  return true;
 }
-
 
 // Inte definierad för tomma listor
 L list_get(list_t *list, int index) {

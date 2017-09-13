@@ -31,6 +31,9 @@ int main(int argc, char *argv[]) {
   printf("Första elementet: %d\n", elem);
   elem = list_last(lista);
   printf("Sista elementet: %d\n", elem);
+  list_insert(lista, 3, 9);
+  printf("efter insert:\n");
+  print_list(lista);
   
   int buf_size = SIZE;
   item_t db[SIZE];  // Databas med plats för 16 objekt
