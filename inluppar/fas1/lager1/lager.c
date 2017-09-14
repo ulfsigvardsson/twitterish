@@ -59,13 +59,19 @@ int main(int argc, char *argv[]) {
 
   
   tree_t *new_tree = tree_new();
-  new_tree->node = node_new();
-  new_tree->right = tree_new();
-  new_tree->left = tree_new();
-  new_tree->right->node = node_new();
-  new_tree->left->node = node_new();  
-  int l = tree_size(new_tree);
-  printf("size of tree: %d\n", l);
+  //new_tree->node = node_new();
+  //new_tree->right = tree_new();
+  //new_tree->left = tree_new();
+  //new_tree->right->node = node_new();
+  //new_tree->left->node = node_new();
+  //new_tree->right->right = tree_new();
+  //new_tree->right->right->node = node_new();
+  int size = tree_size(new_tree);
+  printf("size of tree: %d\n", size);
+
+  int depth = tree_depth(new_tree);
+  printf("Depth of tree %d\n", depth);
+  
 
   int buf_size = SIZE;
   item_t db[SIZE];  // Databas med plats för 16 objekt
