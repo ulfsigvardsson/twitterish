@@ -108,14 +108,14 @@ bool list_remove(list_t *list, int index, L *elem) {
     *elem = tmp->elem;
     current->next = current->next->next;
     free(tmp);
+    return true;
   }
 }
 
-bool_list_insert(list_t *list, int index, L elem) {
+void bool_list_insert(list_t *list, int index, L elem) {
   int i = 0;
-  link_t *cursor = list->first
+  link_t *cursor = list->first;
 
-  
 }
 
 
@@ -138,4 +138,16 @@ L list_first(list_t *list) {
 L list_last(list_t *list) {
   L last = list->last->elem;
   return last;
+}
+
+
+void delete_list(list_t *list) {
+  link_t *current = list->first;
+
+  while (current->next) {
+    link_t *temp = current;
+    current = current->next;
+    free(temp);
+  }
+  free(list);
 }

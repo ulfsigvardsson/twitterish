@@ -105,4 +105,5 @@ L list_last(list_t *list);
 /// \returns the length of list
 int list_length(list_t *list);
 void print_list(list_t *list); //Testfunktion, tas bort sen
+void delete_list(list_t *list);
 #endif
