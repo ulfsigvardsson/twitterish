@@ -81,6 +81,12 @@ int tree_depth(tree_t *tree) {
   return tree_depth_help(tree, -1);
 }
 
+bool tree_insert( tree_t *tree, K key, T elem) {
+  
+
+  
+}
+
 
 
 
