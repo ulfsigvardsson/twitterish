@@ -5,7 +5,7 @@
 
 /// Define struct tree in your .c file not here! (why?)
 typedef struct tree tree_t;
-typedef struct node node_t;
+
 /// For now, let an element's key be string 
 typedef char *K;
 
@@ -25,8 +25,6 @@ typedef int T;
 ///
 /// \returns: empty tree
 tree_t *tree_new();
-
-node_t *node_new();
 
 /// Remove a tree along with all T elements.
 /// Note, if T is a pointer, elements will not
@@ -85,5 +83,6 @@ T tree_remove(tree_t *tree, K key);
   { T tmp = tree_remove(t, k);                  \
     tree_insert(t, k, e);                       \
     tmp; }                                      \
+
 
 #endif

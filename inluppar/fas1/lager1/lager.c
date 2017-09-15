@@ -14,18 +14,6 @@ void event_loop(item_t *db, int *db_size, int buf_size);
 
 
 
-  struct node {
-  K key;    
-  list_t *l;  
-};
-
-struct tree {
-  node_t *node;
-  tree_t *left;
-  tree_t *right;
-};
-
-
 
 
 
@@ -59,7 +47,7 @@ int main(int argc, char *argv[]) {
 
   
   tree_t *new_tree = tree_new();
-  //new_tree->node = node_new();
+  tree_insert(new_tree, "banan", 1);
   //new_tree->right = tree_new();
   //new_tree->left = tree_new();
   //new_tree->right->node = node_new();
@@ -77,7 +65,6 @@ int main(int argc, char *argv[]) {
   item_t db[SIZE];  // Databas med plats för 16 objekt
   int db_size = 0;
   event_loop(db, &db_size, buf_size);
-  delete_list(lista);
   return 0;
 }
 

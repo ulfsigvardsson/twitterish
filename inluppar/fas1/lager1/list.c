@@ -136,7 +136,6 @@ bool list_insert(list_t *list, int index, L elem) {
   new_insert->next = cursor->next;
   cursor->next = new_insert;
   return true;
->>>>>>> cd20ef83f983cc8e5b66316048f2856e065d5ceb
 }
 
 // Inte definierad för tomma listor
