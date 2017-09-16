@@ -47,7 +47,11 @@ int main(int argc, char *argv[]) {
 
   
   tree_t *new_tree = tree_new();
-  tree_insert(new_tree, "banan", 1);
+  tree_insert(new_tree, "apa", 55);
+  tree_insert(new_tree, "banan", 55);
+  tree_insert(new_tree, "cirkel", 2);
+  tree_insert(new_tree, "groda", 3);
+  tree_insert(new_tree, "orm", 4);
   //new_tree->right = tree_new();
   //new_tree->left = tree_new();
   //new_tree->right->node = node_new();
@@ -59,13 +63,22 @@ int main(int argc, char *argv[]) {
 
   int depth = tree_depth(new_tree);
   printf("Depth of tree %d\n", depth);
-  
 
+  char *key = "banan";
+  bool svar = tree_has_key(new_tree, key);
+  printf("1 for key, 0 for no key: %d\n", svar);
+
+  T get_key = tree_get(new_tree, key);
+  printf("Elementet till en viss nyckel: %d\n", get_key);
+
+  
+  /*
   int buf_size = SIZE;
   item_t db[SIZE];  // Databas med plats för 16 objekt
   int db_size = 0;
   event_loop(db, &db_size, buf_size);
   return 0;
+  */
 }
 
 // Kopierar en sträng från en pekare till en annan adress

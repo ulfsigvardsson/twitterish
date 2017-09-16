@@ -87,6 +87,15 @@ bool tree_has_key(tree_t *tree, K key) {
   else if (strcmp(tree->node->key, key) == 0) {
     return true;
   }
+  else if (!tree->right && !tree->left) {
+    return false;
+  }
+  else if (!tree->left) {
+    return tree_has_key(tree->right, key); 
+  }
+  else if (!tree->right) {
+    return tree_has_key(tree->left, key); 
+  }
   else {
     return (tree_has_key(tree->left, key) || tree_has_key(tree->right, key));
   }
@@ -122,13 +131,14 @@ bool tree_insert( tree_t *tree, K key, T elem) {
     tree->node=new_node;
     return true;
   }
-  if (tree_has_key(tree, key)) {
+  else if (tree_has_key(tree, key)) {
     return false;
   }
   
   else {
     if( strcmp(tree->node->key, key) < 0)  { // Vi kollar om vi ska till vänster
-      if  (is_empty_tree(tree->left)) { // Kolla om vänsterträdet är tomt
+      if  (!tree->left) { // Kolla om vänsterträdet är tomt
+        tree->left = tree_new(); // om ja: sätt vänsterträdet till ett tomt träd
         add_node(tree->left, key, elem); // Om ja, lägg till ett nytt träd till vänster
         return true;
       }
@@ -137,12 +147,13 @@ bool tree_insert( tree_t *tree, K key, T elem) {
       }
     }
     else { // Annars ska vi till höger
-        if  (is_empty_tree(tree->right)) { // Kolla om högerrträdet är tomt
+        if  (!tree->right) { // Kolla om högerrträdet är tomt
+          tree->right = tree_new(); // om ja: sätt högerträdet till ett tomt träd
           add_node(tree->right, key, elem); // Om ja, lägg till ett nytt träd till höger
           return true;
         }
-      else {
-        return tree_insert(tree->right, key, elem); // Om inte, traversera högererträdet
+        else {
+          return tree_insert(tree->right, key, elem); // Om inte, traversera högererträdet
       }
     }
   }
@@ -153,7 +164,6 @@ bool is_empty_tree(tree_t *tree) {
 }
 
 void add_node(tree_t *tree, K key, T elem) {
-  tree = tree_new(); // om ja: sätt vänsterträdet till ett tomt träd
   tree->node = node_new(); // och sätt dess nod till en tom nod
   tree->node->key = key;
   tree->node->item = elem;
