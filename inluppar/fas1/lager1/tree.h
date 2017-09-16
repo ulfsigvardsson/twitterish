@@ -2,6 +2,7 @@
 #define __tree_h__
 
 #include <stdbool.h>
+#include "db.h"
 
 /// Define struct tree in your .c file not here! (why?)
 typedef struct tree tree_t;

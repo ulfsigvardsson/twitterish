@@ -18,101 +18,30 @@ void event_loop(item_t *db, int *db_size, int buf_size);
 
 
 int main(int argc, char *argv[]) {
-  /*
-  list_t *lista = list_new();
-  L elem;
-  for (int i = 0; i < 5; ++i) {
-    list_append(lista, i);
+  char *keys[] = {"Banan", "Äpple", "Päron", "Mango"};
+  int elems[] = {1, 2, 3, 4};
+  tree_t *tree = tree_new();
+  for (int i=0; i < 4; ++i) {
+    tree_insert(tree, keys[i], elems[i]);
   }
-  
-  printf("Originallistan: \n");
-  print_list(lista);
-  list_remove(lista, 0, &elem);
-  printf("Efter att ha tagit bort index 0\n");
-  print_list(lista);
-  L test = list_get(lista, 1);
-  printf("Elementet på index 1: %d\n", test);
-  elem = list_first(lista);
-  printf("Första elementet: %d\n", elem);
-  elem = list_last(lista);
-  printf("Sista elementet: %d\n", elem);
-  list_insert(lista, 3, 9);
-  printf("efter insert:\n");
-  print_list(lista);
-  */
-
-
-
-
-
-  
-  tree_t *new_tree = tree_new();
-  tree_insert(new_tree, "banan", 1);
-  //new_tree->right = tree_new();
-  //new_tree->left = tree_new();
-  //new_tree->right->node = node_new();
-  //new_tree->left->node = node_new();
-  //new_tree->right->right = tree_new();
-  //new_tree->right->right->node = node_new();
-  int size = tree_size(new_tree);
+  int size = tree_size(tree);
   printf("size of tree: %d\n", size);
 
-  int depth = tree_depth(new_tree);
+  int depth = tree_depth(tree);
   printf("Depth of tree %d\n", depth);
   
-
-  int buf_size = SIZE;
-  item_t db[SIZE];  // Databas med plats för 16 objekt
-  int db_size = 0;
-  event_loop(db, &db_size, buf_size);
+  T elem = tree_get(tree, keys[2]);
+  printf("Med nyckeln %s får vi elementet: %d\n", keys[2], elems[2]);
+  
   return 0;
 }
 
-// Kopierar en sträng från en pekare till en annan adress
-void cp(char *source, char *dest) {
-  FILE *s = fopen(source, "r");
-  FILE *d = fopen(dest, "w");
-  int c   = fgetc(s);
- 
-  while (c != EOF) {
-    fputc(c, d);
-    c = fgetc(s);
-  }
-  fclose(s);
-  fclose(d);
-}
-// Skriver ut innehållet i en textfil på skärmen
-void cat(char *filename, int *row) {
-  printf("==== %s ====\n", filename);
-  FILE *f = fopen(filename, "r");
-  int c   = fgetc(f);
-  printf("%d. ", *row);
-  
-  while (c != EOF)
-  { 
-    // Om karaktären är newline ökas radräknaren och skrivs
-    // ut OM det inte är den sista raden i filen
-    if (c == '\n') {
-      ++*row;
-      fputc(c, stdout);
-      c = fgetc(f);  // fgetc() popar också c från input buffern
-      if (c != EOF) {
-        printf("%d. ", *row);
-      }
-    }
-    else {
-      fputc(c, stdout);
-      c = fgetc(f);
-    }
-  }
-  fclose(f);
-}
 
-// Huvudloop för programmet. ACHIEVEMENT: vädeöverföring via pekare görs med pekare till db
+// Huvudloop för programmet. 
 
 void event_loop(item_t *db, int *db_size, int buf_size) {
   char user_choice;
-  action_t undo ={ .type = NOTHING };
+  action_t undo = { .type = NOTHING };
   char *menu = "\n[L]ägga till en vara\n"\
                  "[T]a bort en vara\n"\
                  "[R]edigera en vara\n"\

@@ -21,6 +21,7 @@ list_t *list_new() {
   return new;
 }
 
+// Allokerar en ny link_t och nitierar en tom lista med den
 void initiate_list(list_t *list, L elem) {
   link_t *new =calloc(1, sizeof(link_t));
   new->elem = elem;
@@ -77,25 +78,27 @@ int list_length(list_t *list) {
   return count;
 }
 
+bool pop(list_t *list, L *elem) {
+  if (list_length(list) == 1) { // cc för singletons
+    *elem = list->first->elem;
+    list->first = list->last = NULL;
+    return true; 
+  }
+  else {
+    link_t *tmp =list->first;
+    *elem = tmp->elem;
+    list->first = list->first->next;
+    free(tmp);
+    return true;
+  }
+}
 
 bool list_remove(list_t *list, int index, L *elem) {
   if (!not_empty_list(list)) {
     return false;
   }
-  else if (index == 0) { //corner case för pop, bryt ut denna till en pop();
-
-    if (list_length(list) == 1) { // cc för singletons
-      *elem = list->first->elem;
-      list->first = list->last = NULL;
-      return true; 
-    }
-    else {
-      link_t *tmp =list->first;
-      *elem = tmp->elem;
-      list->first = list->first->next;
-      free(tmp);
-      return true;
-    }
+  else if (index == 0) { 
+    pop(list, elem);
   }
   else {
     link_t *current = list->first;
