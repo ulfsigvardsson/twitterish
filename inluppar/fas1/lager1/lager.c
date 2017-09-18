@@ -4,13 +4,14 @@
 #include "db.h"
 #include "list.h"
 #include "tree.h"
+
 #define SIZE 16
 
 void cp(char *source, char*dest);
 void cat(char *filename, int *row);
 void print_menu();
 char ask_question_menu();
-void event_loop(item_t *db, int *db_size, int buf_size);
+void event_loop(tree_t *db);
 
 
 
@@ -27,10 +28,10 @@ int main(int argc, char *argv[]) {
   int size = tree_size(tree);
   printf("size of tree: %d\n", size);
 
-  int depth = tree_depth(tree);
+  int depth =  tree_depth(tree);
   printf("Depth of tree %d\n", depth);
   
-  T elem = tree_get(tree, keys[2]);
+  
   printf("Med nyckeln %s får vi elementet: %d\n", keys[2], elems[2]);
   
   return 0;
@@ -39,8 +40,8 @@ int main(int argc, char *argv[]) {
 
 // Huvudloop för programmet. 
 
-void event_loop(item_t *db, int *db_size, int buf_size) {
-  char user_choice;
+void event_loop(tree_t *db) {
+  /*char user_choice;
   action_t undo = { .type = NOTHING };
   char *menu = "\n[L]ägga till en vara\n"\
                  "[T]a bort en vara\n"\
@@ -55,15 +56,15 @@ void event_loop(item_t *db, int *db_size, int buf_size) {
       user_choice = toupper(ask_question_menu("Ange ett menyval: ", "LTRGHA"));
  
       switch (user_choice) {
-      case 'L': {add_item_to_db(db, db_size, buf_size);
+      case 'L': {add_item_to_db(db);
                    undo.type = ADD;
                    break;}
-        case 'T': {remove_item_from_db(db, db_size, &undo);    break;}
-        case 'R': {edit_db(db, *db_size, &undo);               break;}
-        case 'G': {undo_last_action(&undo, db, db_size);       break;}
-        case 'H': {list_db(db, *db_size);                      break;}
-        default:  printf("Avslutar...\n");                     break;}
+        case 'T': {remove_item_from_db(db, &undo); break;}
+        case 'R': {edit_db(db, &undo);             break;}
+        case 'G': {undo_last_action(&undo, db);    break;}
+        case 'H': {list_db(db);                    break;}
+        default:  printf("Avslutar...\n");         break;}
     } while (user_choice != 'A');
-}  
+  */}  
 
 

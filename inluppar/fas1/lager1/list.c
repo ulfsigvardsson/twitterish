@@ -1,6 +1,5 @@
 #include <stdlib.h>
 #include "list.h"
-#include "db.h"
 #include <stdio.h> // for printfunktionen, kan tas bort om den tas bort
 
 bool not_empty_list(list_t *list);
@@ -98,7 +97,7 @@ bool list_remove(list_t *list, int index, L *elem) {
     return false;
   }
   else if (index == 0) { 
-    pop(list, elem);
+    return pop(list, elem);
   }
   else {
     link_t *current = list->first;
@@ -142,34 +141,67 @@ bool list_insert(list_t *list, int index, L elem) {
 }
 
 // Inte definierad för tomma listor
-L list_get(list_t *list, int index) {
+L *list_get(list_t *list, int index) {
   int i=0;
   link_t *cursor = list->first;
   while (cursor && i < index) {
     cursor = cursor->next;
     ++i;
   }
-  return cursor->elem;
+  return &cursor->elem;
 }
 
-L list_first(list_t *list) {
-  L first = list->first->elem;
-  return first;  
+L *list_first(list_t *list) {
+  return &list->first->elem;
 }
 
-L list_last(list_t *list) {
-  L last = list->last->elem;
-  return last;
+L *list_last(list_t *list) {
+  return &list->last->elem;
+
 }
 
 
-void delete_list(list_t *list) {
+/// Deletes a list. 
+///
+/// \param list pointer to the list
+/// \param cleanup a function that takes an element as
+///        argument, to be used to free memory. If this param is 
+///        NULL, no cleanup of keys or elements will happen.
+void list_delete(list_t *list, list_action cleanup) {
+  link_t *tmp;
   link_t *current = list->first;
-
-  while (current->next) {
-    link_t *temp = current;
+  while (current) {
+    tmp = current;
     current = current->next;
-    free(temp);
+    if (cleanup) {
+      cleanup(tmp->elem); // cleanup definieras inte här
+      free(tmp); 
+    }
+    else {
+      free(tmp); 
+    }
   }
-  free(list);
+}
+
+
+/// This function is used in list_apply() to allow applying a function
+/// to all elements in a list
+typedef void(*list_action2)(L elem, void *data);
+
+/// Applies a function to all elements in a list in list order
+///
+/// \param list the list
+/// \param fun the function to apply to all elements
+/// \param data an extra argument passed to each call to fun (may be NULL)
+void list_apply(list_t *list, list_action2 func, void *data) {
+  if (!list) {
+    return;
+  }
+  else {
+    link_t *current = list->first;
+    while (current) {
+      func(current->elem, data);
+      current = current->next;
+    }
+  }
 }

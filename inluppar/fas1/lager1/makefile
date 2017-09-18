@@ -1,12 +1,18 @@
-main: lager.o db.o utils.o list.o tree.o
-	gcc -g lager.o db.o utils.o list.o tree.o -o lager -lcunit
+CC=gcc
+FLAGS= -Wall -g
+
+lager: lager.o db.o utils.o list.o tree.o
+	$(CC) $(FLAGS) lager.o db.o utils.o list.o tree.o -o lager -lcunit
 lager.o: lager.c db.h utils.h list.h tree.h
-	gcc -c -g -Wall lager.c
-db.o: db.c db.h utils.h
-	gcc -c -g -Wall db.c
+	$(CC) $(FLAGS) -c lager.c
+db.o: db.c db.h list.h utils.h
+	$(CC) $(FLAGS) -c db.c
 utils.o: utils.c db.h utils.h
-	gcc -c -g -Wall utils.c
+	$(CC) $(FLAGS) -c utils.c
 list.o: list.c list.h db.h
-	gcc -c -g -Wall list.c
-tree.o: tree.h list.h utils.h db.h
-	gcc -c -g -Wall tree.c
+	$(CC) $(FLAGS) -c list.c
+tree.o: tree.h list.h utils.h db.h tree.c
+	$(CC) $(FLAGS) -c tree.c
+run: lager
+	./lager
+.PHONY: lager

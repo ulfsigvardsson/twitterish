@@ -2,16 +2,13 @@
 #include "tree.h"
 #include "list.h"
 #include "utils.h"
-#include "db.h"
 #include <stdio.h>
 
 typedef struct node node_t;
 struct node {
   K key;
   T item;
-  list_t *l;  
 };
-//typedef bool(*branching_func)(tree_t *, K, T);
 
 enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL};
 
@@ -22,9 +19,10 @@ struct tree {
 };
 
 //  tree_t t = { .left = nåt, .right = nåt, .key ="Vara", l = ['A23,', 'B5'] };
-bool is_empty_tree(tree_t *tree);
+
 void add_subtree(tree_t **tree, K key, T elem);
 void initiate_tree(tree_t *tree, K key, T elem);
+void tree_insert_aux(tree_t *tree, K key, T elem, int direction);
 
 // Returnerar vilka branches som finns på trädet, om några alls
 enum branch tree_branches(tree_t *tree) {
@@ -80,11 +78,12 @@ int tree_size(tree_t *tree) {
     case RIGHT: {
       return 1 + tree_size(tree->right);
     }
-    case FULL: {
+    default: {
       return 1 + tree_size(tree->left) + tree_size(tree->right);
     }
   }
 }
+
 int biggest(int a, int b) {
   return a > b ? a : b;
 }
@@ -137,7 +136,7 @@ bool tree_has_key(tree_t *tree, K key) {
       case LEAF:  { return strcmp(tree->node->key, key) == 0;                                }
       case LEFT:  { return tree_has_key(tree->left, key);                                    }
       case RIGHT: { return tree_has_key(tree->right, key);                                   }
-      case FULL:  { return (tree_has_key(tree->left, key) || tree_has_key(tree->right, key));}
+      case FULL:  { return (tree_has_key(tree->left, key) ||tree_has_key(tree->right, key));}
       default :   { return false;                                                            }
     }
   }
@@ -165,7 +164,7 @@ T tree_get(tree_t *tree, K key) {
         return tree_get(tree->right, key);
       }
     }
-    case FULL:  {
+    default:  {
       if (strcmp(tree->node->key, key) == 0) {
         return tree->node->item;
       }
@@ -178,24 +177,6 @@ T tree_get(tree_t *tree, K key) {
     }
   }
 }
-
-// Hjälpfunktion för tree_insert. Gör korrekt förgreningsval beroende på key och typ av subträd
-void tree_insert_aux(tree_t *tree, K key, T elem, int direction) {
-  if (direction > 0 && !tree->left) {
-    add_subtree(&tree->left, key ,elem); // add_subtree &tree->left
-  }
-  else if (direction > 0) {
-    tree_insert(tree->left, key ,elem);    // tree_insert tree->left
-  }
-  else if (!tree->right){
-    add_subtree(&tree->right, key, elem); // add_subtree &tree->right
-  }
-  else {
-    tree_insert(tree->right, key, elem);
-  }
-}
-
-
 
 bool tree_insert( tree_t *tree, K key, T elem) {
   enum branch type = tree_branches(tree);
@@ -226,13 +207,27 @@ bool tree_insert( tree_t *tree, K key, T elem) {
 }
 
 
-bool is_empty_tree(tree_t *tree) {
-  return tree_size(tree) == 0;
+// Hjälpfunktion för tree_insert. Gör korrekt förgreningsval beroende på key och typ av subträd
+
+void tree_insert_aux(tree_t *tree, K key, T elem, int direction) {
+  if (direction > 0 && !tree->left) {
+    add_subtree(&tree->left, key ,elem); // add_subtree &tree->left
+  }
+  else if (direction > 0) {
+    tree_insert(tree->left, key ,elem);    // tree_insert tree->left
+  }
+  else if (!tree->right){
+    add_subtree(&tree->right, key, elem); // add_subtree &tree->right
+  }
+  else {
+    tree_insert(tree->right, key, elem);
+  }
 }
+
 
 /// Lägger till ett nytt subträd till ett träd
 ///
-/// \param tree-pekare till ett träd
+/// \param tree-pekare till en pekare till ett träd
 /// \param key nyckel till den nya noden
 /// \param elem element till den nya noden
 /// \returns: void
@@ -255,3 +250,47 @@ void initiate_tree(tree_t *tree, K key, T elem) {
     new_node->item=elem;
     tree->node=new_node;
 }
+//////////// ================= Added in version 1.2
+///
+/// NOTE: Implementing these functions is NOT mandatory
+///
+
+/// Returns an array holding all the keys in the tree
+/// in ascending order.
+///
+/// \param tree pointer to the tree
+/// \returns: array of tree_size() keys
+K *tree_keys(tree_t *tree)  {
+  int size = tree_size(tree);
+  int start = 1;
+  K *keys = calloc(size, sizeof(K));
+}
+
+/// Returns an array holding all the elements in the tree
+/// in ascending order of their keys (which are not part
+/// of the value).
+///
+/// \param tree pointer to the tree
+/// \returns: array of tree_size() elements
+T *tree_elements(tree_t *tree);
+
+/// This function is used in tree_apply() to allow applying a function
+/// to all elements in a tree. 
+typedef void(*tree_action2)(K key, T elem, void *data);
+
+/// Applies a function to all elements in the tree in a specified order.
+/// Example (using shelf as key):
+///
+///     tree_t *t = tree_new();
+///     tree_insert(t, "A25", some_item);
+///     int number = 0;
+///     tree_apply(t, inorder, print_item, &number);
+///
+/// where print_item is a function that prints the number and increments it,
+/// and prints the item passed to it. 
+///
+/// \param tree the tree
+/// \param order the order in which the elements will be visited
+/// \param fun the function to apply to all elements
+/// \param data an extra argument passed to each call to fun (may be NULL)
+void tree_apply(tree_t *tree, enum tree_order order, tree_action2 fun, void *data);
