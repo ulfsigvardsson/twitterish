@@ -19,10 +19,10 @@ void event_loop(tree_t *db);
 
 
 int main(int argc, char *argv[]) {
-  char *keys[] = {"Banan", "Äpple", "Päron", "Mango"};
-  int elems[] = {1, 2, 3, 4};
+  char *keys[] = {"d", "b", "a", "c", "f", "e"};
+  int elems[] = {4, 2, 1, 3, 6, 5};
   tree_t *tree = tree_new();
-  for (int i=0; i < 4; ++i) {
+  for (int i=0; i < 6; ++i) {
     tree_insert(tree, keys[i], elems[i]);
   }
   int size = tree_size(tree);
@@ -33,7 +33,11 @@ int main(int argc, char *argv[]) {
   
   
   printf("Med nyckeln %s får vi elementet: %d\n", keys[2], elems[2]);
-  
+
+  T *elements = tree_elements(tree);
+  for ( int i = 0; i < 6; ++i) {
+    printf("Namn på element %d: %d\n", i, elements[i] ); 
+  }
   return 0;
 }
 

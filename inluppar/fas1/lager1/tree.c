@@ -2,6 +2,7 @@
 #include "tree.h"
 #include "list.h"
 #include "utils.h"
+#include "db.h"
 #include <stdio.h>
 
 typedef struct node node_t;
@@ -36,11 +37,11 @@ enum branch tree_branches(tree_t *tree) {
   else if (!tree->right && !tree->left) {
     type = LEAF;
   }
-  else if (tree->right) {
-    type = RIGHT;
-  }
-  else if (tree->left) {
+  else if (!tree->right) {
     type = LEFT;
+  }
+  else if (!tree->left) {
+    type = RIGHT;
   }
   else {
     type = FULL;
@@ -210,10 +211,10 @@ bool tree_insert( tree_t *tree, K key, T elem) {
 // Hjälpfunktion för tree_insert. Gör korrekt förgreningsval beroende på key och typ av subträd
 
 void tree_insert_aux(tree_t *tree, K key, T elem, int direction) {
-  if (direction > 0 && !tree->left) {
+  if (direction < 0 && !tree->left) {
     add_subtree(&tree->left, key ,elem); // add_subtree &tree->left
   }
-  else if (direction > 0) {
+  else if (direction < 0) {
     tree_insert(tree->left, key ,elem);    // tree_insert tree->left
   }
   else if (!tree->right){
@@ -256,15 +257,18 @@ void initiate_tree(tree_t *tree, K key, T elem) {
 ///
 
 /// Returns an array holding all the keys in the tree
-/// in ascending order.
-///
+/// in ascending order.///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() keys
 K *tree_keys(tree_t *tree)  {
   int size = tree_size(tree);
   int start = 1;
   K *keys = calloc(size, sizeof(K));
+  
+
+  
 }
+
 
 /// Returns an array holding all the elements in the tree
 /// in ascending order of their keys (which are not part
@@ -272,7 +276,31 @@ K *tree_keys(tree_t *tree)  {
 ///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() elements
-T *tree_elements(tree_t *tree);
+
+  // {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL};
+
+void tree_elements_aux(tree_t *tree, T *elements, int *index) {
+  if (!tree) {
+    return;
+  }
+  else {
+    tree_elements_aux(tree->left, elements, index);
+    elements[*index] = tree->node->item;
+    ++(*index);
+    tree_elements_aux(tree->right, elements, index);
+  }
+}
+
+T *tree_elements(tree_t *tree) {
+  int size = tree_size(tree);
+  T *elements = calloc(size, sizeof(T));
+  int *index = calloc(1, sizeof(int));
+  *index = 0;
+  tree_elements_aux(tree, elements, index);
+  free(index);
+  return elements;
+}
+
 
 /// This function is used in tree_apply() to allow applying a function
 /// to all elements in a tree. 

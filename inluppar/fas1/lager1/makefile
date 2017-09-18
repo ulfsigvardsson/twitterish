@@ -2,7 +2,7 @@ CC=gcc
 FLAGS= -Wall -g
 
 lager: lager.o db.o utils.o list.o tree.o
-	$(CC) $(FLAGS) lager.o db.o utils.o list.o tree.o -o lager -lcunit
+	$(CC) $(FLAGS) lager.o db.o utils.o list.o tree.o -o lager
 lager.o: lager.c db.h utils.h list.h tree.h
 	$(CC) $(FLAGS) -c lager.c
 db.o: db.c db.h list.h utils.h
