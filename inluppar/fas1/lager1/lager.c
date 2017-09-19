@@ -5,42 +5,126 @@
 #include "tree.h"
 #include "item.h"
 
+typedef struct pair { item_t *edited; item_t original; } pair_t;
+
+struct action
+{
+  enum { NOTHING, ADD, REMOVE, EDIT } type;
+  pair_t p;
+};
+
+typedef struct action action_t;
+
 
 void print_menu();
 char ask_question_menu();
 void event_loop(tree_t *db);
-void print_item(K key, T elem, void *data);
-// Ulf: tree_apply();
+void list_db(tree_t *tree);
+void print_item(T elem);
 
-int main(int argc, char *argv[]) {
-  char *name = "Hammare";
-  char *descr = "Ett verktyg";
-  int price = 15;
-  char *shelf_id = "A12";
-  int amount = 1;
 
-  item_t *new_item = item_new(name, descr, price, shelf_id, amount);
-  item_t *new_item2 = item_new("Bajs", "Kiss", 1, "D23", 4);
-  item_t *new_item3 = item_new("Öl", "Bira", 2, "D2", 5);
-  item_t *new_item4 = item_new("Apa", "Apdjävel", 2, "D2", 5);
-  tree_t *tree = tree_new();
-  tree_insert(tree, new_item->name, *new_item);
-  tree_insert(tree, new_item2->name, *new_item2);
-  tree_insert(tree, new_item3->name, *new_item3);
-  tree_insert(tree, new_item4->name, *new_item4);
-  char **keys = tree_keys(tree);
   
-  enum tree_order order = inorder;
-  int index = 1;
-  tree_apply(tree, order, print_item, &index);
-  return 0;
+void undo_last_action(action_t *last_action, tree_t *db) {
+  return;
 }
 
+tree_t *create_db() {
+  return tree_new();
+}
+
+void remove_item_from_db(tree_t *db, action_t *last_action) {
+  printf("Inte implementerad\n");
+  return;
+}
+
+// Lägger till en vara i databasen
+//TODO: Om varan redan finns ska man få välja en ny eller gammal  hylla att sätta in den på.
+void add_item_to_db(tree_t *db) {
+  char *name  = ask_question_string("Ange namn på vara:\n");
+  char *descr = ask_question_string("Ange en beskrivning av varan:\n");
+  int price   = ask_question_int("Ange pris på varan:\n");
+  char *shelf = ask_question_shelf("Ange hyllplats:\n");
+  int amount  = ask_question_int("Ange antal: \n");
+  item_t *item = item_new(name, descr, price, shelf, amount);
+  tree_insert(db, item->name, *item);
+}
+
+void edit_db(tree_t *db, action_t *last_action) {
+  char *choice;
+  list_db(db);
+ 
+  do {
+    choice = ask_question_string("Ange namn för varan du vill ersätta\n");
+  } while (!tree_has_key(db, choice));
+
+   item_t item = tree_get(db, choice);
+   print_item(item);
+
+  while (true) {
+    choice = ask_question_string("Ange vilken del du vill ersätta\n");
+
+    if (strcmp("B", choice) == 0) {
+      char *new_desc = ask_question_string("Ange ny beskrivning\n");
+      item.descr = new_desc;
+      break;
+    }  
+    else if (strcmp("P", choice) == 0) {
+      int new_price = ask_question_int("Ange nytt pris\n");
+      item.price = new_price;
+      break;
+    }
+    else if (strcmp("H", choice) == 0) {
+      printf("Inte implementerad\n");
+      break;
+    }
+  }
+}
+
+
+// list_action2-funktion för print_shelves()
+void print_shelf(L shelf, void *data) {
+  shelf_t *tmp;
+  tmp = (shelf_t*)shelf;
+  printf("[%s]: %d st.\n", tmp->id, tmp->amount);
+}
+
+// Skriver ut alla hyllor i en lista
+void print_shelves(list_t *list) {
+  printf("Hyllor:  ");
+  list_apply(list, print_shelf, NULL);
+}
+
+// Skriver ut en varas detaljinformation
+void print_item(T elem) {
+  printf("%s\n"\
+         "[B]eskrivning: %s\n"\
+         "[P]ris: %d\n", elem.name, elem.descr, elem.price);
+  print_shelves(elem.shelves);
+}
+
+// Hjälpfunktion til list_db.
+// Skriver ut index följt av varans namn.
+void list_db_aux(K key, T elem, void *data) {
+  printf("%d: %s\n", *(int*)data, elem.name);
+  ++(*(int*)data); // Varans index i databasen
+}
+
+
+// skriver ut alla varor i databasen på formen
+// 1. Namn1
+// 2. Namn2
+// ...
+// N. NamnN
+void list_db(tree_t *tree) {
+  enum tree_order order = inorder;
+  int index = 1;
+  tree_apply(tree, order, list_db_aux, &index);
+}
 
 // Huvudloop för programmet. 
 
 void event_loop(tree_t *db) {
-  /*char user_choice;
+  char user_choice;
   action_t undo = { .type = NOTHING };
   char *menu = "\n[L]ägga till en vara\n"\
                  "[T]a bort en vara\n"\
@@ -50,12 +134,11 @@ void event_loop(tree_t *db) {
                  "[A]vsluta\n\n";
   
     do {
-      // skickar db_size som pointer i fallen då den måste justeras, ta M38 här och visa att db_size allokeras på stacken och skickas över funktioner
       print_menu(menu);
       user_choice = toupper(ask_question_menu("Ange ett menyval: ", "LTRGHA"));
  
       switch (user_choice) {
-      case 'L': {add_item_to_db(db);
+        case 'L': {add_item_to_db(db);
                    undo.type = ADD;
                    break;}
         case 'T': {remove_item_from_db(db, &undo); break;}
@@ -64,16 +147,11 @@ void event_loop(tree_t *db) {
         case 'H': {list_db(db);                    break;}
         default:  printf("Avslutar...\n");         break;}
     } while (user_choice != 'A');
-  */}  
-
-
-
-void print_item(K key, T elem, void *data) {
-  printf("Index: %d\n"\
-         "Namn: %s\n"                           \
-         "Beskrivning: %s\n"\
-         "Pris: %d\n"\
-         , *(int*)data, key, elem.descr, elem.price);
-  ++(*(int*)data);
+  
 }
 
+int main(int argc, char *argv[]) {
+  tree_t *db = create_db();
+  event_loop(db);
+  return 0;
+}

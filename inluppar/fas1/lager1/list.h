@@ -132,6 +132,4 @@ typedef void(*list_action2)(L elem, void *data);
 /// \param fun the function to apply to all elements
 /// \param data an extra argument passed to each call to fun (may be NULL)
 void list_apply(list_t *list, list_action2 fun, void *data);
-
-
 #endif

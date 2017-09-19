@@ -13,6 +13,7 @@ double ask_question_float(char *question);
 int ask_question_int(char *question);
 char *ask_question_string(char *question);
 char ask_question_char(char *question);
+char ask_question_menu(char *question, char *menu_choices);
 int read_string(char *buf, int buf_siz);
 void print(char *str);
 void println(char *str);

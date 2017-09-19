@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include "list.h"
-#include <stdio.h> // for printfunktionen, kan tas bort om den tas bort
+
 
 bool not_empty_list(list_t *list);
 void initiate_list(list_t *list, L  elem);
@@ -49,21 +49,6 @@ void list_prepend(list_t *list, L elem) {
  new_first->elem   = elem;
  new_first->next   = list->first;
  list->first       = new_first;
-}
-
-void print_list(list_t *list) {
-  if (not_empty_list(list)) {
-    link_t *current = list->first;
-    int i =1;
-    while (current !=NULL) {
-      printf("Värde plats %d: %p\n", i, current->elem);
-      current = current->next;
-      ++i;
-    } 
-  }
-  else {
-    printf("Tom lista!\n");
-  }
 }
 
 int list_length(list_t *list) {
@@ -182,11 +167,6 @@ void list_delete(list_t *list, list_action cleanup) {
     }
   }
 }
-
-
-/// This function is used in list_apply() to allow applying a function
-/// to all elements in a list
-typedef void(*list_action2)(L elem, void *data);
 
 /// Applies a function to all elements in a list in list order
 ///

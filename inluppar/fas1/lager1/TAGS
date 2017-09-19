@@ -1,16 +1,14 @@
 
-db.c,319
-void print_item(34,663
-shelf_t make_shelf(45,986
-item_t *make_item(make_item51,1166
-item_t *input_item(input_item60,1430
-void edit_description(69,1772
-void edit_price(74,1874
-void edit_shelf(79,1970
-void edit_amount(84,2074
-bool is_menu_choice(90,2164
-void print_menu(94,2233
-void undo_last_action(98,2288
+db.c,265
+shelf_t make_shelf(34,634
+item_t *make_item(make_item40,814
+item_t *input_item(input_item49,1078
+void edit_description(58,1420
+void edit_price(63,1522
+void edit_shelf(68,1618
+void edit_amount(73,1722
+void print_menu(81,1814
+void undo_last_action(85,1869
 
 item.c,291
 struct item 6,41
@@ -25,34 +23,52 @@ typedef struct shelf shelf_t;18,165
 shelf_t *shelf_new(shelf_new20,196
 item_t *item_new(item_new27,334
 
-lager.c,67
-int main(14,210
-void event_loop(44,1078
-void print_item(73,2169
+lager.c,769
+typedef struct pair 8,112
+typedef struct pair { item_t *edited;edited8,112
+typedef struct pair { item_t *edited; item_t original;8,112
+typedef struct pair { item_t *edited; item_t original; } pair_t;8,112
+struct action10,178
+  enum { NOTHING,12,194
+  enum { NOTHING, ADD,12,194
+  enum { NOTHING, ADD, REMOVE,12,194
+  enum { NOTHING, ADD, REMOVE, EDIT 12,194
+  enum { NOTHING, ADD, REMOVE, EDIT } type;12,194
+  pair_t p;13,238
+typedef struct action action_t;16,254
+void undo_last_action(26,389
+tree_t *create_db(create_db30,461
+void remove_item_from_db(34,507
+void add_item_to_db(38,582
+void edit_db(42,629
+void print_item(46,713
+void print_shelf(57,1038
+void print_shelves(65,1228
+void list_db(70,1342
+void event_loop(78,1505
+int main(105,2436
 
-list.c,604
-struct link 8,190
-  L elem;9,204
-  link_t *next;next10,214
-struct list 13,274
-  link_t *first;first14,288
-  link_t *last;last15,305
-list_t *list_new(list_new18,326
-void initiate_list(24,467
-bool not_empty_list(31,616
-void list_append(35,677
-void list_prepend(47,918
-void print_list(54,1104
-int list_length(69,1398
-bool pop(80,1599
-bool list_remove(95,1915
-bool list_insert(118,2374
-L *list_get(list_get144,3087
-L *list_first(list_first154,3268
-L *list_last(list_last158,3330
-void list_delete(170,3635
-typedef void(*list_action2)list_action2189,4050
-void list_apply(196,4320
+list.c,529
+struct link 8,119
+  L elem;9,133
+  link_t *next;next10,143
+struct list 13,203
+  link_t *first;first14,217
+  link_t *last;last15,234
+list_t *list_new(list_new18,255
+void initiate_list(24,396
+bool not_empty_list(31,545
+void list_append(35,606
+void list_prepend(47,847
+int list_length(54,1033
+bool pop(65,1234
+bool list_remove(80,1550
+bool list_insert(103,2009
+L *list_get(list_get129,2722
+L *list_first(list_first139,2903
+L *list_last(list_last143,2965
+void list_delete(155,3270
+void list_apply(176,3803
 
 livekodning.c,600
 typedef struct list list_t;7,82
@@ -81,7 +97,7 @@ test.c,42
 void test_list_new(5,45
 int main(10,132
 
-tree.c,1081
+tree.c,1031
 typedef struct node node_t;7,95
 struct node 8,123
   K key;9,137
@@ -114,10 +130,9 @@ K *tree_keys(tree_keys266,6535
 void tree_keys_aux(276,6754
 void tree_elements_aux(288,6998
 T *tree_elements(tree_elements306,7477
-typedef void(*tree_action2)tree_action2320,7811
-void tree_apply(337,8472
+void tree_apply(331,8310
 
-utils.c,725
+utils.c,816
   int   i;4,36
   float f;5,47
   char *s;s6,58
@@ -125,21 +140,24 @@ utils.c,725
 } answer_t;8,79
 typedef bool(*check_func)check_func11,93
 typedef answer_t(*convert_func)convert_func12,128
-answer_t make_float(26,542
-double ask_question_float(30,618
-char *ask_question_shelf(ask_question_shelf35,777
-bool is_valid_shelf(42,985
-shelf_t to_shelf(59,1389
-bool is_float(64,1466
-void clear_input_buffer(84,1897
-bool not_empty(98,2269
-answer_t ask_question(102,2326
-int ask_question_int(121,2760
-char *ask_question_string(ask_question_string127,2980
-char ask_question_char(133,3158
-char chardup(138,3300
-bool is_single_char(142,3344
-int read_string(146,3405
-bool is_number(173,4099
-void print(196,4646
-void println(204,4764
+answer_t make_float(28,620
+double ask_question_float(32,696
+char *ask_question_shelf(ask_question_shelf37,855
+bool is_valid_shelf(44,1063
+shelf_t to_shelf(61,1467
+bool is_float(66,1544
+void clear_input_buffer(86,1975
+bool not_empty(100,2347
+answer_t ask_question(104,2404
+int ask_question_int(123,2838
+char *ask_question_string(ask_question_string129,3058
+char ask_question_char(135,3236
+char chardup(140,3378
+char ask_question_menu(144,3422
+bool is_menu_choice(154,3673
+bool is_single_char(164,3879
+void print_menu(168,3940
+int read_string(172,3995
+bool is_number(199,4689
+void print(222,5236
+void println(230,5354
