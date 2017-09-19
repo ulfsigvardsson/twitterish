@@ -1,43 +1,37 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "utils.h"
-#include "db.h"
 #include "list.h"
 #include "tree.h"
+#include "item.h"
 
-#define SIZE 16
 
-void cp(char *source, char*dest);
-void cat(char *filename, int *row);
 void print_menu();
 char ask_question_menu();
 void event_loop(tree_t *db);
 
 
-
-
-
-
 int main(int argc, char *argv[]) {
-  char *keys[] = {"d", "b", "a", "c", "f", "e"};
-  int elems[] = {4, 2, 1, 3, 6, 5};
+
+  char *name = "Hammare";
+  char *descr = "Ett verktyg";
+  int price = 15;
+  char *shelf_id = "A12";
+  int amount = 1;
+
+  item_t *new_item = item_new(name, descr, price, shelf_id, amount);
+  item_t *new_item2 = item_new("Bajs", "Kiss", 1, "D23", 4);
   tree_t *tree = tree_new();
-  for (int i=0; i < 6; ++i) {
-    tree_insert(tree, keys[i], elems[i]);
+  tree_insert(tree, new_item->name, *new_item);
+  tree_insert(tree, new_item2->name, *new_item2);
+  char **keys = tree_keys(tree);
+
+  for (int i = 0; i < 2; ++i) {
+    printf("Keys: %s\n", *keys);  
   }
+  
   int size = tree_size(tree);
-  printf("size of tree: %d\n", size);
-
-  int depth =  tree_depth(tree);
-  printf("Depth of tree %d\n", depth);
-  
-  
-  printf("Med nyckeln %s får vi elementet: %d\n", keys[2], elems[2]);
-
-  T *elements = tree_elements(tree);
-  for ( int i = 0; i < 6; ++i) {
-    printf("Namn på element %d: %d\n", i, elements[i] ); 
-  }
+  printf("Storlek på trädet: %d\n", size);
   return 0;
 }
 

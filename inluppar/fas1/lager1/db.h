@@ -3,10 +3,10 @@
 #include "tree.h"
 #include "list.h"
 
-typedef struct shelf {
+struct shelf {
   char *id;
   int amount;
-} shelf_t;
+};
 
 struct item {
   char *name;
@@ -15,6 +15,7 @@ struct item {
   list_t *shelves;
 };
 
+typedef struct shelf shelf_t;
 typedef struct item item_t;
 typedef struct pair { item_t *edited; item_t original; } pair_t;
 

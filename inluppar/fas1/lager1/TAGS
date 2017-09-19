@@ -1,82 +1,57 @@
 
-list.c,496
-struct link 9,206
-  L elem;10,220
-  link_t *next;next11,230
-struct list 14,290
-  link_t *first;first15,304
-  link_t *last;last16,321
-list_t *list_new(list_new19,342
-void initiate_list(25,483
-bool not_empty_list(32,632
-void list_append(36,693
-void list_prepend(48,934
-void print_list(55,1120
-int list_length(70,1414
-bool pop(81,1615
-bool list_remove(96,1931
-bool list_insert(119,2383
-L list_get(145,3096
-L list_first(155,3275
-L list_last(160,3356
-void delete_list(166,3432
+db.c,319
+void print_item(34,663
+shelf_t make_shelf(45,986
+item_t *make_item(make_item51,1166
+item_t *input_item(input_item60,1430
+void edit_description(69,1772
+void edit_price(74,1874
+void edit_shelf(79,1970
+void edit_amount(84,2074
+bool is_menu_choice(90,2164
+void print_menu(94,2233
+void undo_last_action(98,2288
 
-db.h,746
-#define DB_H2,13
-struct shelf 5,28
-  char *id;id6,43
-typedef struct shelf shelf_t;9,59
-struct item 11,90
-  char *name;name12,104
-  char *descr;descr13,118
-  int price;14,133
+item.c,291
+struct item 6,41
+  char *name;name7,55
+  char *descr;descr8,69
+  int price;9,84
+  list_t *shelves;shelves10,97
+struct shelf 13,120
+  char *id;id14,135
   int amount;15,147
-  shelf_t shelf;16,161
-typedef struct item item_t;19,214
-typedef struct pair 20,242
-typedef struct pair { item_t *edited;edited20,242
-typedef struct pair { item_t *edited; item_t original;20,242
-typedef struct pair { item_t *edited; item_t original; } pair_t;20,242
-struct action22,308
-  enum { NOTHING,24,324
-  enum { NOTHING, ADD,24,324
-  enum { NOTHING, ADD, REMOVE,24,324
-  enum { NOTHING, ADD, REMOVE, EDIT 24,324
-  enum { NOTHING, ADD, REMOVE, EDIT } type;24,324
-  pair_t p;25,368
-typedef struct action action_t;28,392
+typedef struct shelf shelf_t;18,165
+shelf_t *shelf_new(shelf_new20,196
+item_t *item_new(item_new27,334
 
-tree.c,922
-typedef struct node node_t;8,111
-struct node 9,139
-  K key;10,153
-  T item;11,162
-  list_t *l;l12,172
-enum branch 16,240
-enum branch {EMPTY,EMPTY16,240
-enum branch {EMPTY, EMPTY_LEAF,16,240
-enum branch {EMPTY, EMPTY_LEAF, LEAF,16,240
-enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT,16,240
-enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT,16,240
-enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL}FULL16,240
-struct tree 18,299
-  node_t *node;node19,313
-  tree_t *left;left20,329
-  tree_t *right;right21,345
-enum branch tree_branches(30,647
-node_t *node_new(node_new53,1036
-tree_t *tree_new(tree_new58,1127
-int tree_size(64,1219
-int biggest(88,1660
-int tree_depth_aux(92,1715
-int tree_depth(124,2315
-bool tree_has_key(129,2385
-T tree_get(146,3167
-void tree_insert_aux(183,4113
-bool tree_insert(200,4550
-bool is_empty_tree(229,5340
-void add_subtree(239,5604
-void initiate_tree(252,6043
+lager.c,41
+int main(14,189
+void event_loop(37,789
+
+list.c,604
+struct link 8,190
+  L elem;9,204
+  link_t *next;next10,214
+struct list 13,274
+  link_t *first;first14,288
+  link_t *last;last15,305
+list_t *list_new(list_new18,326
+void initiate_list(24,467
+bool not_empty_list(31,616
+void list_append(35,677
+void list_prepend(47,918
+void print_list(54,1104
+int list_length(69,1398
+bool pop(80,1599
+bool list_remove(95,1915
+bool list_insert(118,2374
+L *list_get(list_get144,3087
+L *list_first(list_first154,3268
+L *list_last(list_last158,3330
+void list_delete(170,3635
+typedef void(*list_action2)list_action2189,4050
+void list_apply(196,4320
 
 livekodning.c,600
 typedef struct list list_t;7,82
@@ -100,6 +75,45 @@ iter_t list_iterator(88,1616
 void iter_delete(94,1722
 char *iter_next(iter_next97,1771
 bool iter_has_more(107,1970
+
+test.c,42
+void test_list_new(5,45
+int main(10,132
+
+tree.c,1055
+typedef struct node node_t;7,95
+struct node 8,123
+  K key;9,137
+  T item;10,146
+enum branch 13,160
+enum branch {EMPTY,EMPTY13,160
+enum branch {EMPTY, EMPTY_LEAF,13,160
+enum branch {EMPTY, EMPTY_LEAF, LEAF,13,160
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT,13,160
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT,13,160
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL}FULL13,160
+struct tree 15,219
+  node_t *node;node16,233
+  tree_t *left;left17,249
+  tree_t *right;right18,265
+enum branch tree_branches(29,655
+node_t *node_new(node_new53,1059
+tree_t *tree_new(tree_new58,1150
+int tree_size(64,1242
+int biggest(89,1682
+int tree_depth_aux(93,1737
+int tree_depth(125,2337
+bool tree_has_key(130,2407
+T tree_get(147,3188
+bool tree_insert(183,4030
+void tree_insert_aux(214,4923
+void add_subtree(236,5569
+void initiate_tree(249,6008
+K *tree_keys(tree_keys265,6443
+void tree_keys_aux(275,6662
+void tree_elements_aux(287,6906
+T *tree_elements(tree_elements305,7385
+typedef void(*tree_action2)tree_action2319,7719
 
 utils.c,725
   int   i;4,36
@@ -127,46 +141,3 @@ int read_string(146,3405
 bool is_number(173,4099
 void print(196,4646
 void println(204,4764
-
-tree.h,135
-#define __tree_h__2,19
-typedef struct tree tree_t;8,133
-typedef char *K;K11,207
-typedef int T;16,416
-#define tree_update(83,2175
-
-utils.h,26
-#define __UTILS_H__9,136
-
-lager.c,61
-#define SIZE 7,109
-int main(20,304
-void event_loop(42,833
-
-list.h,117
-#define __list_h__6,158
-typedef struct list list_t;11,256
-typedef struct link link_t;12,284
-typedef int L;16,404
-
-db.c,561
-void print_item(37,927
-shelf_t make_shelf(50,1391
-item_t make_item(56,1489
-item_t input_item(66,1836
-char *magick(magick79,2414
-int add_to_string(95,2839
-void list_db(108,3167
-void edit_db(127,3506
-void edit_description(163,4690
-void edit_price(171,5008
-void edit_shelf(179,5310
-void edit_amount(189,5707
-void add_item_to_db(197,5999
-void save_item(231,7231
-void remove_item_from_db(237,7368
-char ask_question_menu(258,8022
-bool is_menu_choice(269,8300
-void print_menu(279,8505
-void help_undo_remove(283,8560
-void undo_last_action(295,8845
