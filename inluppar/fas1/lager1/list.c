@@ -66,6 +66,8 @@ void print_list(list_t *list) {
   }
 }
 
+                                //   ***  VISA PÅ LABBEN !!!   ***
+
 int list_length(list_t *list) {
   int count = 0; // räknare för längden
   link_t *current = list->first;
@@ -76,6 +78,38 @@ int list_length(list_t *list) {
   }
   return count;
 }
+
+int list_length_rec_aux(link_t *link) {
+  if (!link) {
+    return 0;
+  }
+  else {
+    return ( 1 + list_length_rec_aux(link->next)); 
+  }
+}
+
+int list_length_rec(list_t *list) {
+  link_t *link = list->first;
+  return list_length_rec_aux(link); 
+}
+
+
+int list_length_tailrec_aux(link_t *link, int acc) {
+  if (!link) {
+    return acc;
+  }
+  else {
+    return list_length_tailrec_aux(link->next, acc+1);
+  }
+}
+
+int list_length_tailrec(list_t *list) {
+  link_t *link = list->first;
+  return list_length_tailrec_aux(link, 0);
+}
+
+                               //   ***  VISA PÅ LABBEN !!!   ***
+
 
 bool pop(list_t *list, L *elem) {
   if (list_length(list) == 1) { // cc för singletons

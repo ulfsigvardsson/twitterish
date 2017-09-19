@@ -266,11 +266,6 @@ void initiate_tree(tree_t *tree, K key, T elem) {
 K *tree_keys(tree_t *tree)  {
   int size = tree_size(tree);
   K *keys = calloc(size, sizeof(K));
-<<<<<<< HEAD
-  
-
-  
-=======
   int *index = calloc(1, sizeof(int));
   *index = 0;
   tree_keys_aux(tree, keys, index);
@@ -300,7 +295,6 @@ void tree_elements_aux(tree_t *tree, T *elems, int *index) {
     ++(*index);
     tree_elements_aux(tree->right, elems, index);
   }
->>>>>>> ffb70b18ed7ba338f3ed863554299fb2dc528437
 }
 
 
@@ -310,33 +304,10 @@ void tree_elements_aux(tree_t *tree, T *elems, int *index) {
 ///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() elements
-<<<<<<< HEAD
 
-  // {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL};
 
-void tree_elements_aux(tree_t *tree, T *elements, int *index) {
-  if (!tree) {
-    return;
-  }
-  else {
-    tree_elements_aux(tree->left, elements, index);
-    elements[*index] = tree->node->item;
-    ++(*index);
-    tree_elements_aux(tree->right, elements, index);
-  }
-}
 
-T *tree_elements(tree_t *tree) {
-  int size = tree_size(tree);
-  T *elements = calloc(size, sizeof(T));
-  int *index = calloc(1, sizeof(int));
-  *index = 0;
-  tree_elements_aux(tree, elements, index);
-  free(index);
-  return elements;
-}
 
-=======
 T *tree_elements(tree_t *tree) {
   int size = tree_size(tree);
   T *elems = calloc(size, sizeof(T));
@@ -348,7 +319,6 @@ T *tree_elements(tree_t *tree) {
 }
 
 
->>>>>>> ffb70b18ed7ba338f3ed863554299fb2dc528437
 
 /// This function is used in tree_apply() to allow applying a function
 /// to all elements in a tree. 
@@ -369,4 +339,67 @@ typedef void(*tree_action2)(K key, T elem, void *data);
 /// \param order the order in which the elements will be visited
 /// \param fun the function to apply to all elements
 /// \param data an extra argument passed to each call to fun (may be NULL)
-void tree_apply(tree_t *tree, enum tree_order order, tree_action2 fun, void *data);
+
+
+
+void tree_apply(tree_t *tree, enum tree_order order, tree_action2 func, void *data) {
+  enum branch type = tree_branches(tree);
+  switch (type) {
+  case EMPTY: {
+    return;
+    break;
+  }
+  case EMPTY_LEAF: {
+    return;
+    break;
+  }
+  case LEAF: {             // order doesn't matter
+    func(tree->node->key, tree->node->item, data);
+    return;
+    break;
+  }
+  case LEFT: {
+    if (order == 0) {      // in-order
+      func(tree->node->key, tree->node->item, data);
+      tree_apply(tree->left, order, func, data);
+    }
+    else {
+      tree_apply(tree->left, order, func, data);
+      func(tree->node->key, tree->node->item, data);
+    }
+    return;
+      break;
+  }
+  case RIGHT: {
+    if (order == 1) {    //post-order
+      tree_apply(tree->right, order, func, data);
+      func(tree->node->key, tree->node->item, data);
+    }
+    else {
+      func(tree->node->key, tree->node->item, data);
+      tree_apply(tree->right, order, func, data);
+    };
+    break;
+  }
+  default:
+    if (order == -1) {  // pre-order
+      func(tree->node->key, tree->node->item, data);
+      tree_apply(tree->left, order, func, data);
+      tree_apply(tree->right, order, func, data);
+    }
+    else if (order == 0) {  //in-order
+      tree_apply(tree->left, order, func, data);
+      func(tree->node->key, tree->node->item, data);
+      tree_apply(tree->right, order, func, data);
+
+    }
+    else {                  //post-order
+      tree_apply(tree->left, order, func, data);
+      tree_apply(tree->right, order, func, data);
+      func(tree->node->key, tree->node->item, data);
+    }
+    break;
+  }
+}
+
+// {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL};

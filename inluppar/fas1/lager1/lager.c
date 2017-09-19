@@ -27,7 +27,7 @@ int main(int argc, char *argv[]) {
   char **keys = tree_keys(tree);
 
   for (int i = 0; i < 2; ++i) {
-    printf("Keys: %s\n", *keys);  
+    printf("Keys: %s\n", keys[i]);  
   }
   
   int size = tree_size(tree);
