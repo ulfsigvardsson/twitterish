@@ -9,7 +9,8 @@
 void print_menu();
 char ask_question_menu();
 void event_loop(tree_t *db);
-
+void print_item(K key, T elem, void *data);
+// Ulf: tree_apply();
 
 int main(int argc, char *argv[]) {
   char *name = "Hammare";
@@ -20,17 +21,18 @@ int main(int argc, char *argv[]) {
 
   item_t *new_item = item_new(name, descr, price, shelf_id, amount);
   item_t *new_item2 = item_new("Bajs", "Kiss", 1, "D23", 4);
+  item_t *new_item3 = item_new("Öl", "Bira", 2, "D2", 5);
+  item_t *new_item4 = item_new("Apa", "Apdjävel", 2, "D2", 5);
   tree_t *tree = tree_new();
   tree_insert(tree, new_item->name, *new_item);
   tree_insert(tree, new_item2->name, *new_item2);
+  tree_insert(tree, new_item3->name, *new_item3);
+  tree_insert(tree, new_item4->name, *new_item4);
   char **keys = tree_keys(tree);
-
-  for (int i = 0; i < 2; ++i) {
-    printf("Keys: %s\n", *keys);  
-  }
   
-  int size = tree_size(tree);
-  printf("Storlek på trädet: %d\n", size);
+  enum tree_order order = inorder;
+  int index = 1;
+  tree_apply(tree, order, print_item, &index);
   return 0;
 }
 
@@ -64,4 +66,14 @@ void event_loop(tree_t *db) {
     } while (user_choice != 'A');
   */}  
 
+
+
+void print_item(K key, T elem, void *data) {
+  printf("Index: %d\n"\
+         "Namn: %s\n"                           \
+         "Beskrivning: %s\n"\
+         "Pris: %d\n"\
+         , *(int*)data, key, elem.descr, elem.price);
+  ++(*(int*)data);
+}
 

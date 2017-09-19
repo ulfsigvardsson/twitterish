@@ -212,8 +212,8 @@ bool tree_insert( tree_t *tree, K key, T elem) {
 // Hjälpfunktion för tree_insert. Gör korrekt förgreningsval beroende på key och typ av subträd
 
 void tree_insert_aux(tree_t *tree, K key, T elem, int direction) {
-  if (direction < 0 && !tree->left) {
-    add_subtree(&tree->left, key ,elem); // add_subtree &tree->left
+  if (direction < 0 && !tree->left) { 
+    add_subtree(&(tree->left), key ,elem); // add_subtree &tree->left. 
   }
   else if (direction < 0) {
     tree_insert(tree->left, key ,elem);    // tree_insert tree->left
@@ -233,6 +233,7 @@ void tree_insert_aux(tree_t *tree, K key, T elem, int direction) {
 /// \param key nyckel till den nya noden
 /// \param elem element till den nya noden
 /// \returns: void
+//FIXME: vi skickar in trädet, inte dess subträd här. trädet ersätts av ett nytt.
 void add_subtree(tree_t **tree, K key, T elem) {
   (*tree) = tree_new(); // Trädet som skickas in är NULL, vi pekar därför om pekaren till ett nytt träd
   (*tree)->node = node_new(); 
@@ -262,7 +263,6 @@ void initiate_tree(tree_t *tree, K key, T elem) {
 ///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() keys
-
 K *tree_keys(tree_t *tree)  {
   int size = tree_size(tree);
   K *keys = calloc(size, sizeof(K));
@@ -313,12 +313,6 @@ T *tree_elements(tree_t *tree) {
   return elems;
 }
 
-
-
-/// This function is used in tree_apply() to allow applying a function
-/// to all elements in a tree. 
-typedef void(*tree_action2)(K key, T elem, void *data);
-
 /// Applies a function to all elements in the tree in a specified order.
 /// Example (using shelf as key):
 ///
@@ -334,4 +328,29 @@ typedef void(*tree_action2)(K key, T elem, void *data);
 /// \param order the order in which the elements will be visited
 /// \param fun the function to apply to all elements
 /// \param data an extra argument passed to each call to fun (may be NULL)
-void tree_apply(tree_t *tree, enum tree_order order, tree_action2 fun, void *data);
+void tree_apply(tree_t *tree, enum tree_order order, tree_action2 fun, void *data) {
+if (!tree) {
+    return;
+  }
+  else {
+    switch (order) {
+      case inorder: {
+        tree_apply(tree->left, order, fun, data);
+        fun(tree->node->key, tree->node->item, data);
+        tree_apply(tree->right, order, fun, data);
+        break;
+      }
+      case preorder: {
+        fun(tree->node->key, tree->node->item, data);
+        tree_apply(tree->left, order, fun, data);
+        tree_apply(tree->right, order, fun, data);
+        break;
+      }
+      default:
+        tree_apply(tree->left, order, fun, data);
+        tree_apply(tree->right, order, fun, data);
+        fun(tree->node->key, tree->node->item, data);
+        break;
+      }
+  }  
+}

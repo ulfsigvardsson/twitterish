@@ -25,9 +25,10 @@ typedef struct shelf shelf_t;18,165
 shelf_t *shelf_new(shelf_new20,196
 item_t *item_new(item_new27,334
 
-lager.c,41
-int main(14,189
-void event_loop(37,789
+lager.c,67
+int main(14,210
+void event_loop(44,1078
+void print_item(73,2169
 
 list.c,604
 struct link 8,190
@@ -80,7 +81,7 @@ test.c,42
 void test_list_new(5,45
 int main(10,132
 
-tree.c,1055
+tree.c,1081
 typedef struct node node_t;7,95
 struct node 8,123
   K key;9,137
@@ -107,13 +108,14 @@ bool tree_has_key(130,2407
 T tree_get(147,3188
 bool tree_insert(183,4030
 void tree_insert_aux(214,4923
-void add_subtree(236,5569
-void initiate_tree(249,6008
-K *tree_keys(tree_keys265,6443
-void tree_keys_aux(275,6662
-void tree_elements_aux(287,6906
-T *tree_elements(tree_elements305,7385
-typedef void(*tree_action2)tree_action2319,7719
+void add_subtree(237,5661
+void initiate_tree(250,6100
+K *tree_keys(tree_keys266,6535
+void tree_keys_aux(276,6754
+void tree_elements_aux(288,6998
+T *tree_elements(tree_elements306,7477
+typedef void(*tree_action2)tree_action2320,7811
+void tree_apply(337,8472
 
 utils.c,725
   int   i;4,36
