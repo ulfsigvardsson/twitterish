@@ -56,7 +56,7 @@ void print_list(list_t *list) {
     link_t *current = list->first;
     int i =1;
     while (current !=NULL) {
-      printf("Värde plats %d: %d\n", i, current->elem);
+      printf("Värde plats %d: %p\n", i, current->elem);
       current = current->next;
       ++i;
     } 

@@ -64,26 +64,6 @@ item_t *input_item() {
   return make_item(name, descr, price);
 }
 
-// Väljer en slumpmässig sträng från en array av strängar
-// och lägger till den till *buf
-int add_to_string(char *arr[], char *buf, int index) {
-  return 0;
-}
-
-// Skriver ut namnen på alla objekt i en databas
-void list_db(tree_t *items) {
-  
-  printf("\n====DATABAS====\n");
-
-  //TODO: Traversera trädet och skriv ut
-  
-  printf("\n");
-}
-
-// Editerar en databas
-void edit_db(tree_t *db, action_t *last_action) {
-  return;
-}
 
 // Hjälpfunktion för edit_db, ändrar på objektsbeskrivningen
 void edit_description(item_t *item) {
@@ -105,20 +85,6 @@ void edit_amount(item_t *item) {
   return;
 }
 
-// Lägger till objekt i databasen
-void add_item_to_db(tree_t *db) {
-  return;
-}
-
-// Hjälpfunktion för add_item_to_db, Sparar slutgiltigt en vara i databasen
-void save_item(tree_t *db, item_t *item) {
-  return;
-}
-
-// Tar bort ett objekt från databasen
-void remove_item_from_db(tree_t *db, action_t *last_action) {
-  return;  
-}
 
 // Kontrollfunktion för ask_question_menu
 bool is_menu_choice(char c, char *menu_choices) {

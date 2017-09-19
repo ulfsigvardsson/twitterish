@@ -7,12 +7,10 @@
 
 #include <stdbool.h>
 
-
-
 /// Define struct list in your .c file not here! (why?)
 typedef struct list list_t;
 typedef struct link link_t;
-typedef int L;
+typedef void *L; // listelementet är en pekar till en okänd typ
 
 
 /// This function is used in list_delete() to allow the lists which are

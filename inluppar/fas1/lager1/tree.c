@@ -23,6 +23,7 @@ struct tree {
 void add_subtree(tree_t **tree, K key, T elem);
 void initiate_tree(tree_t *tree, K key, T elem);
 void tree_insert_aux(tree_t *tree, K key, T elem, int direction);
+void tree_keys_aux(tree_t *tree, K *keys, int *index);
 
 // Returnerar vilka branches som finns på trädet, om några alls
 enum branch tree_branches(tree_t *tree) {
@@ -36,15 +37,16 @@ enum branch tree_branches(tree_t *tree) {
   else if (!tree->right && !tree->left) {
     type = LEAF;
   }
+  else if (tree->right && tree->left){
+    type = FULL;
+  }
   else if (tree->right) {
     type = RIGHT;
   }
-  else if (tree->left) {
+  else {
     type = LEFT;
   }
-  else {
-    type = FULL;
-  }
+
   return type;
 }
 
@@ -210,10 +212,10 @@ bool tree_insert( tree_t *tree, K key, T elem) {
 // Hjälpfunktion för tree_insert. Gör korrekt förgreningsval beroende på key och typ av subträd
 
 void tree_insert_aux(tree_t *tree, K key, T elem, int direction) {
-  if (direction > 0 && !tree->left) {
+  if (direction < 0 && !tree->left) {
     add_subtree(&tree->left, key ,elem); // add_subtree &tree->left
   }
-  else if (direction > 0) {
+  else if (direction < 0) {
     tree_insert(tree->left, key ,elem);    // tree_insert tree->left
   }
   else if (!tree->right){
@@ -260,10 +262,39 @@ void initiate_tree(tree_t *tree, K key, T elem) {
 ///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() keys
+
 K *tree_keys(tree_t *tree)  {
   int size = tree_size(tree);
-  int start = 1;
   K *keys = calloc(size, sizeof(K));
+  int *index = calloc(1, sizeof(int));
+  *index = 0;
+  tree_keys_aux(tree, keys, index);
+  free(index);
+  return keys;
+}
+
+void tree_keys_aux(tree_t *tree, K *keys, int *index) {
+  if (!tree) {
+    return;
+  }
+  else {
+    tree_keys_aux(tree->left, keys, index);
+    keys[*index] = tree->node->key;
+    ++(*index);
+    tree_keys_aux(tree->right, keys, index);
+  }
+}
+
+void tree_elements_aux(tree_t *tree, T *elems, int *index) {
+  if (!tree) {
+    return;
+  }
+  else {
+    tree_elements_aux(tree->left, elems, index);
+    elems[*index] = tree->node->item;
+    ++(*index);
+    tree_elements_aux(tree->right, elems, index);
+  }
 }
 
 /// Returns an array holding all the elements in the tree
@@ -272,7 +303,17 @@ K *tree_keys(tree_t *tree)  {
 ///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() elements
-T *tree_elements(tree_t *tree);
+T *tree_elements(tree_t *tree) {
+  int size = tree_size(tree);
+  T *elems = calloc(size, sizeof(T));
+  int *index = calloc(1, sizeof(int));
+  *index = 0;
+  tree_elements_aux(tree, elems, index);
+  free(index);
+  return elems;
+}
+
+
 
 /// This function is used in tree_apply() to allow applying a function
 /// to all elements in a tree. 
