@@ -1,15 +1,15 @@
 CC=gcc
 FLAGS= -Wall -g
 
-lager: lager.o item.o utils.o list.o tree.o
+lager: lager.o 
 	$(CC) $(FLAGS) lager.o item.o utils.o list.o tree.o -o lager
-lager.o: lager.c item.h utils.h list.h tree.h
+lager.o: lager.c item.o utils.o list.o tree.o
 	$(CC) $(FLAGS) -c lager.c
 utils.o: utils.c utils.h
 	$(CC) $(FLAGS) -c utils.c
 list.o: list.c list.h
 	$(CC) $(FLAGS) -c list.c
-tree.o: tree.h list.h utils.h tree.c
+tree.o: tree.h list.o utils.o tree.c
 	$(CC) $(FLAGS) -c tree.c
 item.o: item.c list.h
 	$(CC) $(FLAGS) -c item.c

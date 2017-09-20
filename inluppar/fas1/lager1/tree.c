@@ -7,7 +7,7 @@
 typedef struct node node_t;
 struct node {
   K key;
-  T item;
+  T *item;
 };
 
 enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL};
@@ -127,6 +127,7 @@ int tree_depth(tree_t *tree) {
 }
 
 
+
 bool tree_has_key(tree_t *tree, K key) {
   enum branch type = tree_branches(tree);
   if (!tree || !tree->node) { // Om noden eller trädet är NULL
@@ -143,6 +144,7 @@ bool tree_has_key(tree_t *tree, K key) {
     }
   }
 }
+
 
 T tree_get(tree_t *tree, K key) {
   enum branch type = tree_branches(tree);
