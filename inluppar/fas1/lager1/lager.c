@@ -1,131 +1,131 @@
 #include <stdio.h>
 #include <ctype.h>
 #include "utils.h"
-#include "db.h"
 #include "list.h"
 #include "tree.h"
-#define SIZE 16
+#include "item.h"
 
-void cp(char *source, char*dest);
-void cat(char *filename, int *row);
+typedef struct pair { item_t *edited; item_t original; } pair_t;
+
+struct action
+{
+  enum { NOTHING, ADD, REMOVE, EDIT } type;
+  pair_t p;
+};
+
+typedef struct action action_t;
+
+
 void print_menu();
 char ask_question_menu();
-void event_loop(item_t *db, int *db_size, int buf_size);
-
-
-
-  struct node {
-  K key;    
-  list_t *l;  
-};
-
-struct tree {
-  node_t *node;
-  tree_t *left;
-  tree_t *right;
-};
-
-
-
-
-
-int main(int argc, char *argv[]) {
-  /*
-  list_t *lista = list_new();
-  L elem;
-  for (int i = 0; i < 5; ++i) {
-    list_append(lista, i);
-  }
-  
-  printf("Originallistan: \n");
-  print_list(lista);
-  list_remove(lista, 0, &elem);
-  printf("Efter att ha tagit bort index 0\n");
-  print_list(lista);
-  L test = list_get(lista, 1);
-  printf("Elementet på index 1: %d\n", test);
-  elem = list_first(lista);
-  printf("Första elementet: %d\n", elem);
-  elem = list_last(lista);
-  printf("Sista elementet: %d\n", elem);
-  list_insert(lista, 3, 9);
-  printf("efter insert:\n");
-  print_list(lista);
-  */
-
-
-
+void event_loop(tree_t *db);
+void list_db(tree_t *tree);
+void print_item(T elem);
 
 
   
-  tree_t *new_tree = tree_new();
-  //new_tree->node = node_new();
-  //new_tree->right = tree_new();
-  //new_tree->left = tree_new();
-  //new_tree->right->node = node_new();
-  //new_tree->left->node = node_new();
-  //new_tree->right->right = tree_new();
-  //new_tree->right->right->node = node_new();
-  int size = tree_size(new_tree);
-  printf("size of tree: %d\n", size);
-
-  int depth = tree_depth(new_tree);
-  printf("Depth of tree %d\n", depth);
-  
-
-  int buf_size = SIZE;
-  item_t db[SIZE];  // Databas med plats för 16 objekt
-  int db_size = 0;
-  event_loop(db, &db_size, buf_size);
-  return 0;
+void undo_last_action(action_t *last_action, tree_t *db) {
+  return;
 }
 
-// Kopierar en sträng från en pekare till en annan adress
-void cp(char *source, char *dest) {
-  FILE *s = fopen(source, "r");
-  FILE *d = fopen(dest, "w");
-  int c   = fgetc(s);
+tree_t *create_db() {
+  return tree_new();
+}
+
+void remove_item_from_db(tree_t *db, action_t *last_action) {
+  printf("Inte implementerad\n");
+  return;
+}
+
+// Lägger till en vara i databasen
+//TODO: Om varan redan finns ska man få välja en ny eller gammal  hylla att sätta in den på.
+void add_item_to_db(tree_t *db) {
+  char *name  = ask_question_string("Ange namn på vara:\n");
+  char *descr = ask_question_string("Ange en beskrivning av varan:\n");
+  int price   = ask_question_int("Ange pris på varan:\n");
+  char *shelf = ask_question_shelf("Ange hyllplats:\n");
+  int amount  = ask_question_int("Ange antal: \n");
+  item_t *item = item_new(name, descr, price, shelf, amount);
+  tree_insert(db, item->name, *item);
+}
+
+void edit_db(tree_t *db, action_t *last_action) {
+  char *choice;
+  list_db(db);
  
-  while (c != EOF) {
-    fputc(c, d);
-    c = fgetc(s);
-  }
-  fclose(s);
-  fclose(d);
-}
+  do {
+    choice = ask_question_string("Ange namn för varan du vill ersätta\n");
+  } while (!tree_has_key(db, choice));
 
-// Skriver ut innehållet i en textfil på skärmen
-void cat(char *filename, int *row) {
-  printf("==== %s ====\n", filename);
-  FILE *f = fopen(filename, "r");
-  int c   = fgetc(f);
-  printf("%d. ", *row);
-  
-  while (c != EOF)
-  { 
-    // Om karaktären är newline ökas radräknaren och skrivs
-    // ut OM det inte är den sista raden i filen
-    if (c == '\n') {
-      ++*row;
-      fputc(c, stdout);
-      c = fgetc(f);  // fgetc() popar också c från input buffern
-      if (c != EOF) {
-        printf("%d. ", *row);
-      }
+   item_t item = tree_get(db, choice);
+   print_item(item);
+
+  while (true) {
+    choice = ask_question_string("Ange vilken del du vill ersätta\n");
+
+    if (strcmp("B", choice) == 0) {
+      char *new_desc = ask_question_string("Ange ny beskrivning\n");
+      item.descr = new_desc;
+      break;
+    }  
+    else if (strcmp("P", choice) == 0) {
+      int new_price = ask_question_int("Ange nytt pris\n");
+      item.price = new_price;
+      break;
     }
-    else {
-      fputc(c, stdout);
-      c = fgetc(f);
+    else if (strcmp("H", choice) == 0) {
+      printf("Inte implementerad\n");
+      break;
     }
   }
-  fclose(f);
 }
 
-// Huvudloop för programmet. ACHIEVEMENT: vädeöverföring via pekare görs med pekare till db
 
-void event_loop(item_t *db, int *db_size, int buf_size) {
+// list_action2-funktion för print_shelves()
+void print_shelf(L shelf, void *data) {
+  shelf_t *tmp;
+  tmp = (shelf_t*)shelf;
+  printf("[%s]: %d st.\n", tmp->id, tmp->amount);
+}
+
+// Skriver ut alla hyllor i en lista
+void print_shelves(list_t *list) {
+  printf("Hyllor:  ");
+  list_apply(list, print_shelf, NULL);
+}
+
+// Skriver ut en varas detaljinformation
+void print_item(T elem) {
+  printf("%s\n"\
+         "[B]eskrivning: %s\n"\
+         "[P]ris: %d\n", elem.name, elem.descr, elem.price);
+  print_shelves(elem.shelves);
+}
+
+// Hjälpfunktion til list_db.
+// Skriver ut index följt av varans namn.
+void list_db_aux(K key, T elem, void *data) {
+  printf("%d: %s\n", *(int*)data, elem.name);
+  ++(*(int*)data); // Varans index i databasen
+}
+
+
+// skriver ut alla varor i databasen på formen
+// 1. Namn1
+// 2. Namn2
+// ...
+// N. NamnN
+void list_db(tree_t *tree) {
+  enum tree_order order = inorder;
+  int index = 1;
+  tree_apply(tree, order, list_db_aux, &index);
+}
+
+// Huvudloop för programmet. 
+
+void event_loop(tree_t *db) {
   char user_choice;
-  action_t undo ={ .type = NOTHING };
+  action_t undo = { .type = NOTHING };
   char *menu = "\n[L]ägga till en vara\n"\
                  "[T]a bort en vara\n"\
                  "[R]edigera en vara\n"\
@@ -134,20 +134,24 @@ void event_loop(item_t *db, int *db_size, int buf_size) {
                  "[A]vsluta\n\n";
   
     do {
-      // skickar db_size som pointer i fallen då den måste justeras, ta M38 här och visa att db_size allokeras på stacken och skickas över funktioner
       print_menu(menu);
       user_choice = toupper(ask_question_menu("Ange ett menyval: ", "LTRGHA"));
  
       switch (user_choice) {
-      case 'L': {add_item_to_db(db, db_size, buf_size);
+        case 'L': {add_item_to_db(db);
                    undo.type = ADD;
                    break;}
-        case 'T': {remove_item_from_db(db, db_size, &undo);    break;}
-        case 'R': {edit_db(db, *db_size, &undo);               break;}
-        case 'G': {undo_last_action(&undo, db, db_size);       break;}
-        case 'H': {list_db(db, *db_size);                      break;}
-        default:  printf("Avslutar...\n");                     break;}
+        case 'T': {remove_item_from_db(db, &undo); break;}
+        case 'R': {edit_db(db, &undo);             break;}
+        case 'G': {undo_last_action(&undo, db);    break;}
+        case 'H': {list_db(db);                    break;}
+        default:  printf("Avslutar...\n");         break;}
     } while (user_choice != 'A');
-}  
+  
+}
 
-
+int main(int argc, char *argv[]) {
+  tree_t *db = create_db();
+  event_loop(db);
+  return 0;
+}

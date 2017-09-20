@@ -12,10 +12,12 @@ typedef bool(*check_func)(char *);
 typedef answer_t(*convert_func)(char *);
 extern char *strdup(const char *);
 
+void print_menu(char *menu);
 bool is_float(char *str);
 bool is_number(char *str);
 bool not_empty(char *str);
 bool is_single_char(char *c);
+bool is_menu_choice(char c, char *menu_choices);
 void clear_input_buffer();
 answer_t ask_question(char *question, check_func check, convert_func convert);
 answer_t make_float(char *str);
@@ -34,7 +36,7 @@ double ask_question_float(char *question) {
 
 char *ask_question_shelf(char *question) {
   char *answer;
-  answer = ask_question(question, is_valid_shelf, (convert_func) to_shelf).s;
+  answer = ask_question(question, is_valid_shelf, (convert_func) strdup).s;
   return answer;
 }
 
@@ -53,12 +55,6 @@ bool is_valid_shelf(char *str) {
     }
   }
   return true;
-}
-
-// Konverteringsfunktion för shelves
-shelf_t to_shelf(char *shelf) {
-  shelf_t s = {.id = shelf };
-  return s;
 }
 
 bool is_float(char *str) {
@@ -139,8 +135,32 @@ char chardup(char *str) {
   return *str;
 }
 
+char ask_question_menu(char *question, char *menu_choices) {
+  char choice = ask_question_char(question);
+
+  while (!is_menu_choice(choice, menu_choices)) {
+     print_menu(question);
+     choice = ask_question_char(question);
+  }
+  return choice;
+}
+
+bool is_menu_choice(char c, char *menu_choices) {
+  char s = toupper(c); 
+  for (int i = 0; i < strlen(menu_choices); ++i) {
+    if (s == menu_choices[i]) {
+      return true;
+    }
+  } 
+  return false;
+}
+
 bool is_single_char(char *c) {
   return (strlen(c) == 1);
+}
+
+void print_menu(char *menu) {
+  printf("%s", menu);
 }
 
 int read_string(char *buf, int buf_siz) {
@@ -205,3 +225,4 @@ void println(char *str) {
   print(str);
   putchar('\n');
 }
+
