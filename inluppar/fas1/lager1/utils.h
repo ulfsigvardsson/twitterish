@@ -31,11 +31,6 @@ char *ask_question_string(char *question);
 // \param question: a string for displaying valid user inputs
 char ask_question_char(char *question);
 
-char ask_question_menu();
-
-// Reads user input from input buffer and returns the length of the string.
-// \param buf: adress at where to store the string
-// \param buf_siz: the maximum allowed length of the input
-int read_string(char *buf, int buf_siz);
+char ask_question_menu(char *question, char *menu_choices);
 
 #endif

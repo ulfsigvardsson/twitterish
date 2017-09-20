@@ -28,6 +28,7 @@ void print_item(T item) {
          item_name(item), item_descr(item), item_price(item));
   print_shelves(item_shelves(item));
 }
+
 // Hjälpfunktion til list_db.
 // Skriver ut index följt av varans namn.
 void list_db_aux(K key, T elem, void *data) {
@@ -100,45 +101,9 @@ void event_loop(tree_t *db) {
       case 'G': {undo_last_action();             break;}
       case 'H': {list_db(db);                    break;}
       default:  printf("Avslutar...\n");         break;}
-} while (user_choice != 'A');
-
-  /*char user_choice;
-  action_t undo = { .type = NOTHING };
-  char *menu = "\n[L]ägga till en vara\n"\
-                 "[T]a bort en vara\n"\
-                 "[R]edigera en vara\n"\
-                 "Ån[g]ra senaste ändringen\n"\
-                 "Lista [h]ela varukatalogen\n"\
-                 "[A]vsluta\n\n";
-  
-    do {
-      // skickar db_size som pointer i fallen då den måste justeras, ta M38 här och visa att db_size allokeras på stacken och skickas över funktioner
-      print_menu(menu);
-      user_choice = toupper(ask_question_menu("Ange ett menyval: ", "LTRGHA"));
+  } while (user_choice != 'A');
+}
  
-      switch (user_choice) {
-      case 'L': {add_item_to_db(db);
-                   undo.type = ADD;
-                   break;}
-        case 'T': {remove_item_from_db(db, &undo); break;}
-        case 'R': {edit_db(db, &undo);             break;}
-        case 'G': {undo_last_action(&undo, db);    break;}
-        case 'H': {list_db(db);                    break;}
-        default:  printf("Avslutar...\n");         break;}
-    } while (user_choice != 'A');
-  */}  
-
-
-/*
-void print_item(K key, T elem, void *data) {
-  printf("Index: %d\n"\
-         "Namn: %s\n"                           \
-         "Beskrivning: %s\n"\
-         "Pris: %d\n"\
-         , *(int*)data, key, elem.descr, elem.price);
-  ++(*(int*)data);
-  }*/
-
 int main(int argc, char *argv[]) {
   char *name = "Hammare";
   char *descr = "Ett verktyg";
@@ -152,7 +117,6 @@ int main(int argc, char *argv[]) {
   tree_t *db = tree_new();
   tree_insert(db, item_name(i1), i1);
   tree_insert(db, item_name(i2), i2);
-
 
   event_loop(db);
   return 0;

@@ -55,7 +55,6 @@ int tree_size(tree_t *tree);
 ///
 /// \returns: the depth of the deepest subtree
 int tree_depth(tree_t *tree);
-
 /// Insert element into the tree. Returns false if the key is already used.
 ///
 /// \param tree pointer to the tree
