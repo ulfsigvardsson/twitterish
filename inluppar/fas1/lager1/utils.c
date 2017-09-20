@@ -24,6 +24,7 @@ answer_t make_float(char *str);
 bool is_valid_shelf(char *str);
 char chardup(char *str);
 void print(char *str);
+int read_string(char *buf, int buf_siz);
 
 bool is_menu_choice(char c, char *menu_choices) {
   char s = toupper(c);
@@ -115,6 +116,8 @@ bool not_empty(char *str) {
   return strlen(str) > 0;
 }
 
+
+
 answer_t ask_question(char *question, check_func check, convert_func convert) {
   int buffer = 20;
   char str[20];
@@ -153,26 +156,6 @@ char ask_question_char(char *question) {
 
 char chardup(char *str) {
   return *str;
-}
-
-char ask_question_menu(char *question, char *menu_choices) {
-  char choice = ask_question_char(question);
-
-  while (!is_menu_choice(choice, menu_choices)) {
-     print_menu(question);
-     choice = ask_question_char(question);
-  }
-  return choice;
-}
-
-bool is_menu_choice(char c, char *menu_choices) {
-  char s = toupper(c); 
-  for (int i = 0; i < strlen(menu_choices); ++i) {
-    if (s == menu_choices[i]) {
-      return true;
-    }
-  } 
-  return false;
 }
 
 bool is_single_char(char *c) {
