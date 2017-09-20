@@ -35,3 +35,47 @@ item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount)
   return item;
 }
 
+
+// Hjälpfunktion för edit_db, ändrar på objektsbeskrivningen
+void edit_description(item_t *item) {
+  return;
+}
+
+// Hjälpfunktion för edit_db, ändrar på priset
+void edit_price(item_t *item) {
+  return;
+}
+
+// Hjälpfunktion för edit_db, ändrar på hyllan
+void edit_shelf(item_t *item) {
+  return;
+}
+
+// Hjälpfunktion för edit_db, ändrar på antalet objekt
+void edit_amount(item_t *item) {
+  return;
+}
+char *item_name(item_t *item) {
+  return item->name;
+}
+
+char *item_descr(item_t *item) {
+  return item->descr;
+}
+
+int item_price(item_t *item) {
+  return item->price;
+}
+
+list_t *item_shelves(item_t *item) {
+  return item->shelves;
+}
+
+
+char *shelf_id(shelf_t *shelf) {
+  return shelf->id;
+}
+
+int shelf_amount(shelf_t *shelf) {
+  return shelf->amount;
+}

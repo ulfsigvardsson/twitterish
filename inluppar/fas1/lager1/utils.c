@@ -20,8 +20,28 @@ void clear_input_buffer();
 answer_t ask_question(char *question, check_func check, convert_func convert);
 answer_t make_float(char *str);
 bool is_valid_shelf(char *str);
-shelf_t to_shelf(char *shelf);
 char chardup(char *str);
+void print(char *str);
+
+bool is_menu_choice(char c, char *menu_choices) {
+  char s = toupper(c);
+  for (int i = 0; i < strlen(menu_choices); ++i) {
+    if (s == menu_choices[i]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+char ask_question_menu(char *menu, char *menu_choices) {
+  char choice = ask_question_char(menu);
+
+  while (!is_menu_choice(choice, menu_choices)) {
+    printf("%s\n", menu);
+    choice = ask_question_char(menu);
+  }
+  return choice;
+}
 
 answer_t make_float(char *str) {
   return (answer_t) { .f = atof(str) };
@@ -34,7 +54,7 @@ double ask_question_float(char *question) {
 
 char *ask_question_shelf(char *question) {
   char *answer;
-  answer = ask_question(question, is_valid_shelf, (convert_func) to_shelf).s;
+  answer = ask_question(question, is_valid_shelf, (convert_func) strdup).s;
   return answer;
 }
 
@@ -53,12 +73,6 @@ bool is_valid_shelf(char *str) {
     }
   }
   return true;
-}
-
-// Konverteringsfunktion för shelves
-shelf_t to_shelf(char *shelf) {
-  shelf_t s = {.id = shelf };
-  return s;
 }
 
 bool is_float(char *str) {

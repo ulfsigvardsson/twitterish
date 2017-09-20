@@ -2,7 +2,7 @@
 #define __tree_h__
 
 #include <stdbool.h>
-#include "item.h"
+
 
 /// Define struct tree in your .c file not here! (why?)
 typedef struct tree tree_t;
@@ -12,7 +12,7 @@ typedef char *K;
 /// Change this definition and replace int with the appropriate type
 /// in your program. Note, however, that your implementation of list.c
 /// should treat T as if it did not know the type.
-typedef item_t T;
+typedef void *T;
 
 /// This function is used in tree_delete() to allow the trees which are
 /// the sole owners of their data to free the data on delete.
