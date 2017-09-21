@@ -43,7 +43,7 @@ char ask_question_menu(char *menu, char *menu_choices) {
     printf("%s\n", menu);
     choice = ask_question_char(menu);
   }
-  return choice;
+  return toupper(choice);
 }
 
 answer_t make_float(char *str) {

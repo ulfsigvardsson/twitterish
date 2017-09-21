@@ -1,0 +1,150 @@
+
+item.c,593
+struct item 6,41
+  char *name;name7,55
+  char *descr;descr8,69
+  int price;9,84
+  list_t *shelves;shelves10,97
+struct shelf 13,120
+  char *id;id14,135
+  int amount;15,147
+typedef struct shelf shelf_t;18,165
+shelf_t *shelf_new(shelf_new20,196
+item_t *item_new(item_new27,334
+void edit_description(40,738
+void edit_price(45,866
+void edit_shelf(50,986
+void edit_amount(55,1109
+char *item_name(item_name58,1184
+char *item_descr(item_descr62,1240
+int item_price(66,1298
+list_t *item_shelves(item_shelves70,1354
+char *shelf_id(shelf_id75,1419
+int shelf_amount(79,1475
+
+lager.c,301
+bool has_shelf(12,162
+void print_shelf(23,465
+void print_shelves(28,630
+void print_item(34,784
+void list_db_aux(45,1104
+void list_db(56,1344
+void db_add_item(68,1550
+void db_remove_item(89,2567
+void edit_db(93,2614
+void undo_last_action(155,4231
+void event_loop(159,4270
+int main(182,5098
+
+list.c,529
+struct link 8,119
+  L elem;9,133
+  link_t *next;next10,143
+struct list 13,203
+  link_t *first;first14,217
+  link_t *last;last15,234
+list_t *list_new(list_new18,255
+void initiate_list(24,396
+bool not_empty_list(31,545
+void list_append(35,606
+void list_prepend(47,847
+int list_length(54,1033
+bool pop(65,1234
+bool list_remove(80,1550
+bool list_insert(103,2009
+L *list_get(list_get129,2722
+L *list_first(list_first139,2903
+L *list_last(list_last143,2965
+void list_delete(155,3270
+void list_apply(176,3803
+
+livekodning.c,600
+typedef struct list list_t;7,82
+typedef struct link link_t;8,110
+typedef struct iter iter_t;9,138
+struct iter 11,167
+  link_t *current;current12,181
+struct list 15,204
+  link_t *first;first16,218
+  link_t *last;last17,235
+struct link 20,255
+  char *value;value21,269
+  link_t *next;next22,284
+int main(34,590
+list_t *list_new(list_new49,831
+void list_delete(52,895
+void list_prepend(62,1071
+char *list_get(list_get69,1233
+link_t *link_new(link_new78,1428
+iter_t list_iterator(88,1616
+void iter_delete(94,1722
+char *iter_next(iter_next97,1771
+bool iter_has_more(107,1970
+
+test.c,42
+void test_list_new(5,45
+int main(10,132
+
+tree.c,1037
+typedef struct node node_t;7,95
+struct node 8,123
+  K key;9,137
+  T *item;item10,146
+enum branch 13,161
+enum branch {EMPTY,EMPTY13,161
+enum branch {EMPTY, EMPTY_LEAF,13,161
+enum branch {EMPTY, EMPTY_LEAF, LEAF,13,161
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT,13,161
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT,13,161
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL}FULL13,161
+struct tree 15,220
+  node_t *node;node16,234
+  tree_t *left;left17,250
+  tree_t *right;right18,266
+enum branch tree_branches(29,656
+node_t *node_new(node_new53,1060
+tree_t *tree_new(tree_new58,1151
+int tree_size(64,1243
+int biggest(89,1683
+int tree_depth_aux(93,1738
+int tree_depth(125,2338
+bool tree_has_key(131,2409
+T tree_get(149,3191
+bool tree_insert(185,4033
+void tree_insert_aux(216,4926
+void add_subtree(239,5664
+void initiate_tree(252,6103
+K *tree_keys(tree_keys268,6538
+void tree_keys_aux(278,6757
+void tree_elements_aux(290,7001
+T *tree_elements(tree_elements308,7480
+void tree_apply(333,8313
+
+utils.c,790
+  int   i;4,36
+  float f;5,47
+  char *s;s6,58
+  char c;7,69
+} answer_t;8,79
+typedef bool(*check_func)check_func11,93
+typedef answer_t(*convert_func)convert_func12,128
+bool is_menu_choice(29,653
+char ask_question_menu(39,857
+answer_t make_float(49,1103
+double ask_question_float(53,1179
+char *ask_question_shelf(ask_question_shelf58,1338
+bool is_valid_shelf(65,1544
+bool is_float(81,1910
+void clear_input_buffer(101,2341
+bool not_empty(115,2713
+answer_t ask_question(121,2772
+int ask_question_int(140,3206
+char *ask_question_string(ask_question_string146,3426
+char ask_question_char(152,3604
+char chardup(157,3746
+bool is_single_char(161,3790
+void print_menu(165,3851
+int read_string(169,3906
+bool is_number(196,4600
+void print(219,5147
+void println(227,5265
