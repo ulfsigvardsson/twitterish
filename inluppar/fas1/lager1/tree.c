@@ -126,7 +126,9 @@ int tree_depth(tree_t *tree) {
   return tree_depth_aux(tree, -1);
 }
 
-
+bool matching_keys(node_t *node, K key) {
+  return strcmp(node->key, key) == 0;
+}
 
 bool tree_has_key(tree_t *tree, K key) {
   enum branch type = tree_branches(tree);
@@ -135,12 +137,19 @@ bool tree_has_key(tree_t *tree, K key) {
   }
   else {
     switch (type) {
-      case EMPTY: { return false;                                                            }
-      case LEAF:  { return strcmp(tree->node->key, key) == 0;                                }
-      case LEFT:  { return tree_has_key(tree->left, key);                                    }
-      case RIGHT: { return tree_has_key(tree->right, key);                                   }
-      case FULL:  { return (tree_has_key(tree->left, key) ||tree_has_key(tree->right, key));}
-      default :   { return false;                                                            }
+      case EMPTY: { return false;}
+      case LEAF:  { return matching_keys(tree->node, key);}
+      case LEFT:  { return (matching_keys(tree->node, key) ||
+                            tree_has_key(tree->left, key));
+      }
+      case RIGHT: { return (matching_keys(tree->node, key) ||
+                            tree_has_key(tree->right, key));
+      }
+      case FULL:  { return (matching_keys(tree->node, key) ||
+                            tree_has_key(tree->left, key) ||
+                            tree_has_key(tree->right, key));
+      }
+      default :   { return false;}
     }
   }
 }
@@ -153,7 +162,7 @@ T tree_get(tree_t *tree, K key) {
   switch (type) {
     case LEAF:  { return tree->node->item;                 }
     case LEFT: {
-      if (strcmp(tree->node->key, key) == 0) {
+      if (matching_keys(tree->node, key)) {
         return tree->node->item;
       }
       else {
@@ -161,7 +170,7 @@ T tree_get(tree_t *tree, K key) {
       }
     }
     case RIGHT: {
-      if (strcmp(tree->node->key, key) == 0) {
+      if (matching_keys(tree->node, key)) {
         return tree->node->item;
       }
       else {
@@ -169,7 +178,7 @@ T tree_get(tree_t *tree, K key) {
       }
     }
     default:  {
-      if (strcmp(tree->node->key, key) == 0) {
+      if (matching_keys(tree->node, key)) {
         return tree->node->item;
       }
       else if (tree_has_key(tree->right, key)){

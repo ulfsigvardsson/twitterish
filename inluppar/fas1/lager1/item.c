@@ -37,23 +37,23 @@ item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount)
 
 
 // Hjälpfunktion för edit_db, ändrar på objektsbeskrivningen
-void edit_description(item_t *item) {
-  return;
+void edit_description(item_t *item, char *descr) {
+  item->descr = descr;
 }
 
 // Hjälpfunktion för edit_db, ändrar på priset
-void edit_price(item_t *item) {
-  return;
+void edit_price(item_t *item, int price) {
+  item->price = price;
 }
 
 // Hjälpfunktion för edit_db, ändrar på hyllan
-void edit_shelf(item_t *item) {
-  return;
+void edit_shelf(shelf_t *shelf, char *id) {
+  shelf->id =id;
 }
 
 // Hjälpfunktion för edit_db, ändrar på antalet objekt
-void edit_amount(item_t *item) {
-  return;
+void edit_amount(shelf_t *shelf, int amount) {
+  shelf->amount = amount;
 }
 char *item_name(item_t *item) {
   return item->name;
@@ -70,7 +70,6 @@ int item_price(item_t *item) {
 list_t *item_shelves(item_t *item) {
   return item->shelves;
 }
-
 
 char *shelf_id(shelf_t *shelf) {
   return shelf->id;

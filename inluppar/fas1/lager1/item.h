@@ -8,6 +8,7 @@ typedef struct item item_t;
 // shelf is a struct included in item_t
 typedef struct shelf shelf_t;
 
+
 /// Allokerar plats för en ny vara och sätter dess information
 /// \param name: namn på varan
 /// \param descr: beskrivning på varan
@@ -21,19 +22,19 @@ shelf_t *shelf_new(char *id, int amount);
 
 /// Ändrar objektsbeskrivningen för ett objekt
 /// \param item: objektet att editera
-void edit_description(item_t *item);
+void edit_description(item_t *item, char *descr);
 
 /// Ändrar priset för ett objekt
 /// \param item: objektet att editera
-void edit_price(item_t *item);
+void edit_price(item_t *item, int price);
 
 /// Ändrar hyllplats för ett objekt
 /// \param item: objektet att editera
-void edit_shelf(item_t *item);
+void edit_shelf(shelf_t *shelf, char *id);
 
 /// Ändrar antalet för ett objekt
 /// \param item: objektet att editera
-void edit_amount(item_t *item);
+void edit_amount(shelf_t *shelf, int amount);
 
 /// Returnerar namnet på ett item
 /// \param item: objektet att returnera namnet för
