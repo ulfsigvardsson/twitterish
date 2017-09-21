@@ -22,24 +22,41 @@ save_info_t *save_info_new() {
   save_info_t *new = calloc(1, sizeof(save_info_t));
   return new;
 }
+
+bool info_exists(save_info_t *info) {
+  return info->exists;
+}
+
+enum state info_state(save_info_t *info) {
+  return info->state;
+}
+
 char *info_name(save_info_t *info) {
   return info->name;
 }
 
-bool info_exists(save_info_t *info) {
-  return info->exists;
+char *info_id(save_info_t *info) {
+  return info->id;
 }
 
 void set_info_exist(bool val, save_info_t *info) {
   info->exists = val;
 }
 
-void set_info_state(save_info_t *info, enum state state) {
+void set_info_state(enum state state, save_info_t *info) {
   info->state = state;
 }
 
+void set_info_name(char *name, save_info_t *info) {
+  info->name = name;
+}
+
+void set_info_id(char *id, save_info_t *info) {
+  info->id = id;
+}
+
 void shelf_is_equal(L elem, void *data) {
-  char *name = info_name(data);
+  char *name = info_id(data);
   if (strcmp(name, shelf_id(elem)) == 0) {
     set_info_exist(true, data);
   }
@@ -51,11 +68,11 @@ void shelf_check_func(K key, T elem, void *data) {
   if  (info_exists(data)) {
     if (strcmp(key, item_name(elem)) == 0) {
        enum state state = SAME;
-       set_info_state(data, state);
+       set_info_state(state, data);
     }
     else {
       enum state state = BLOCKED;
-      set_info_state(data, state);
+      set_info_state(state, data);
     } 
   }  
 }
@@ -102,6 +119,15 @@ void print_item(T item) {
   print_shelves(item_shelves(item));
 }
 
+save_info_t *info_initiate(void) {
+  save_info_t *info = save_info_new();
+  set_info_exist(false, info);
+  set_info_state(FREE, info);
+  set_info_name(NULL, info);
+  set_info_id(NULL, info);
+  return info;
+}
+
 // Hjälpfunktion til list_db.
 // Skriver ut index följt av varans namn.
 void list_db_aux(K key, T elem, void *data) {
@@ -139,18 +165,28 @@ void db_add_item(tree_t *db) {
     list_append(item_shelves(item), new_shelf);
   }
   else { // Annars gör vi en ny vara
-    char *descr  = ask_question_string("\nAnge beskrivning: ");
-    int price    = ask_question_int("\nAnge pris: ");
-    char *shelf  = ask_question_shelf("Välj en ny eller befintlig hylla: ");
-    int amount   = ask_question_int("Välj antal att lagra: ");
-    item_t *item = item_new(name, descr, price, shelf, amount);
-    tree_insert(db, name, item);
-  }
+     char *id;
+     save_info_t *info = info_initiate();
+     do {
+         set_info_exist(false, info);
+         id = ask_question_shelf("Ange ny hylla: ");
+         set_info_id(id, info);
+         tree_has_shelf(db, info);
+          }
+       while (info_exists(info));
+       if (!info_exists(info)) {      
+         char *descr  = ask_question_string("\nAnge beskrivning: ");
+         int price    = ask_question_int("\nAnge pris: ");
+         int amount   = ask_question_int("Välj antal att lagra: ");
+         item_t *item = item_new(name, descr, price, id, amount);
+         tree_insert(db, name, item);
+        }
+   }
 }
-
 void db_remove_item(tree_t *db) {
   return;
 }
+
 
 void edit_db(tree_t *db) {
   list_db(db);
@@ -196,35 +232,47 @@ void edit_db(tree_t *db) {
     char *id;
     int index = -1;
     L old_shelf;
+    save_info_t *info = info_initiate();
     // Loop tills man valt en befintlig hylla
     do {
+      index = -1;
       shelves = item_shelves(item);
       id = ask_question_shelf("Välj en hylla: ");
     } while (!has_shelf(shelves, id, &index));
-    
-      list_remove(shelves, index, &old_shelf);
 
-      
-      printf("Nuvarande hylla: %s\n"                                    \
-           "-----------------------------------------------------\n", id);
-      
-    if (edit_choice == 'L' ) {
-      char *id = ask_question_shelf("Ange ny hylla: ");
-      int amount = shelf_amount(old_shelf);
-      shelf_t *new_shelf = shelf_new(id, amount);
-      list_insert(shelves, index, new_shelf);
+    printf("Nuvarande hylla: %s\n"\
+         "-----------------------------------------------------\n", id);
+    list_remove(shelves, index, &old_shelf);
+    
+    if (edit_choice == 'L') {
+       do {
+         set_info_exist(false, info);
+         id = ask_question_shelf("Ange ny hylla: ");
+         set_info_id(id, info);
+         tree_has_shelf(db, info);
+          }
+       while (info_exists(info));
+       if (!info_exists(info)) {          
+          int amount = shelf_amount(old_shelf);
+          shelf_t *new_shelf = shelf_new(id, amount);
+          list_insert(shelves, index, new_shelf);
+          return;
+       }
+       else {
+         return;
+       }
     }
-    else {
-      int amount = ask_question_int("Ange nytt antal: ");
-      char *id = id;
-      shelf_t *new_shelf = shelf_new(id, amount);
-      list_insert(shelves, index, new_shelf);
+    else {   // edit_choice == t
+        int amount = ask_question_int("Välj ett nytt antal: ");
+        id = shelf_id(old_shelf);
+        shelf_t *new_shelf = shelf_new(id, amount);
+        list_append(shelves, new_shelf);
+        return;
+        
     }
-  }// OBS! Måste frigöra minne för save_info_new
+  }                            // OBS! Måste frigöra minne för save_info_new
  }
 }
-
-
 
 void undo_last_action() {
   return;

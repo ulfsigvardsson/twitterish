@@ -105,13 +105,14 @@ bool list_insert(list_t *list, int index, L elem) {
   if (index < 0) {
     index = size + 1 + index;   // Om angivet index är negativt -> gör det positivt.
   }
-  if (index == 0) {
-    list_prepend(list, elem);   // Vid insert på plats 1, används prepend.
-  }
-  if (!(0 < index && index < size)) {
+  if ( index < 0 || size < index) {
     return false;              // ogiltigt index, ingen insert sker.
   }
-  
+  if (index == 0) {
+    list_prepend(list, elem);
+    return true;                // Vid insert på plats 1, används prepend.
+  }
+  else {
   int i = 1;
   link_t *cursor = list->first;
   while (i < index) {
@@ -123,6 +124,7 @@ bool list_insert(list_t *list, int index, L elem) {
   new_insert->next = cursor->next;
   cursor->next = new_insert;
   return true;
+  }
 }
 
 // Inte definierad för tomma listor
