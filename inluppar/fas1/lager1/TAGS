@@ -19,22 +19,27 @@ char *item_name(item_name58,1184
 char *item_descr(item_descr62,1240
 int item_price(66,1298
 list_t *item_shelves(item_shelves70,1354
-char *shelf_id(shelf_id75,1419
-int shelf_amount(79,1475
+char *shelf_id(shelf_id74,1418
+int shelf_amount(78,1474
 
-lager.c,301
-bool has_shelf(12,162
-void print_shelf(23,465
-void print_shelves(28,630
-void print_item(34,784
-void list_db_aux(45,1104
-void list_db(56,1344
-void db_add_item(68,1550
-void db_remove_item(89,2567
-void edit_db(93,2614
-void undo_last_action(155,4231
-void event_loop(159,4270
-int main(182,5098
+lager.c,460
+void shelf_is_equal(16,310
+void item_has_shelf(24,565
+bool shelf_is_used(44,1198
+bool is_on_shelf(56,1674
+void print_shelf(68,2068
+void print_shelves(73,2233
+void print_item(79,2387
+void list_db_aux(90,2707
+void list_db(101,2947
+void db_add_item(113,3153
+void db_remove_item(138,4230
+void check_shelf_ownership(142,4277
+void edit_shelves(148,4447
+void edit_db(189,5820
+void undo_last_action(234,7221
+void event_loop(238,7260
+int main(261,8088
 
 list.c,529
 struct link 8,119
@@ -81,11 +86,27 @@ void iter_delete(94,1722
 char *iter_next(iter_next97,1771
 bool iter_has_more(107,1970
 
+shelfinfo.c,407
+struct shelf_info 3,24
+  bool exists;4,44
+  enum owner owner;5,59
+  char *item_name;item_name6,79
+  char *shelf;shelf7,142
+shelf_info_t *shelf_info_new(shelf_info_new11,192
+char *info_name(info_name17,340
+bool info_exists(21,407
+char* info_shelf(25,472
+enum owner info_owner(29,536
+void set_info_exist(33,605
+void set_info_owner(37,682
+void set_info_name(41,768
+void set_info_shelf(45,850
+
 test.c,42
 void test_list_new(5,45
 int main(10,132
 
-tree.c,1037
+tree.c,1066
 typedef struct node node_t;7,95
 struct node 8,123
   K key;9,137
@@ -108,17 +129,18 @@ int tree_size(64,1243
 int biggest(89,1683
 int tree_depth_aux(93,1738
 int tree_depth(125,2338
-bool tree_has_key(131,2409
-T tree_get(149,3191
-bool tree_insert(185,4033
-void tree_insert_aux(216,4926
-void add_subtree(239,5664
-void initiate_tree(252,6103
-K *tree_keys(tree_keys268,6538
-void tree_keys_aux(278,6757
-void tree_elements_aux(290,7001
-T *tree_elements(tree_elements308,7480
-void tree_apply(333,8313
+bool matching_keys(129,2407
+bool tree_has_key(133,2490
+T tree_get(158,3286
+bool tree_insert(194,4119
+void tree_insert_aux(225,5012
+void add_subtree(248,5750
+void initiate_tree(261,6189
+K *tree_keys(tree_keys277,6624
+void tree_keys_aux(287,6843
+void tree_elements_aux(299,7087
+T *tree_elements(tree_elements317,7566
+void tree_apply(342,8399
 
 utils.c,790
   int   i;4,36
@@ -134,17 +156,17 @@ answer_t make_float(49,1103
 double ask_question_float(53,1179
 char *ask_question_shelf(ask_question_shelf58,1338
 bool is_valid_shelf(65,1544
-bool is_float(81,1910
-void clear_input_buffer(101,2341
-bool not_empty(115,2713
-answer_t ask_question(121,2772
-int ask_question_int(140,3206
-char *ask_question_string(ask_question_string146,3426
-char ask_question_char(152,3604
-char chardup(157,3746
-bool is_single_char(161,3790
-void print_menu(165,3851
-int read_string(169,3906
-bool is_number(196,4600
-void print(219,5147
-void println(227,5265
+bool is_float(81,1924
+void clear_input_buffer(101,2355
+bool not_empty(115,2727
+answer_t ask_question(121,2786
+int ask_question_int(140,3220
+char *ask_question_string(ask_question_string146,3440
+char ask_question_char(152,3618
+char chardup(157,3760
+bool is_single_char(161,3804
+void print_menu(165,3865
+int read_string(169,3920
+bool is_number(196,4614
+void print(219,5161
+void println(227,5279

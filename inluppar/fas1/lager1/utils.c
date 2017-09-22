@@ -65,7 +65,7 @@ char *ask_question_shelf(char *question) {
 bool is_valid_shelf(char *str) {
 // Determines whether or not a string is a valid shelf number
   int length = strlen(str);
-  if (!isupper(str[0])) {
+  if (!isupper(str[0]) || length < 2) {
     return false;
   }
   for (int i=1; i < length; ++i) {

@@ -2,8 +2,8 @@ CC=gcc
 FLAGS= -Wall -g
 
 lager: lager.o 
-	$(CC) $(FLAGS) lager.o item.o utils.o list.o tree.o -o lager
-lager.o: lager.c item.o utils.o list.o tree.o
+	$(CC) $(FLAGS) lager.o item.o shelfinfo.o utils.o list.o tree.o -o lager
+lager.o: lager.c item.o shelfinfo.o utils.o list.o tree.o
 	$(CC) $(FLAGS) -c lager.c
 utils.o: utils.c utils.h
 	$(CC) $(FLAGS) -c utils.c
@@ -13,6 +13,8 @@ tree.o: tree.h list.o utils.o tree.c
 	$(CC) $(FLAGS) -c tree.c
 item.o: item.c list.h
 	$(CC) $(FLAGS) -c item.c
+shelfinfo.o : shelfinfo.c shelfinfo.h
+	$(CC) $(FLAGS) -c shelfinfo.c
 run: lager
 	./lager
 clean:

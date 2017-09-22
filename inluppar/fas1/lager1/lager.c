@@ -4,73 +4,54 @@
 #include "list.h"
 #include "tree.h"
 #include "item.h"
+#include "shelfinfo.h"
 
-void print_menu();
-void event_loop(tree_t *db);
-
-//============================================
-enum state {BLOCKED, FREE, SAME};
-
-typedef struct save_info {
-  bool exists;
-  enum state state;
-  char *name;
-  char *id;
-} save_info_t;
-
-save_info_t *save_info_new() {
-  save_info_t *new = calloc(1, sizeof(save_info_t));
-  return new;
-}
-char *info_name(save_info_t *info) {
-  return info->name;
-}
-
-bool info_exists(save_info_t *info) {
-  return info->exists;
-}
-
-void set_info_exist(bool val, save_info_t *info) {
-  info->exists = val;
-}
-
-void set_info_state(save_info_t *info, enum state state) {
-  info->state = state;
-}
-
+// list_apply-funktion. Avgör om en hyllas namn är identisk med en sträng
 void shelf_is_equal(L elem, void *data) {
-  char *name = info_name(data);
-  if (strcmp(name, shelf_id(elem)) == 0) {
+  char *shelf_to_add = info_shelf(data);
+  if (strcmp(shelf_to_add, shelf_id(elem)) == 0) {
     set_info_exist(true, data);
   }
 }
 
-void shelf_check_func(K key, T elem, void *data) {
+// tree_apply-funktion. Avgör om ett elements hyllista innehåller en viss hylla
+void item_has_shelf(K key, T elem, void *data) {
   L shelves = item_shelves(elem);
   list_apply(shelves, shelf_is_equal, data);
   if  (info_exists(data)) {
-    if (strcmp(key, item_name(elem)) == 0) {
-       enum state state = SAME;
-       set_info_state(data, state);
+    // Om hyllan finns i listan kollar vi om hyllans 'ägare'
+    // är samma vara som vi försöker lägga till/ändra i och sätter
+    // ägaren till motsvarande värde.
+    if (strcmp(key, info_name(data)) == 0) {
+      enum owner owner = SELF;
+      set_info_owner(data, owner);
     }
     else {
-      enum state state = BLOCKED;
-      set_info_state(data, state);
+      enum owner owner = OTHER;
+      set_info_owner(data, owner);
     } 
-  }  
+  }
 }
 
-void tree_has_shelf(tree_t *db, save_info_t *info) {
+// Kollar om ett hyllnamn finns i databasen, tar en shelf_info_t-pekare
+// som lagrar hyllans ägare om den finns.
+// returns: true om hyllan finns, annars false
+bool shelf_is_used(tree_t *db, shelf_info_t *info) {
   enum tree_order order = inorder;
-  tree_apply(db, order, shelf_check_func, info);
+  tree_apply(db, order, item_has_shelf, info);
+  return info_exists(info);
 }
 
-// =======================================
-
+void check_shelf_ownership(tree_t *db, char *id, shelf_info_t *info, char *name) {
+  set_info_name(info, name);
+  set_info_shelf(info, id);
+  shelf_is_used(db, info);
+}
 
 // Kontrollerar om ett hyllnamn finns med i en lista av hyllor, tar en int-pekare
 /// som argument för att räkna ut index om det finns. Index måste vara -1 vid anrop.
-bool has_shelf(list_t *list, char *name_lookup, int *index) {
+/// Denna har lite annorlunda funktionalitet än shelf_is_used och får var kvar för stunden.
+bool in_list(list_t *list, char *name_lookup, int *index) {
   for (int i = 0; i < list_length(list); ++i) {
     ++(*index);
     L *temp_shelf = list_get(list, i); // L-pekare som avrefereras och skickas till shelf_id som tar en L
@@ -129,7 +110,9 @@ void list_db(tree_t *db) {
 
 void db_add_item(tree_t *db) {
   char *name = ask_question_string("Ange namn: ");
-  if (tree_has_key(db, name)) { // Om varan redan finns i databasen
+  if (tree_has_key(db, name)) {
+    
+    // Om varan redan finns i databasen väljer vi vilken hylla vi vill lägga in på
     T item = tree_get(db, name);
     printf("Varan finns redan i databasen.\n");
     print_item(item);
@@ -138,7 +121,9 @@ void db_add_item(tree_t *db) {
     shelf_t *new_shelf = shelf_new(shelf, amount);
     list_append(item_shelves(item), new_shelf);
   }
-  else { // Annars gör vi en ny vara
+  else {
+
+    // Annars gör vi en ny vara
     char *descr  = ask_question_string("\nAnge beskrivning: ");
     int price    = ask_question_int("\nAnge pris: ");
     char *shelf  = ask_question_shelf("Välj en ny eller befintlig hylla: ");
@@ -152,75 +137,93 @@ void db_remove_item(tree_t *db) {
   return;
 }
 
+
+void edit_shelves(tree_t *db, T item, char choice, char *name) {
+  list_t *list_of_shelves;
+  char *shelf_to_edit;
+  int index;
+  L shelf_to_remove;
+  
+  // Loop tills man valt en av  hyllorna i varans lista 
+  do {
+    index = -1;
+    list_of_shelves = item_shelves(item);
+    shelf_to_edit = ask_question_shelf("Välj en hylla: ");
+  } while (!in_list(list_of_shelves, shelf_to_edit, &index));
+
+  list_remove(list_of_shelves, index, &shelf_to_remove); // Tar bort vald hylla och lägger i shelf_to_remove
+  printf("Nuvarande hylla: %s\n"\
+         "---------------------\n", shelf_to_edit);
+
+  if (choice == 'L' ) {
+    // Om vi har valt att ändra namn på en lagerhylla
+    shelf_info_t *info = shelf_info_new();
+    char *new_id = ask_question_shelf("Ange ny hylla: ");
+    check_shelf_ownership(db, new_id, info, name);
+
+    // Om någon annan vara ligger på vald hylla får vi välja en ny
+    if (info_owner(info) == OTHER) {
+      do {
+        new_id = ask_question_shelf("Vald hylla innehåller annan vara, gör ett nytt val: ");
+        set_info_owner(info, NONE); // Nollställer ägandeskapet
+        set_info_shelf(info, new_id); // Uppdaterar hyllan till det nya valet      
+      } while (info_owner(info) == OTHER);
+    }
+
+    int amount = shelf_amount(shelf_to_remove);
+    shelf_t *new_shelf = shelf_new(new_id, amount);
+    list_insert(list_of_shelves, index, new_shelf);
+  }
+  else {
+    // Ändra antal varor på en lagerhylla
+    int amount = ask_question_int("Ange nytt antal: ");
+    char *new_id = shelf_id(shelf_to_remove);
+    shelf_t *new_shelf = shelf_new(new_id, amount);
+    list_insert(list_of_shelves, index, new_shelf);
+  }
+  free(shelf_to_remove); // Osäker
+}
+
 void edit_db(tree_t *db) {
   list_db(db);
   char *name = ask_question_string("Välj vara att redigera: ");
 
+  // Om inte varan finns i databasen får användaren försöka igen
   while (!tree_has_key(db, name)) {
-    printf("Ogiltigt val: \"%s\".", name);
+    printf("Ogiltigt val: \"%s\". ", name);
     name = ask_question_string("Gör ett nytt val: \n");
   }
   
-  T item = tree_get(db, name);
+  T item = tree_get(db, name); // Det valda lagerobjektet
   print_item(item);
-  char *menu_choices = "BbPpLlTtAa";
   char *menu = "\n[B]eskrivning\n"              \
                "[P]ris\n"\
                "[L]agerhylla\n"\
                "An[t]al\n\n"\
                "Välj rad eller [a]vbryt: ";
 
-  char edit_choice = ask_question_menu(menu, menu_choices);
-  switch (edit_choice) {
-  case 'A': {
-    return;
-  }
-  case 'P': {
-    printf("Nuvarande pris: %d\n"\
-           "-----------------------------------------------------\n", item_price(item));
-    int new_price = ask_question_int("Nytt pris: ");
-    edit_price(item, new_price);
-    break;
-  }
-  case 'B': {
-    printf("Nuvarande beskrivning: %s\n"\
-           "-----------------------------------------------------\n", item_descr(item));
-    char *new_descr = ask_question_string("Ny beskrivning: ");
-    edit_description(item, new_descr);
-    break;
-  }
-    // Samlar case för Lagerhylla och Antal då de båda behandlar hyllor
-  default : {
-    
-    list_t *shelves;
-    char *id;
-    int index = -1;
-    L old_shelf;
-    // Loop tills man valt en befintlig hylla
-    do {
-      shelves = item_shelves(item);
-      id = ask_question_shelf("Välj en hylla: ");
-    } while (!has_shelf(shelves, id, &index));
-    
-      list_remove(shelves, index, &old_shelf);
+  char edit_choice = ask_question_menu(menu, "BbPpLlTtAa");
 
-      
-      printf("Nuvarande hylla: %s\n"                                    \
-           "-----------------------------------------------------\n", id);
-      
-    if (edit_choice == 'L' ) {
-      char *id = ask_question_shelf("Ange ny hylla: ");
-      int amount = shelf_amount(old_shelf);
-      shelf_t *new_shelf = shelf_new(id, amount);
-      list_insert(shelves, index, new_shelf);
+  switch (edit_choice) {
+    case 'A': { return;}
+    case 'P': {
+      printf("Nuvarande pris: %d\n"                                     \
+             "------------------\n", item_price(item));
+      int new_price = ask_question_int("Nytt pris: ");
+      edit_price(item, new_price);
+      break;
     }
-    else {
-      int amount = ask_question_int("Ange nytt antal: ");
-      char *id = id;
-      shelf_t *new_shelf = shelf_new(id, amount);
-      list_insert(shelves, index, new_shelf);
+    case 'B': {
+      printf("Nuvarande beskrivning: %s\n"\
+             "-------------------------\n", item_descr(item));
+      char *new_descr = ask_question_string("Ny beskrivning: ");
+      edit_description(item, new_descr);
+      break;
     }
-  }// OBS! Måste frigöra minne för save_info_new
+    // Samlar case för Lagerhylla och Antal då de båda behandlar hyllor
+    default : {
+      edit_shelves(db, item, edit_choice, name);
+    }// OBS! Måste frigöra minne för shelf_info_new
  }
 }
 
