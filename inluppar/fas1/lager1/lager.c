@@ -8,8 +8,9 @@
 void print_menu();
 void event_loop(tree_t *db);
 
-//============================================
+
 enum state {BLOCKED, FREE, SAME};
+
 
 typedef struct save_info {
   bool exists;
@@ -51,9 +52,12 @@ void set_info_name(char *name, save_info_t *info) {
   info->name = name;
 }
 
+
 void set_info_id(char *id, save_info_t *info) {
   info->id = id;
 }
+
+
 
 void shelf_is_equal(L elem, void *data) {
   char *name = info_id(data);
@@ -150,6 +154,7 @@ void list_db(tree_t *db) {
     enum tree_order order = inorder;
     int index = 1;
     tree_apply(db, order, list_db_aux, &index);
+
   }
 }
 
@@ -183,6 +188,7 @@ void db_add_item(tree_t *db) {
         }
    }
 }
+
 void db_remove_item(tree_t *db) {
   return;
 }
@@ -318,5 +324,4 @@ int main(int argc, char *argv[]) {
   event_loop(db);
   return 0;
 }
-
 

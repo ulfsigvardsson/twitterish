@@ -1,6 +1,7 @@
 CC=gcc
 FLAGS= -Wall -g
 
+
 lager: lager.o 
 	$(CC) $(FLAGS) lager.o item.o utils.o list.o tree.o -o lager
 lager.o: lager.c item.o utils.o list.o tree.o

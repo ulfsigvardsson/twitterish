@@ -2,6 +2,7 @@
 #include "tree.h"
 #include "list.h"
 #include "utils.h"
+#include "item.h"
 #include <stdio.h>
 
 typedef struct node node_t;
@@ -270,8 +271,7 @@ void initiate_tree(tree_t *tree, K key, T elem) {
 ///
 
 /// Returns an array holding all the keys in the tree
-/// in ascending order.
-///
+/// in ascending order.///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() keys
 K *tree_keys(tree_t *tree)  {
@@ -308,12 +308,17 @@ void tree_elements_aux(tree_t *tree, T *elems, int *index) {
   }
 }
 
+
 /// Returns an array holding all the elements in the tree
 /// in ascending order of their keys (which are not part
 /// of the value).
 ///
 /// \param tree pointer to the tree
 /// \returns: array of tree_size() elements
+
+
+
+
 T *tree_elements(tree_t *tree) {
   int size = tree_size(tree);
   T *elems = calloc(size, sizeof(T));
@@ -339,6 +344,7 @@ T *tree_elements(tree_t *tree) {
 /// \param order the order in which the elements will be visited
 /// \param fun the function to apply to all elements
 /// \param data an extra argument passed to each call to fun (may be NULL)
+
 void tree_apply(tree_t *tree, enum tree_order order, tree_action2 fun, void *data) {
 if (!tree) {
     return;
