@@ -350,24 +350,31 @@ if (!tree) {
     return;
   }
   else {
-    switch (order) {
-      case inorder: {
-        tree_apply(tree->left, order, fun, data);
-        fun(tree->node->key, tree->node->item, data);
-        tree_apply(tree->right, order, fun, data);
-        break;
-      }
-      case preorder: {
-        fun(tree->node->key, tree->node->item, data);
-        tree_apply(tree->left, order, fun, data);
-        tree_apply(tree->right, order, fun, data);
-        break;
-      }
-      default:
-        tree_apply(tree->left, order, fun, data);
-        tree_apply(tree->right, order, fun, data);
-        fun(tree->node->key, tree->node->item, data);
-        break;
-      }
+    enum branch branch = tree_branches(tree);
+
+    if (branch == LEAF) {
+      fun(tree->node->key, tree->node->item, data);
+    }
+    else { 
+      switch (order) {
+        case inorder: {
+          tree_apply(tree->left, order, fun, data);
+          fun(tree->node->key, tree->node->item, data);
+          tree_apply(tree->right, order, fun, data);
+          break;
+        }
+        case preorder: {
+          fun(tree->node->key, tree->node->item, data);
+          tree_apply(tree->left, order, fun, data);
+          tree_apply(tree->right, order, fun, data);
+          break;
+        }
+        default:
+          tree_apply(tree->left, order, fun, data);
+          tree_apply(tree->right, order, fun, data);
+          fun(tree->node->key, tree->node->item, data);
+          break;
+        }
+    }
   }  
 }

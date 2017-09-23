@@ -19,24 +19,31 @@ char *item_name(item_name58,1184
 char *item_descr(item_descr62,1240
 int item_price(66,1298
 list_t *item_shelves(item_shelves70,1354
-char *shelf_id(shelf_id75,1419
-int shelf_amount(79,1475
+char *shelf_id(shelf_id74,1418
+int shelf_amount(78,1474
 
-lager.c,301
-bool has_shelf(12,162
-void print_shelf(23,465
-void print_shelves(28,630
-void print_item(34,784
-void list_db_aux(45,1104
-void list_db(56,1344
-void db_add_item(68,1550
-void db_remove_item(89,2567
-void edit_db(93,2614
-void undo_last_action(155,4231
-void event_loop(159,4270
-int main(182,5098
+lager.c,554
+void shelf_is_equal(12,183
+void shelf_check_func(19,337
+void find_shelf_owner(35,778
+bool has_shelf(42,1090
+void print_shelf(54,1482
+void print_shelves(59,1645
+void print_item(65,1799
+save_info_t *info_initiate(info_initiate74,2045
+void list_db_aux(85,2328
+void list_db(96,2568
+void db_remove_item(109,2775
+char *input_new_shelf(input_new_shelf114,2921
+void shelf_add_amount(129,3367
+void db_add_item(139,3760
+void edit_shelves(176,5044
+void edit_db(218,6437
+void undo_last_action(263,7800
+void event_loop(267,7839
+int main(290,8667
 
-list.c,529
+list.c,664
 struct link 8,119
   L elem;9,133
   link_t *next;next10,143
@@ -48,15 +55,19 @@ void initiate_list(24,396
 bool not_empty_list(31,545
 void list_append(35,606
 void list_prepend(47,847
-int list_length(54,1033
-bool pop(65,1234
-bool list_remove(80,1550
-bool list_insert(103,2009
-L *list_get(list_get129,2722
-L *list_first(list_first139,2903
-L *list_last(list_last143,2965
-void list_delete(155,3270
-void list_apply(176,3803
+int list_length(72,1401
+int list_length_rec_aux(83,1602
+int list_length_rec(92,1743
+int list_length_tailrec_aux(98,1850
+int list_length_tailrec(107,2009
+bool pop(115,2194
+bool list_remove(130,2510
+bool list_insert(153,2969
+L *list_get(list_get181,3720
+L *list_first(list_first191,3901
+L *list_last(list_last195,3963
+void list_delete(207,4268
+void list_apply(228,4801
 
 livekodning.c,600
 typedef struct list list_t;7,82
@@ -81,44 +92,61 @@ void iter_delete(94,1722
 char *iter_next(iter_next97,1771
 bool iter_has_more(107,1970
 
+saveinfo.c,388
+struct save_info 3,23
+  bool exists;4,42
+  enum owner owner;5,57
+  char *name;name6,77
+  char *id;id7,91
+save_info_t *save_info_new(save_info_new10,107
+bool info_exists(15,208
+enum owner info_owner(19,272
+char *info_name(info_name23,340
+char *info_id(info_id27,401
+void set_info_exist(31,458
+void set_info_owner(35,534
+void set_info_name(39,619
+void set_info_id(44,696
+
 test.c,42
 void test_list_new(5,45
 int main(10,132
 
-tree.c,1037
-typedef struct node node_t;7,95
-struct node 8,123
-  K key;9,137
-  T *item;item10,146
-enum branch 13,161
-enum branch {EMPTY,EMPTY13,161
-enum branch {EMPTY, EMPTY_LEAF,13,161
-enum branch {EMPTY, EMPTY_LEAF, LEAF,13,161
-enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT,13,161
-enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT,13,161
-enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL}FULL13,161
-struct tree 15,220
-  node_t *node;node16,234
-  tree_t *left;left17,250
-  tree_t *right;right18,266
-enum branch tree_branches(29,656
-node_t *node_new(node_new53,1060
-tree_t *tree_new(tree_new58,1151
-int tree_size(64,1243
-int biggest(89,1683
-int tree_depth_aux(93,1738
-int tree_depth(125,2338
-bool tree_has_key(131,2409
-T tree_get(149,3191
-bool tree_insert(185,4033
-void tree_insert_aux(216,4926
-void add_subtree(239,5664
-void initiate_tree(252,6103
-K *tree_keys(tree_keys268,6538
-void tree_keys_aux(278,6757
-void tree_elements_aux(290,7001
-T *tree_elements(tree_elements308,7480
-void tree_apply(333,8313
+tree.c,1068
+typedef struct node node_t;8,113
+struct node 9,141
+  K key;10,155
+  T *item;item11,164
+enum branch 14,179
+enum branch {EMPTY,EMPTY14,179
+enum branch {EMPTY, EMPTY_LEAF,14,179
+enum branch {EMPTY, EMPTY_LEAF, LEAF,14,179
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT,14,179
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT,14,179
+enum branch {EMPTY, EMPTY_LEAF, LEAF, LEFT, RIGHT, FULL}FULL14,179
+struct tree 16,238
+  node_t *node;node17,252
+  tree_t *left;left18,268
+  tree_t *right;right19,284
+enum branch tree_branches(30,674
+node_t *node_new(node_new54,1078
+tree_t *tree_new(tree_new59,1169
+int tree_size(65,1261
+int biggest(90,1701
+int tree_depth_aux(94,1756
+int tree_depth(126,2356
+bool matching_keys(130,2425
+bool tree_has_key(134,2508
+T tree_get(159,3304
+bool tree_insert(195,4137
+void tree_insert_aux(226,5030
+void add_subtree(249,5768
+void initiate_tree(262,6207
+K *tree_keys(tree_keys277,6641
+void tree_keys_aux(287,6860
+void tree_elements_aux(299,7104
+T *tree_elements(tree_elements322,7588
+void tree_apply(348,8422
 
 utils.c,790
   int   i;4,36
