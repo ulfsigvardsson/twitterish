@@ -35,25 +35,35 @@ item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount)
   return item;
 }
 
+item_t *item_empty() {
+  item_t *item = calloc(1, sizeof(item_t));
+  return item;
+}
 
-// Hjälpfunktion för edit_db, ändrar på objektsbeskrivningen
-void edit_description(item_t *item, char *descr) {
+void item_set_name(item_t *item, char *name) {
+  item->name = name;
+}
+
+void item_set_description(item_t *item, char *descr) {
   item->descr = descr;
 }
 
-// Hjälpfunktion för edit_db, ändrar på priset
-void edit_price(item_t *item, int price) {
+
+void item_set_price(item_t *item, int price) {
   item->price = price;
 }
 
-// Hjälpfunktion för edit_db, ändrar på hyllan
-void edit_shelf(shelf_t *shelf, char *id) {
+
+void item_set_shelf(shelf_t *shelf, char *id) {
   shelf->id =id;
 }
 
-// Hjälpfunktion för edit_db, ändrar på antalet objekt
-void edit_amount(shelf_t *shelf, int amount) {
+void item_set_amount(shelf_t *shelf, int amount) {
   shelf->amount = amount;
+}
+
+void item_set_shelves(item_t *item, list_t *shelves) {
+  item->shelves = shelves;
 }
 char *item_name(item_t *item) {
   return item->name;
