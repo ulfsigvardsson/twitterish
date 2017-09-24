@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 #include "utils.h"
 #include "list.h"
@@ -18,9 +19,10 @@ void shelf_is_equal(L elem, void *data) {
 }
 void shelf_check_func(K key, T elem, void *data) {
   L shelves = item_shelves(elem);
-  set_info_exists(false, data); //nollställer inför varje lista
+  // //nollställer inför varje lista
   list_apply(shelves, shelf_is_equal, data);
   if  (info_exists(data)) {
+    set_info_exists(false, data);
     if (strcmp(key, info_name(data)) == 0) {
        set_info_owner(SELF, data);
     }
@@ -100,7 +102,36 @@ void list_db(tree_t *db) {
     enum tree_order order = inorder;
     int index = 1;
     tree_apply(db, order, list_db_aux, &index);
+    
+  }
+}
 
+void list_db2(tree_t *db) {
+  if (!db) {
+    printf("Tom databas!\n");
+    return;
+  }
+  else {
+    int size = tree_size(db);
+    K *list_of_keys = tree_keys(db);
+    while (size > 0) {
+      int i = 1;
+      while (i < 3 && size > 0) {
+        printf("%d. %s\n", i, *list_of_keys);
+        ++list_of_keys;
+        ++i;
+        --size;
+      }
+      if (size > 0) {
+        char yes_or_no = ask_question_menu("\nVill du se fler varor, [J]a eller [N]ej?\n", "JjNn");
+        if (yes_or_no == 'N') {
+          return;
+        }
+        else {
+          putchar('\n');
+        }  
+      }
+    }
   }
 }
 
@@ -117,12 +148,12 @@ char *input_new_shelf(tree_t *db, save_info_t *info) {
     }
     new_id = ask_question_shelf("Ange ny hylla: ");
     set_info_exists(false, info);
+    set_info_owner(NONE, info);
     set_info_id(new_id, info);
     find_shelf_owner(db, info); // lägger till ägandeinformation om hyllan i info
-  } while (info_exists(info) && info_owner(info) == OTHER);
+  } while (info_owner(info) == OTHER);
   return new_id;
 }
-
 void shelf_add_amount(list_t *shelves, char *id, int amount) {
   int index = -1;                       //Lägger till amount till id:s amount och insertar.
   L old_shelf2;
@@ -136,10 +167,10 @@ void shelf_add_amount(list_t *shelves, char *id, int amount) {
 void db_add_item(tree_t *db) {
   save_info_t *info = info_initiate();
   char *name = ask_question_string("Ange namn: ");
+  set_info_name(name, info); // Lagrar varunamnet i 'info'
 
   if (tree_has_key(db, name)) {               // Om varan redan finns i databasen
     T item = tree_get(db, name);
-    set_info_name(name, info); // Lagrar varunamnet i 'info'
     list_t *shelves = item_shelves(item);
     printf("Varan finns redan i databasen.\n");
     print_item(item);
@@ -286,7 +317,7 @@ void event_loop(tree_t *db) {
       case 'T': {db_remove_item(db);             break;}
       case 'R': {edit_db(db);                    break;}
       case 'G': {undo_last_action();             break;}
-      case 'H': {list_db(db);                    break;}
+      case 'H': {list_db2(db);                    break;}
       default:  printf("Avslutar...\n");         break;}
   } while (user_choice != 'A');
 }
