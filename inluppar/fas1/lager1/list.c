@@ -34,10 +34,10 @@ bool not_empty_list(list_t *list) {
 
 void list_append(list_t *list, L elem) {
   if (list->last) {
-  link_t *new_last = calloc(1, sizeof(link_t));
-  new_last->elem = elem;
-  list->last->next = new_last;
-  list->last = new_last;
+    link_t *new_last = calloc(1, sizeof(link_t));
+    new_last->elem = elem;
+    list->last->next = new_last;
+    list->last = new_last;
   }
   else {
     initiate_list(list, elem);

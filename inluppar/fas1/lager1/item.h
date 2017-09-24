@@ -17,24 +17,29 @@ typedef struct shelf shelf_t;
 /// \param amount: antalet varor av denna typ
 item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount);
 
+item_t *item_empty();
+
 /// Allokerar plats för en ny shelf_t och initierar till noll.
 shelf_t *shelf_new(char *id, int amount);
 
+void item_set_name(item_t *item, char *name);
 /// Ändrar objektsbeskrivningen för ett objekt
 /// \param item: objektet att editera
-void edit_description(item_t *item, char *descr);
+void item_set_description(item_t *item, char *descr);
 
 /// Ändrar priset för ett objekt
 /// \param item: objektet att editera
-void edit_price(item_t *item, int price);
+void item_set_price(item_t *item, int price);
 
 /// Ändrar hyllplats för ett objekt
 /// \param item: objektet att editera
-void edit_shelf(shelf_t *shelf, char *id);
+void item_set_shelf(shelf_t *shelf, char *id);
 
 /// Ändrar antalet för ett objekt
 /// \param item: objektet att editera
-void edit_amount(shelf_t *shelf, int amount);
+void item_set_amount(shelf_t *shelf, int amount);
+
+void item_set_shelves(item_t *item, list_t *shelves);
 
 /// Returnerar namnet på ett item
 /// \param item: objektet att returnera namnet för
