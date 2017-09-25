@@ -64,4 +64,9 @@ char *shelf_id(shelf_t *shelf);
 /// Returnerar antalet lagrade varor på en hylla
 /// \param shelf: en shelf_t
 int shelf_amount(shelf_t *shelf);
+
+void item_copy(item_t *original, item_t *copy);
+
+void shelf_copy(item_t *original, item_t *copy);
+
 #endif

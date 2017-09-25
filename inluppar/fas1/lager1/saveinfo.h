@@ -23,3 +23,5 @@ void set_info_owner(enum owner owner, save_info_t *info);
 void set_info_name(char *name, save_info_t *info);
 
 void set_info_id(char *id, save_info_t *info);
+
+save_info_t *info_initiate(void);

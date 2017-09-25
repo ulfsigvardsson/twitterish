@@ -12,6 +12,15 @@ save_info_t *save_info_new() {
   return new;
 }
 
+save_info_t *info_initiate(void) {
+  save_info_t *info = save_info_new();
+  set_info_exists(false, info);
+  set_info_owner(NONE, info);
+  set_info_name(NULL, info);
+  set_info_id(NULL, info);
+  return info;
+}
+
 bool info_exists(save_info_t *info) {
   return info->exists;
 }

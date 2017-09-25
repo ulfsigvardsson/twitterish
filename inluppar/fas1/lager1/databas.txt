@@ -1,0 +1,134 @@
+L
+Kritor
+Vita kritor
+200
+C4
+15
+L
+Bananer
+Gula bananer
+12
+A2
+45
+L
+Hammare
+Ett verktyg
+115
+V3
+1
+L
+Laptop
+En bärbar dator
+4000
+B3
+23
+L
+Småspik
+Blandade spikar
+1
+H6
+400
+L
+Äpplen
+Gröna äpplen
+10
+K8
+150
+L
+Kex
+Ballerinakex
+23
+F4
+18
+L
+Avgasrör
+Bilreservdel
+9500
+O9
+7
+L
+Pennor
+Blyertspennor
+2
+A12
+650
+L
+Salt
+Bordsalt
+18
+Y6
+100
+L
+Kattmat
+Whiskas
+38
+H67
+125
+L
+Spenat
+Fryst bladspenat
+20
+H13
+150
+L
+Skumbilar
+Godis
+13
+U81
+340
+L
+Cykel
+En mountainbike
+6500
+X4
+15
+L
+TV
+Plattv, 50'
+11500
+F71
+30
+L
+Spade
+Spade
+20
+I90
+15
+L
+Miniräknare
+CASIO-grafräknare
+750
+D37
+15
+L
+Ballonger
+Ballonger i blandade färger
+20
+W23
+15
+L
+Spelkulor
+Påse med 25 spelkulor
+53
+R45
+15
+L
+Kortlek
+En kortlek, 52 kort
+20
+O99
+15
+L
+Krukväxt
+En påsklilja
+20
+B67
+15
+L
+Badrumsmatta
+En bättre begagnad badrumsmatta
+9000
+A123
+15
+h
+

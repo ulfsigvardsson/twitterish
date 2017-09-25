@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "item.h"
 
 
@@ -24,6 +25,12 @@ shelf_t *shelf_new(char *id, int amount) {
   return s;
 }
 
+shelf_t *shelf_empty()
+{
+  shelf_t *s = calloc(1, sizeof(shelf_t));
+  return s;
+}
+
 item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount) {
   item_t *item = calloc(1, sizeof(item_t));
   item->name   = name;
@@ -37,6 +44,7 @@ item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount)
 
 item_t *item_empty() {
   item_t *item = calloc(1, sizeof(item_t));
+  item->shelves = list_new();
   return item;
 }
 
@@ -87,4 +95,32 @@ char *shelf_id(shelf_t *shelf) {
 
 int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
+}
+
+//FIXME: måste kopiera lsitan av hyllor, annars har de samma pekare, samma med beskrivningen
+void item_copy(item_t *original, item_t *copy) {
+  copy->name = strdup(original->name);
+  copy->descr = strdup(original->descr);
+  copy->price = original->price;
+  shelf_copy(original, copy);
+}
+
+void shelf_copy(item_t *original, item_t *copy)
+{
+  list_t *to = copy->shelves;
+  list_t *from = original->shelves;
+  int length = list_length(original->shelves);
+  list_t *temp_list = list_new();
+  
+  for (int i = 0; i < length; ++i)
+  {
+    L *tmp = list_get(from, i);
+    int amount = shelf_amount(*tmp);
+    char *id = strdup(shelf_id(*tmp));
+    shelf_t *new = shelf_new(id, amount);
+    list_append(temp_list, new);
+  }
+
+  copy->shelves = temp_list;
+  free(to); // Måste ihn och gröta djupare än såhär
 }
