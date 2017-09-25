@@ -61,7 +61,6 @@ tree_t *tree_new() {
   return new_tree;
 }
 
-
 int tree_size(tree_t *tree) {
   enum branch type = tree_branches(tree);
 

@@ -399,7 +399,7 @@ int main(int argc, char *argv[]) {
   
   item_t *i1 = item_new(name, descr, price, shelf_id, amount);
   item_t *i2 = item_new("Banan", "En frukt", 13, "A2", 100);
-    
+  
 
   tree_t *db = tree_new();
   tree_insert(db, item_name(i1), i1);

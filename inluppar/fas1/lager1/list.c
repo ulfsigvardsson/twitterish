@@ -137,7 +137,7 @@ bool list_remove(list_t *list, int index, L *elem) {
   else {
     link_t *current = list->first;
     int i = 0;
-    while (current->next != NULL && i < index-1) {
+    while (current->next != NULL && i < index-1) { //TODO: support för index som inte finns
       current = current->next;
       ++i;
     }
