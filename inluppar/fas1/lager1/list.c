@@ -177,7 +177,7 @@ bool list_insert(list_t *list, int index, L elem)
   int size = list_length(list); 
   if (index < 0)
   {
-    index = size + 1 + index;   // Om angivet index är negativt -> gör det positivt.
+    index += size + 1;   // Om angivet index är negativt -> gör det positivt.
   }
   if ( index < 0 || size < index)
   {
@@ -190,6 +190,11 @@ bool list_insert(list_t *list, int index, L elem)
   }
   else
   {
+    if (size == index) {
+      list_append(list, elem);
+    }
+    else {
+      
     int i = 1;
     link_t *cursor = list->first;
     while (i < index)
@@ -197,6 +202,7 @@ bool list_insert(list_t *list, int index, L elem)
         cursor = cursor->next;
         ++i;
       }
+    }
   link_t *new_insert = calloc(1, sizeof(link_t));
   new_insert->elem = elem;
   new_insert->next = cursor->next;
