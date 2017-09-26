@@ -192,6 +192,7 @@ bool list_insert(list_t *list, int index, L elem)
   {
     if (size == index) {
       list_append(list, elem);
+      return true;
     }
     else {
       
@@ -202,13 +203,14 @@ bool list_insert(list_t *list, int index, L elem)
         cursor = cursor->next;
         ++i;
       }
+    
+    link_t *new_insert = calloc(1, sizeof(link_t));
+    new_insert->elem = elem;
+    new_insert->next = cursor->next;
+    cursor->next = new_insert;
     }
-  link_t *new_insert = calloc(1, sizeof(link_t));
-  new_insert->elem = elem;
-  new_insert->next = cursor->next;
-  cursor->next = new_insert;
-  return true;
   }
+  return true;
 }
 
 // Inte definierad för tomma listor
