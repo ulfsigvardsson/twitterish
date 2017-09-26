@@ -53,12 +53,18 @@ void list_append(list_t *list, L elem)
 
 void list_prepend(list_t *list, L elem)
 {
- link_t *new_first = calloc(1, sizeof(link_t));
- new_first->elem   = elem;
- new_first->next   = list->first;
- list->first       = new_first;
+  if (list->first)
+    {
+     link_t *new_first = calloc(1, sizeof(link_t));
+     new_first->elem   = elem;
+     new_first->next   = list->first;
+     list->first       = new_first;
+    }
+  else {
+    initiate_list(list, elem);
+  }
 }
-                                //   ***  VISA PÅ LABBEN !!!   ***
+                         //   ***  VISA PÅ LABBEN !!!   ***
 
 int list_length(list_t *list)
 {
