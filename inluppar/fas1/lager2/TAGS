@@ -1,0 +1,51 @@
+
+lager.c,143
+typedef struct test5,57
+  char *a;a7,79
+  int b;8,90
+} test_t;9,99
+void delete_func_aux(11,110
+void delete_func(16,167
+int main(22,245
+
+list.c,768
+typedef struct link link_t;3,19
+struct link5,48
+  elem_t elem;7,62
+  link_t *next;next8,77
+struct list11,97
+  link_t *first;first13,111
+  link_t *last;last14,128
+  element_copy_fun copy_f;15,144
+  element_free_fun free_f;16,171
+  element_comp_fun cmp_f;17,198
+  int size;18,224
+elem_t list_no_copy(22,241
+list_t *list_new(list_new34,585
+link_t *link_new(link_new43,832
+int adjust_index(51,982
+link_t **list_find(list_find72,1371
+void list_insert(100,2243
+bool empty_list(115,2600
+void list_append(127,2949
+void list_prepend(138,3323
+void list_remove(152,3789
+bool list_get(161,4120
+bool list_first(166,4243
+bool list_last(172,4359
+int list_length(183,4691
+void list_delete(192,4877
+bool list_apply(203,5220
+int list_contains(215,5547
+
+test.c,168
+void list_remove_fun_string_aux(5,64
+void free_string(10,127
+size_t comp_fun_string(14,200
+void list_new_test(20,276
+void list_append_test(26,378
+int main(34,551
+
+tree.c,0
+
+common.c,0

@@ -1,0 +1,21 @@
+CC=gcc
+FLAGS= -Wall -g
+
+lager: lager.c list.o tree.o common.o
+	$(CC) $(FLAGS) lager.c list.o tree.o -o lager
+common.o: common.h
+	$(CC) $(FLAGS) common.c -c
+list.o: list.h list.c
+	$(CC) $(FLAGS) list.c -c
+tree.o: tree.h tree.c
+	$(CC) $(FLAGS) tree.c -c
+runtest: test
+	./test
+valgrind: lager.o
+	valgrind --leak-check=full ./lager
+clean:
+	rm -f *.o
+	rm -rf *.dSYM
+	rm -f lager
+	rm -f *~
+
