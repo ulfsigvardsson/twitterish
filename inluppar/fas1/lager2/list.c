@@ -119,7 +119,6 @@ bool empty_list(list_t *list)
 {
   return (!list->first);
 }
-
 /// Inserts a new element at the end of the list.
 ///
 /// If list's copy function is non-NULL, it will be applied to elem and its result
@@ -154,7 +153,16 @@ void list_prepend(list_t *list, elem_t elem)
 /// \returns true if succeeded, else false
 void list_remove(list_t *list, int index, bool delete)
 {
-  return;
+  link_t **c = list_find(list, index);
+  link_t *tmp = *c;
+  *c = (*c)->next;
+
+  if (delete)
+  {
+    list->free_f(tmp->elem);
+  }
+  
+  free(tmp);
 }
 /// Returns the element at a given index
 /// \param list  pointer to the list
@@ -164,18 +172,32 @@ void list_remove(list_t *list, int index, bool delete)
 bool list_get(list_t *list, int index, elem_t *result)
 {
   link_t **c = list_find(list, index);
-  *result = (*c)->elem;
-  return (abs(index < list->size));
+
+  if (index < 0 && abs(index) <= list->size) // Negativa tal?
+  {
+    *result = (*c)->elem;
+    return true;
+  }
+  else if (abs(index) < list->size) // Detta ger fel när index är -1 och size är 1
+  {
+    *result = (*c)->elem;
+    return true;
+  }
+  return false;
 }
+
 /// A convenience for list_get(list, 0, result)
 bool list_first(list_t *list, elem_t *result)
 {
-  return false;
+  return list_get(list, 0, result);
 }
 
 /// A convenience for list_get(list, -1, result)
 bool list_last(list_t *list, elem_t *result)
 {
+  if (list->size > 0) {
+    return list_get(list, -1, result);    
+  }
   return false;
 }
 

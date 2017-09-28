@@ -64,6 +64,38 @@ void list_get_test()
   CU_ASSERT_TRUE(success);                           
 }
 
+void list_first_test()
+{
+  list_t *list = list_new(NULL, NULL, NULL);
+  elem_t elem1 = { .i=1};
+  elem_t elem2 = { .i=2};
+  elem_t result = { .i =0 };
+  list_first(list, &result); // Tom lista
+  CU_ASSERT_EQUAL(result.i, 0);
+  list_append(list, elem1);
+  CU_ASSERT_TRUE(list_first(list, &result));
+  CU_ASSERT_TRUE(elem1.i == result.i);
+  list_prepend(list, elem2);
+  CU_ASSERT_TRUE(list_first(list, &result));
+  CU_ASSERT_TRUE(elem2.i == result.i);
+}
+
+void list_last_test()
+{
+  list_t *list = list_new(NULL, NULL, NULL);
+  elem_t elem1 = { .i=1};
+  elem_t elem2 = { .i=2};
+  elem_t result = { .i =0 };
+  CU_ASSERT_FALSE(list_last(list, &result));
+  CU_ASSERT_EQUAL(result.i, 0);
+  list_append(list, elem1);
+  CU_ASSERT_TRUE(list_last(list, &result));
+  CU_ASSERT_TRUE(elem1.i == result.i);
+  list_prepend(list, elem2);
+  CU_ASSERT_TRUE(list_last(list, &result));
+  CU_ASSERT_TRUE(elem1.i == result.i);
+}
+
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
 
@@ -79,7 +111,9 @@ int main(int argc, char *argv[]) {
    CU_add_test(pSuite, "list_insert", list_insert_test);
    CU_add_test(pSuite, "list_prepend", list_prepend_test);
    CU_add_test(pSuite, "list_append", list_append_test);
-   CU_add_test(pSuite, "list_get", list_get_test);   
+   CU_add_test(pSuite, "list_get", list_get_test);
+   CU_add_test(pSuite, "list_first", list_first_test);
+   CU_add_test(pSuite, "list_last", list_last_test);
    //CU_add_test(pSuite, "list_insert", list_insert_test);
  
    /* Run all tests using the CUnit Basic interface */
