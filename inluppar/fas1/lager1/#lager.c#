@@ -443,7 +443,7 @@ void list_and_select_item(tree_t *db)
 {
   list_db(db);
   if (tree_size(db) != 0)
-  {
+3  {
     
     item_t *item = select_by_index(db, tree_size(db));
     if (item)

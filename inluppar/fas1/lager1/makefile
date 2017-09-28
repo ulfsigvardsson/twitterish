@@ -1,9 +1,13 @@
 CC=gcc
-FLAGS= -Wall -g
+FLAGS= -Wall -g -I/usr/local/Cellar/cunit/2.1-3/include -L/usr/local/Cellar/cunit/2.1-3/lib
 
 
 lager: lager.o 
 	$(CC) $(FLAGS) lager.o saveinfo.o item.o utils.o list.o tree.o -o lager
+tester: tester.o 
+	$(CC) $(FLAGS) tester.o saveinfo.o item.o utils.o list.o tree.o -o tester -lcunit 
+tester.o: tester.c item.o utils.o list.o tree.o saveinfo.o
+	$(CC) $(FLAGS) -c tester.c -lcunit
 lager.o: lager.c item.o utils.o list.o tree.o saveinfo.o
 	$(CC) $(FLAGS) -c lager.c
 utils.o: utils.c utils.h
@@ -23,4 +27,6 @@ clean:
 	rm -rf *.dSYM
 	rm -f lager
 	rm -f *~
-.PHONY: lager
+.PHONY: lager tester
+
+

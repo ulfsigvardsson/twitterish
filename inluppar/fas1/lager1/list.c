@@ -53,12 +53,18 @@ void list_append(list_t *list, L elem)
 
 void list_prepend(list_t *list, L elem)
 {
- link_t *new_first = calloc(1, sizeof(link_t));
- new_first->elem   = elem;
- new_first->next   = list->first;
- list->first       = new_first;
+  if (list->first)
+    {
+     link_t *new_first = calloc(1, sizeof(link_t));
+     new_first->elem   = elem;
+     new_first->next   = list->first;
+     list->first       = new_first;
+    }
+  else {
+    initiate_list(list, elem);
+  }
 }
-                                //   ***  VISA PÅ LABBEN !!!   ***
+                         //   ***  VISA PÅ LABBEN !!!   ***
 
 int list_length(list_t *list)
 {
@@ -150,8 +156,9 @@ bool list_remove(list_t *list, int index, L *elem)
     {
     link_t *current = list->first;
     int i = 0;
-    while (current->next != NULL && i < index-1)
-    {
+    
+    while (current->next != NULL && i < index-1) { //TODO: support för index som inte finns
+
       current = current->next;
       ++i;
     }
@@ -185,6 +192,7 @@ bool list_insert(list_t *list, int index, L elem)
   {
     if (size == index) {
       list_append(list, elem);
+      return true;
     }
     else {
       
@@ -195,13 +203,14 @@ bool list_insert(list_t *list, int index, L elem)
         cursor = cursor->next;
         ++i;
       }
+    
+    link_t *new_insert = calloc(1, sizeof(link_t));
+    new_insert->elem = elem;
+    new_insert->next = cursor->next;
+    cursor->next = new_insert;
     }
-  link_t *new_insert = calloc(1, sizeof(link_t));
-  new_insert->elem = elem;
-  new_insert->next = cursor->next;
-  cursor->next = new_insert;
-  return true;
   }
+  return true;
 }
 
 // Inte definierad för tomma listor
