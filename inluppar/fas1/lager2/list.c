@@ -88,6 +88,12 @@ link_t **list_find(list_t *list, int index)
   return c; // elementet som ska komma efter indexet vi söker
 }
 
+
+void make_singleton(list_t *list, elem_t elem)
+{
+  list->first = link_new(elem, NULL);
+  list->last = list->first;
+}
 /// Inserts a new element at a given index. 
 ///
 /// If list's copy function is non-NULL, it will be applied to elem and its result
@@ -104,8 +110,7 @@ link_t **list_find(list_t *list, int index)
 void list_insert(list_t *list, int index, elem_t elem)
 {
   if (list->size == 0) {
-    list->first = link_new(elem, NULL);
-    list->last = list->first;
+    make_singleton(list, elem);
   }
   else
   {  
@@ -128,7 +133,21 @@ bool empty_list(list_t *list)
 /// \param elem the element to be appended
 void list_append(list_t *list, elem_t elem)
 {
-  list_insert(list, -1, elem);
+  // FIXME:
+  // Denna ser annorlunda ut än list_prepend eftersom index -1 just nu
+  // knuffar det sista elementet framför sig och alltså hamnar det nya
+  // elementet inte sist i listan. Funktionen verkar funka men det är inte optimalt.
+  if (list->size == 0) {
+    // Corner case för tom lista
+    make_singleton(list, elem);
+  }
+  else
+  {
+    link_t *current_last = list->last;
+    link_t *new = link_new(elem, NULL);
+    current_last->next = new;
+  }
+  ++(list->size); 
 }
 /// Inserts a new element at the beginning of the list
 ///
@@ -141,29 +160,7 @@ void list_prepend(list_t *list, elem_t elem)
 {
   list_insert(list, 0, elem);
 }
-/// Removes an element from a list.
-///
-/// All indexes are valid. 0 means first element. Negative indexes
-/// count backward and too large negative indexes equal 0. Too
-/// large positive indexes are same as -1.
-/// 
-/// \param list  pointer to the list
-/// \param index the index to be removed
-/// \param delete if true, run list's free function on all elements
-/// \returns true if succeeded, else false
-void list_remove(list_t *list, int index, bool delete)
-{
-  link_t **c = list_find(list, index);
-  link_t *tmp = *c;
-  *c = (*c)->next;
 
-  if (delete)
-  {
-    list->free_f(tmp->elem);
-  }
-  
-  free(tmp);
-}
 /// Returns the element at a given index
 /// \param list  pointer to the list
 /// \param index the index to be returned
@@ -172,16 +169,18 @@ void list_remove(list_t *list, int index, bool delete)
 bool list_get(list_t *list, int index, elem_t *result)
 {
   link_t **c = list_find(list, index);
-
-  if (index < 0 && abs(index) <= list->size) // Negativa tal?
+  if (*c)
   {
-    *result = (*c)->elem;
-    return true;
-  }
-  else if (abs(index) < list->size) // Detta ger fel när index är -1 och size är 1
-  {
-    *result = (*c)->elem;
-    return true;
+    if (index < 0 && abs(index) <= list->size) // Negativa tal?
+    {
+      *result = (*c)->elem;
+      return true;
+    }
+    else if (abs(index) < list->size) // Detta ger fel när index är -1 och size är 1
+    {
+      *result = (*c)->elem;
+      return true;
+    }    
   }
   return false;
 }
@@ -212,13 +211,44 @@ int list_length(list_t *list)
   return list->size;
 }
 
+/// Removes an element from a list.
+///
+/// All indexes are valid. 0 means first element. Negative indexes
+/// count backward and too large negative indexes equal 0. Too
+/// large positive indexes are same as -1.
+/// 
+/// \param list  pointer to the list
+/// \param index the index to be removed
+/// \param delete if true, run list's free function on all elements
+/// \returns true if succeeded, else false
+void list_remove(list_t *list, int index, bool delete)
+{
+  link_t **c = list_find(list, index);
+  link_t *tmp = *c;
+
+  if (*c) // Kollar att pekare inte är NULL, vi kan köra på tomma listor
+  {
+    *c = (*c)->next;
+    if (delete)
+    {
+      list->free_f(tmp->elem);
+    }
+
+    free(tmp);
+    --(list->size);  
+  }
+  
+}
 /// Deletes a list. 
 ///
 /// \param list pointer to the list
 /// \param delete if true, use list's free function to free elements
 void list_delete(list_t *list, bool delete)
 {
-  return;
+  for (int i = 0; i < list_length(list); ++i) {
+    list_remove(list, 0, delete);
+  }
+  free(list);
 }
 
 /// Applies a function to all elements in a list in list order
@@ -229,7 +259,24 @@ void list_delete(list_t *list, bool delete)
 /// \returns the result of all fun calls, combined with OR (||)
 bool list_apply(list_t *list, elem_apply_fun fun, void *data)
 {
-  return false;
+  if (!list)
+  {
+    return false;
+  }
+  else
+  {
+    bool result = false;
+    link_t **c = &(list->first);
+    while (*c)
+    {
+      if(fun((*c)->elem, data))
+      {
+        result = true;
+      }
+      c = &((*c)->next);
+    }
+    return result;
+  }
 }
 
 /// Searches for an element in a list

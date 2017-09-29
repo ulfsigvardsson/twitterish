@@ -19,10 +19,14 @@ size_t comp_fun_string(elem_t a, elem_t b)
 void list_insert_test()
 {
   list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem = { .i = 1 };
-  list_insert(list, 0, elem);
-  CU_ASSERT_TRUE(list_length(list) == 1);
-  
+  elem_t elem1 = { .i = 1 };
+  elem_t elem2 = { .i = 2 };
+  elem_t result = { .i = 0 };
+  list_insert(list, 0, elem1);
+  list_insert(list, 1, elem2);
+  CU_ASSERT_TRUE(list_length(list) == 2);
+  list_get(list, 1, &result);
+  CU_ASSERT_EQUAL(result.i, 2);
 }
                     
 
@@ -36,8 +40,15 @@ void list_append_test()
 {
   list_t *list = list_new(NULL, NULL, NULL);
   elem_t elem1 = { .i = 1 };
+  elem_t elem2 = { .i = 2 };
+  elem_t result = { .i = 0 };
   list_append(list, elem1);
   CU_ASSERT_TRUE(list_length(list) == 1);
+  list_first(list, &result);
+  CU_ASSERT_EQUAL(result.i , elem1.i);
+  list_append(list, elem2);
+  list_get(list, 1, &result);
+  CU_ASSERT_EQUAL(result.i, 2);
 }
 
 void list_prepend_test()
@@ -66,35 +77,85 @@ void list_get_test()
 
 void list_first_test()
 {
-  list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1};
-  elem_t elem2 = { .i=2};
-  elem_t result = { .i =0 };
+  list_t *list  = list_new(NULL, NULL, NULL);
+  elem_t elem1  = { .i = 1 };
+  elem_t elem2  = { .i = 2 };
+  elem_t result = { .i = 0 };
   list_first(list, &result); // Tom lista
   CU_ASSERT_EQUAL(result.i, 0);
   list_append(list, elem1);
   CU_ASSERT_TRUE(list_first(list, &result));
-  CU_ASSERT_TRUE(elem1.i == result.i);
+  CU_ASSERT_EQUAL( 1, result.i);
   list_prepend(list, elem2);
   CU_ASSERT_TRUE(list_first(list, &result));
-  CU_ASSERT_TRUE(elem2.i == result.i);
+  CU_ASSERT_EQUAL(2, result.i);
 }
 
 void list_last_test()
 {
-  list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1};
-  elem_t elem2 = { .i=2};
-  elem_t result = { .i =0 };
+  list_t *list  = list_new(NULL, NULL, NULL);
+  elem_t elem1  = { .i = 1 };
+  elem_t elem2  = { .i = 2 };
+  elem_t result = { .i = 0 };
   CU_ASSERT_FALSE(list_last(list, &result));
   CU_ASSERT_EQUAL(result.i, 0);
   list_append(list, elem1);
   CU_ASSERT_TRUE(list_last(list, &result));
-  CU_ASSERT_TRUE(elem1.i == result.i);
+  CU_ASSERT_EQUAL(1, result.i);
   list_prepend(list, elem2);
   CU_ASSERT_TRUE(list_last(list, &result));
-  CU_ASSERT_TRUE(elem1.i == result.i);
+  CU_ASSERT_EQUAL(1, result.i);
 }
+
+void list_remove_test()
+{
+  list_t *list  = list_new(NULL, NULL, NULL);
+  elem_t elem1  = { .i = 1 };
+  elem_t elem2  = { .i = 2 };
+  elem_t result = { .i = 0 };
+
+  list_remove(list, 0, false); // Kolla att programmet inte kraschar på tomma listor.
+  
+  list_append(list, elem2);
+  list_append(list, elem1); // Denna är sist till en början
+
+  CU_ASSERT_EQUAL(list_length(list), 2);
+  list_remove(list, 1, false); // Nu ska elem2 vara sist och först
+  CU_ASSERT_EQUAL(list_length(list), 1);
+  list_last(list, &result);
+  CU_ASSERT_EQUAL(result.i, elem2.i);
+  list_first(list, &result);
+  CU_ASSERT_EQUAL(result.i, elem2.i);
+  list_append(list, elem1);
+  CU_ASSERT_EQUAL(list_length(list), 2);
+}
+
+bool list_apply_fun(elem_t elem, void *data)
+{
+  if (elem.i < 2) {
+     ++elem.i;
+     return true;
+  }
+  return false;
+}
+
+void list_apply_test()
+{
+  list_t *list = list_new(NULL, NULL, NULL);
+  elem_t elem1 = { .i = 1 };
+  elem_t elem2 = { .i = 2 };
+  elem_t elem3 = { .i = 3 };
+  elem_t result = { .i = 0 };
+  list_append(list, elem1);
+  list_append(list, elem2);
+  list_append(list, elem3);
+  list_apply(list, list_apply_fun, NULL);
+  for (int i = 0; i < 3; ++i) {
+    list_get(list, i, &result);
+    CU_ASSERT_TRUE(result.i >=2 );
+  }
+}
+
 
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
@@ -114,7 +175,10 @@ int main(int argc, char *argv[]) {
    CU_add_test(pSuite, "list_get", list_get_test);
    CU_add_test(pSuite, "list_first", list_first_test);
    CU_add_test(pSuite, "list_last", list_last_test);
-   //CU_add_test(pSuite, "list_insert", list_insert_test);
+   CU_add_test(pSuite, "list_remove", list_remove_test);
+   CU_add_test(pSuite, "list_apply", list_apply_test);
+   
+
  
    /* Run all tests using the CUnit Basic interface */
    CU_basic_set_mode(CU_BRM_VERBOSE);
