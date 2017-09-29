@@ -54,15 +54,34 @@ link_t *link_new(elem_t elem, link_t *next)
   link->next = next;
   return link;
 }
-
-int adjust_index(int index, int size)
+int adjust_index_insert(int index, int size)
 {
   /// Negative indexes count from the back
   if (index < 0)
     {
       /// Call adjust_index again to handle when
       /// adjusted index is still negative
-      return adjust_index(size + index, size);
+      return adjust_index_insert(size + index + 1, size);
+    }
+
+  /// Index too big, adjust to after last element
+  if (index > size)
+    {
+      return size;
+    }
+
+  /// Index OK
+  return index;
+}
+
+int adjust_index_get(int index, int size)
+{
+  /// Negative indexes count from the back
+  if (index < 0)
+    {
+      /// Call adjust_index again to handle when
+      /// adjusted index is still negative
+      return adjust_index_get(size + index, size);
     }
 
   /// Index too big, adjust to after last element
@@ -77,8 +96,6 @@ int adjust_index(int index, int size)
 
 link_t **list_find(list_t *list, int index)
 {
-  index = adjust_index(index, list->size);
-  
   link_t **c = &(list->first);
   int counter = 0;
   while (*c && index > counter) {
@@ -109,13 +126,25 @@ void make_singleton(list_t *list, elem_t elem)
 /// \returns true if succeeded, else false
 void list_insert(list_t *list, int index, elem_t elem)
 {
+   index = adjust_index_insert(index, list->size);
   if (list->size == 0) {
     make_singleton(list, elem);
   }
   else
   {  
     link_t **c = list_find(list, index);
-    *c = link_new(list->copy_f(elem), (*c));
+    // För insättning längst bak i listan
+    if (index == list->size)
+    {
+      link_t *new = link_new(list->copy_f(elem), NULL);
+      (list->last)->next = new; 
+      list->last = new;
+    }
+    // Alla andra fall
+    else
+    {
+      *c = link_new(list->copy_f(elem), (*c));
+    }
   }
   ++(list->size);
 }
@@ -133,10 +162,9 @@ bool empty_list(list_t *list)
 /// \param elem the element to be appended
 void list_append(list_t *list, elem_t elem)
 {
-  // FIXME:
   // Denna ser annorlunda ut än list_prepend eftersom index -1 just nu
   // knuffar det sista elementet framför sig och alltså hamnar det nya
-  // elementet inte sist i listan. Funktionen verkar funka men det är inte optimalt.
+  // elementet inte sist i listan.
   if (list->size == 0) {
     // Corner case för tom lista
     make_singleton(list, elem);
@@ -146,6 +174,7 @@ void list_append(list_t *list, elem_t elem)
     link_t *current_last = list->last;
     link_t *new = link_new(elem, NULL);
     current_last->next = new;
+    list->last = new;
   }
   ++(list->size); 
 }
@@ -168,6 +197,7 @@ void list_prepend(list_t *list, elem_t elem)
 /// \returns true if index was a valid index
 bool list_get(list_t *list, int index, elem_t *result)
 {
+  index = adjust_index_get(index, list->size);
   link_t **c = list_find(list, index);
   if (*c)
   {
@@ -259,24 +289,17 @@ void list_delete(list_t *list, bool delete)
 /// \returns the result of all fun calls, combined with OR (||)
 bool list_apply(list_t *list, elem_apply_fun fun, void *data)
 {
-  if (!list)
+  bool result = false;
+  link_t **c = &(list->first);
+  while (*c)
   {
-    return false;
-  }
-  else
-  {
-    bool result = false;
-    link_t **c = &(list->first);
-    while (*c)
+    if(fun((*c)->elem, data))
     {
-      if(fun((*c)->elem, data))
-      {
-        result = true;
-      }
-      c = &((*c)->next);
+      result = true;
     }
-    return result;
+    c = &((*c)->next);
   }
+  return result;
 }
 
 /// Searches for an element in a list
@@ -288,5 +311,30 @@ bool list_apply(list_t *list, elem_apply_fun fun, void *data)
 /// \returns the index of elem in list, or -1 if not found
 int list_contains(list_t *list, elem_t elem)
 {
-  return 1;
+  int index = -1;
+  int counter = 0;
+  link_t **c = &(list->first);
+
+  while (*c)
+  {
+    //Om listan har en cmp-funktion
+    if (list->cmp_f)
+    {
+      if (list->cmp_f((*c)->elem, elem) == 0) {
+        return counter;
+      }
+    }
+    // Om listan inte har en cmp-funktion
+    else
+    {
+      if ((*c)->elem.i == elem.i) { // Ful-lösning, hur jämföra en union med '=='?
+        return counter;
+      }
+    }
+    
+  c = &((*c)->next);
+  ++counter;
+  }
+  return index;
 }
+

@@ -13,7 +13,9 @@ void free_string(elem_t elem) {
 
 size_t comp_fun_string(elem_t a, elem_t b)
 {
-  return strcmp(a.p, b.p);
+  char *a_s = (char*)a.p;
+  char *b_s = (char*)b.p;
+  return strcmp(a_s, b_s);
 }
 
 void list_insert_test()
@@ -21,12 +23,22 @@ void list_insert_test()
   list_t *list = list_new(NULL, NULL, NULL);
   elem_t elem1 = { .i = 1 };
   elem_t elem2 = { .i = 2 };
+  elem_t elem3 = { .i = 3 };
+  elem_t elem4 = { .i = 4 };
   elem_t result = { .i = 0 };
   list_insert(list, 0, elem1);
   list_insert(list, 1, elem2);
   CU_ASSERT_TRUE(list_length(list) == 2);
   list_get(list, 1, &result);
   CU_ASSERT_EQUAL(result.i, 2);
+  list_insert(list, 1, elem3);
+  list_get(list, 1, &result);
+  CU_ASSERT_EQUAL(result.i, elem3.i);
+  list_get(list, 2, &result);
+  CU_ASSERT_EQUAL(result.i, elem2.i);
+  list_insert(list, -1, elem4); ///FIXME:
+  list_get(list, 3, &result); /// FIXME: 
+  CU_ASSERT_EQUAL(result.i, elem4.i);
 }
                     
 
@@ -41,6 +53,7 @@ void list_append_test()
   list_t *list = list_new(NULL, NULL, NULL);
   elem_t elem1 = { .i = 1 };
   elem_t elem2 = { .i = 2 };
+  elem_t elem3 = { .i = 3 };
   elem_t result = { .i = 0 };
   list_append(list, elem1);
   CU_ASSERT_TRUE(list_length(list) == 1);
@@ -49,30 +62,44 @@ void list_append_test()
   list_append(list, elem2);
   list_get(list, 1, &result);
   CU_ASSERT_EQUAL(result.i, 2);
+  list_append(list, elem3),
+  list_get(list, 1, &result);
+  CU_ASSERT_EQUAL(result.i, 2);
 }
 
 void list_prepend_test()
 {
   list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1};
-  elem_t elem2 = { .i=2};
+  elem_t elem1 = { .i=1 };
+  elem_t elem2 = { .i=2 };
+  elem_t result = { .i = 0 };
   list_prepend(list, elem1);
+  list_get(list, 0, &result);
   CU_ASSERT_TRUE(list_length(list) == 1);
+  CU_ASSERT_EQUAL(result.i, 1);
   list_prepend(list, elem2);
+  list_get(list, 0, &result);
+  CU_ASSERT_EQUAL(result.i, elem2.i);
   CU_ASSERT_TRUE(list_length(list) == 2);
+  list_get(list, 1, &result);
+  CU_ASSERT_EQUAL(result.i, elem1.i);
 }
 
 void list_get_test()
 {
   list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1};
-  elem_t elem2 = { .i=2};
-  elem_t *elem_get = calloc(1, sizeof(elem_t));
+  elem_t elem1 = { .i=1 };
+  elem_t elem2 = { .i=2 };
+  elem_t elem_get = { .i =0 };
   list_prepend(list, elem1);
   list_prepend(list, elem2);
-  bool success = list_get(list, 1, elem_get);
-  CU_ASSERT_TRUE(elem_get->i == elem1.i);
-  CU_ASSERT_TRUE(success);                           
+  bool success = list_get(list, 1, &elem_get);
+  CU_ASSERT_EQUAL(elem_get.i, elem1.i);
+  CU_ASSERT_TRUE(success);
+  list_get(list, -1, &elem_get);
+  CU_ASSERT_EQUAL(elem_get.i, elem1.i);
+  list_get(list, -2, &elem_get);
+  CU_ASSERT_EQUAL(elem_get.i, elem2.i);
 }
 
 void list_first_test()
@@ -133,7 +160,7 @@ void list_remove_test()
 bool list_apply_fun(elem_t elem, void *data)
 {
   if (elem.i < 2) {
-     ++elem.i;
+     printf("%d är mindre än två\n", elem.i);
      return true;
   }
   return false;
@@ -144,19 +171,30 @@ void list_apply_test()
   list_t *list = list_new(NULL, NULL, NULL);
   elem_t elem1 = { .i = 1 };
   elem_t elem2 = { .i = 2 };
-  elem_t elem3 = { .i = 3 };
-  elem_t result = { .i = 0 };
+  elem_t elem3 = { .i = 0 };
   list_append(list, elem1);
   list_append(list, elem2);
   list_append(list, elem3);
-  list_apply(list, list_apply_fun, NULL);
-  for (int i = 0; i < 3; ++i) {
-    list_get(list, i, &result);
-    CU_ASSERT_TRUE(result.i >=2 );
-  }
+  CU_ASSERT_TRUE(list_apply(list, list_apply_fun, NULL));
 }
 
-
+void list_contains_test()
+{
+  list_t *list = list_new(NULL, NULL, comp_fun_string);
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem_not_in_list = { .p = "D"};
+  list_append(list, elem1);
+  list_append(list, elem2);
+  list_append(list, elem3);
+  int index = list_contains(list, elem2);
+  CU_ASSERT_EQUAL(index, 1);
+  index = list_contains(list, elem_not_in_list);
+  CU_ASSERT_EQUAL(index, -1);
+  index = list_contains(list, elem3);
+  CU_ASSERT_EQUAL(index, 2);
+}
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
 
@@ -177,6 +215,7 @@ int main(int argc, char *argv[]) {
    CU_add_test(pSuite, "list_last", list_last_test);
    CU_add_test(pSuite, "list_remove", list_remove_test);
    CU_add_test(pSuite, "list_apply", list_apply_test);
+   CU_add_test(pSuite, "list_contains", list_contains_test);
    
 
  
