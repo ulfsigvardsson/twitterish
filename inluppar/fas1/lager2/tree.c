@@ -2,7 +2,7 @@
 #include <assert.h>
 
 #define Compare(a, b) (*tree)->cmp_f(a, b)
-#define Current_key tree->key
+#define Compare_keys tree->cmp_f((*c)->key, key)
 #define Comp tree->cmp_f
 #define Copy tree->copy_f
 #define Free_elem tree->e_free_f
@@ -90,15 +90,17 @@ int tree_depth(tree_t *tree)
 }
 
 // Allmän traverseringsfunktion som används för insättning, sökning, djup och borttagning.
+/// Returnerar en dubbelpekare till ett träd som antingen är det som matchar 'key' eller ett
+/// tomt subträd där vi borde ha hittat den.
 tree_t **tree_traverse(tree_t *tree, elem_t key)
 {
   tree_t **c = &tree;
   while (*c)
   {
-    if (tree->cmp_f(Current_key, key) == 0) { return c; }
+    if (Compare_keys == 0) { return c; }
 
-    if (tree->cmp_f(Current_key, key) > 0) { c = &((*c)->right); }
-    if (tree->cmp_f(Current_key, key) < 0) { c = &((*c)->left);  }
+    if (Compare_keys > 0) { c = &((*c)->right); }
+    if (Compare_keys < 0) { c = &((*c)->left);  }
     
   }
   return c; 
@@ -138,9 +140,9 @@ bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
   {
     tree_t **c = tree_traverse(tree, key); 
     tree_t *new = tree_new(tree->copy_f, tree->k_free_f, tree->e_free_f, tree->cmp_f);
+    new->elem = Copy(elem);
+    new->key = key;
     *c = new;
-    (*c)->elem = Copy(elem);
-    (*c)->key = key;
     ++(tree->size);
   }
   return true;
