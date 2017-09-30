@@ -1,6 +1,14 @@
 #include <CUnit/Basic.h>
 #include "list.h"
 #include "common.h"
+#include "tree.h"
+
+int tree_compare_int(elem_t a, elem_t b)
+{
+  if (a.i == b.i) { return 0;}
+  if (a.i > b.i) { return 1;}
+  else { return -1;}
+}
 
 void list_remove_fun_string_aux(char *elem)
 {
@@ -11,7 +19,7 @@ void free_string(elem_t elem) {
   list_remove_fun_string_aux(elem.p);
 }
 
-size_t comp_fun_string(elem_t a, elem_t b)
+int comp_fun_string(elem_t a, elem_t b)
 {
   char *a_s = (char*)a.p;
   char *b_s = (char*)b.p;
@@ -195,6 +203,52 @@ void list_contains_test()
   index = list_contains(list, elem3);
   CU_ASSERT_EQUAL(index, 2);
 }
+
+void tree_new_test()
+{
+  tree_t *tree = tree_new(NULL, NULL, NULL, NULL);
+  CU_ASSERT_TRUE(tree != NULL);
+}
+
+void tree_insert_test()
+{
+  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "C" };
+  
+  elem_t key1 = { .i = 1 };
+  elem_t key2 = { .i = 2 };
+  
+  tree_insert(tree, key1, elem1);
+  tree_insert(tree, key2, elem2);
+
+  CU_ASSERT_TRUE(tree_has_key(tree, key1));
+  CU_ASSERT_TRUE(tree_has_key(tree, key2));
+}
+
+void tree_height_test()
+{
+  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem4 = { .p = "D" };
+  
+  elem_t key1 = { .i = 1 };
+  elem_t key2 = { .i = 2 };
+  elem_t key3 = { .i = 3 };
+  elem_t key4 = { .i = 4 };
+  
+  tree_insert(tree, key1, elem1);
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key3, elem3);
+  tree_insert(tree, key4, elem4);
+
+  int depth = tree_depth(tree);
+  CU_ASSERT_EQUAL(depth, 3);
+}
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
 
@@ -218,6 +272,10 @@ int main(int argc, char *argv[]) {
    CU_add_test(pSuite, "list_contains", list_contains_test);
    
 
+   pSuite = CU_add_suite("Tree.h", NULL, NULL);
+   CU_add_test(pSuite, "tree_new", tree_new_test);
+   CU_add_test(pSuite, "tree_insert", tree_insert_test);
+   CU_add_test(pSuite, "tree_height", tree_height_test);
  
    /* Run all tests using the CUnit Basic interface */
    CU_basic_set_mode(CU_BRM_VERBOSE);

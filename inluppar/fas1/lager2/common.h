@@ -21,7 +21,7 @@ union element
 /// Functions for handling genericity
 typedef elem_t(*element_copy_fun)(elem_t);
 typedef void(*element_free_fun)(elem_t);
-typedef size_t(*element_comp_fun)(elem_t, elem_t);
+typedef int(*element_comp_fun)(elem_t, elem_t);
 typedef bool(*elem_apply_fun)(elem_t elem, void *data);
 
 #endif

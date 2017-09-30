@@ -15,7 +15,7 @@ struct list
   element_copy_fun copy_f;
   element_free_fun free_f;
   element_comp_fun cmp_f;
-  int size;
+  size_t size;
 };
 
 
@@ -288,7 +288,7 @@ void list_delete(list_t *list, bool delete)
 /// \param data an extra argument passed to each call to fun (may be NULL)
 /// \returns the result of all fun calls, combined with OR (||)
 bool list_apply(list_t *list, elem_apply_fun fun, void *data)
-{
+{ 
   bool result = false;
   link_t **c = &(list->first);
   while (*c)

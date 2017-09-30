@@ -8,7 +8,7 @@ void delete_func_aux(11,110
 void delete_func(16,167
 int main(22,245
 
-list.c,798
+list.c,839
 typedef struct link link_t;3,19
 struct link5,48
   elem_t elem;7,62
@@ -19,42 +19,78 @@ struct list11,97
   element_copy_fun copy_f;15,144
   element_free_fun free_f;16,171
   element_comp_fun cmp_f;17,198
-  int size;18,224
-elem_t list_no_copy(22,241
-list_t *list_new(list_new33,578
-link_t *link_new(link_new50,878
-int adjust_index(58,1028
-link_t **list_find(list_find78,1416
-void make_singleton(92,1701
-void list_insert(110,2379
-bool empty_list(123,2621
-void list_append(134,2969
-void list_prepend(159,3793
-bool list_get(169,4135
-bool list_first(187,4549
-bool list_last(193,4685
-int list_length(207,5088
-void list_remove(222,5551
-void list_delete(244,6005
-bool list_apply(258,6438
-int list_contains(287,7001
+  size_t size;18,224
+elem_t list_no_copy(22,244
+list_t *list_new(list_new33,581
+link_t *link_new(link_new50,881
+int adjust_index_insert(57,1030
+int adjust_index_get(77,1436
+link_t **list_find(list_find97,1832
+void make_singleton(109,2071
+void list_insert(127,2749
+bool empty_list(152,3287
+void list_append(163,3635
+void list_prepend(188,4418
+bool list_get(198,4760
+bool list_first(219,5262
+bool list_last(225,5398
+int list_length(239,5801
+void list_remove(254,6264
+void list_delete(276,6718
+bool list_apply(290,7151
+int list_contains(312,7641
 
-test.c,412
-void list_remove_fun_string_aux(5,64
-void free_string(10,127
-size_t comp_fun_string(14,200
-void list_insert_test(19,275
-void list_new_test(33,624
-void list_append_test(39,726
-void list_prepend_test(54,1116
-void list_get_test(65,1385
-void list_first_test(78,1756
-void list_last_test(94,2206
-void list_remove_test(110,2655
-bool list_apply_fun(133,3354
-void list_apply_test(142,3477
-int main(160,3897
+test.c,569
+int tree_compare_int(6,82
+void list_remove_fun_string_aux(13,210
+void free_string(18,273
+int comp_fun_string(22,346
+void list_insert_test(29,470
+void list_new_test(53,1166
+void list_append_test(59,1268
+void list_prepend_test(78,1777
+void list_get_test(96,2276
+void list_first_test(113,2750
+void list_last_test(129,3200
+void list_remove_test(145,3649
+bool list_apply_fun(168,4348
+void list_apply_test(177,4505
+void list_contains_test(189,4807
+void tree_new_test(207,5329
+void tree_insert_test(213,5438
+void tree_height_test(230,5812
+int main(252,6344
 
-tree.c,0
+tree.c,835
+#define Compare(4,39
+#define Current_key 5,82
+#define Comp 6,112
+#define Copy 7,137
+#define Free_elem 8,163
+#define Free_key 9,196
+struct tree11,229
+  tree_key_t key;13,243
+  elem_t elem;14,261
+  tree_t *right;right15,276
+  tree_t *left;left16,293
+  element_copy_fun copy_f;17,309
+  element_free_fun e_free_f;18,336
+  key_free_fun k_free_f;19,365
+  element_comp_fun cmp_f;20,390
+  size_t size;21,416
+elem_t tree_no_copy(25,436
+tree_t *tree_new(tree_new36,822
+void tree_delete(58,1464
+int tree_size(65,1629
+int max(71,1726
+int tree_depth(79,1859
+tree_t *tree_traverse(tree_traverse93,2150
+bool tree_insert(120,3057
+bool tree_has_key(154,3840
+bool tree_get(166,4226
+bool tree_remove(176,4580
+tree_key_t *tree_keys(tree_keys186,4822
+elem_t *tree_elements(tree_elements197,5096
+bool tree_apply(218,5820
 
 common.c,0
