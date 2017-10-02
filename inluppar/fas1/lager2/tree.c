@@ -7,6 +7,11 @@
 #define Copy tree->copy_f
 #define Free_elem tree->e_free_f
 #define Free_key tree->k_free_f
+#define Apply_key fun(tree->key, tree->elem, data)
+#define Apply_left tree_apply(tree->left, order, fun, data)
+#define Apply_right tree_apply(tree->right, order, fun, data)
+
+
 
 struct tree
 {
@@ -26,6 +31,11 @@ elem_t tree_no_copy(elem_t elem)
 {
   return elem;
 }
+
+void tree_no_free(elem_t elem)
+{
+  return;
+}
 /// Creates a new tree
 ///
 /// \param copy (may be NULL) a function applied to all elements when stored in the tree
@@ -36,16 +46,15 @@ elem_t tree_no_copy(elem_t elem)
 tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_free_fun elem_free, element_comp_fun compare)
 {
   tree_t *tree = calloc(1, sizeof(tree_t));
-  if (element_copy)
-  {
-    Copy = element_copy;
-  }
-  else
-  {
-    Copy = tree_no_copy;
-  }
+  if (element_copy) {Copy = element_copy;}
+  else {Copy = tree_no_copy;} 
+
   if (key_free)     {Free_key = key_free;}
+  else { Free_key = tree_no_free; }
+
   if (elem_free)    {Free_elem = elem_free;}
+  else { Free_elem = tree_no_free;}
+  
   if (compare)      {Comp = compare;}
   return tree;
 }
@@ -79,31 +88,38 @@ int max(int a, int b)
 int tree_depth(tree_t *tree)
 {
   if (!tree || (!(tree->left) && !(tree->right)))
-  {
-    return 0;
-  }
+    {
+      return 0;
+    }
   else
-  {
-    return 1 + max(tree_depth(tree->left), tree_depth(tree->right));  
-  }
+    {
+      return 1 + max(tree_depth(tree->left), tree_depth(tree->right));  
+    }
   
 }
 
 // Allmän traverseringsfunktion som används för insättning, sökning, djup och borttagning.
 /// Returnerar en dubbelpekare till ett träd som antingen är det som matchar 'key' eller ett
 /// tomt subträd där vi borde ha hittat den.
-tree_t **tree_traverse(tree_t *tree, elem_t key)
+tree_t **tree_traverse(tree_t *tree, elem_t const key)
 {
   tree_t **c = &tree;
   while (*c)
-  {
-    if (Compare_keys == 0) { return c; }
+    {
+      if (Compare_keys == 0) { return c; }
 
-    if (Compare_keys > 0) { c = &((*c)->right); }
-    if (Compare_keys < 0) { c = &((*c)->left);  }
-    
-  }
-  return c; 
+      if (Compare_keys > 0)
+        {
+          assert(*c !=0);
+          c = &((*c)->right);
+        }
+      if (Compare_keys < 0)
+        {
+          assert(*c != 0);
+          c = &((*c)->left);
+        }
+    }
+  return c;
 }
 
 /// Insert element into the tree. Returns false if the key is already used.
@@ -124,27 +140,27 @@ bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
 {
   // Trädet innehåller redan nyckeln
   if (tree_has_key(tree, key))
-  {
-    return false;
-  }
+    {
+      return false;
+    }
 
   // Corner case för tomma träd
   if (tree->size == 0)
-  {
-    tree->elem = Copy(elem);
-    tree->key = key;
-    ++(tree->size);
-  }
+    {
+      tree->elem = Copy(elem);
+      tree->key = key;
+      ++(tree->size);
+    }
   
   else
-  {
-    tree_t **c = tree_traverse(tree, key); 
-    tree_t *new = tree_new(tree->copy_f, tree->k_free_f, tree->e_free_f, tree->cmp_f);
-    new->elem = Copy(elem);
-    new->key = key;
-    *c = new;
-    ++(tree->size);
-  }
+    {
+      tree_t **c = tree_traverse(tree, key); 
+      tree_t *new = tree_new(tree->copy_f, tree->k_free_f, tree->e_free_f, tree->cmp_f);
+      new->elem = Copy(elem);
+      new->key = key;
+      *c = new;
+      ++(tree->size);
+    }
   return true;
 }
 /// Checks whether a key is used in a tree
@@ -168,8 +184,30 @@ bool tree_has_key(tree_t *tree, tree_key_t key)
 /// \returns: true if key is a key in the tree
 bool tree_get(tree_t *tree, tree_key_t key, elem_t *result)
 {
-  return false;
+  tree_t **c = tree_traverse(tree, key);
+
+  if (*c)
+    {
+      *result = ((*c)->elem);
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+  
 }
+
+
+tree_t *find_smallest_successor(tree_t *tree)
+{
+  while (tree->left)
+    {
+      tree = tree->left;
+    }
+  return tree;
+}
+
 /// Removes the element for a given key in tree.
 ///
 /// \param tree pointer to the tree
@@ -178,8 +216,42 @@ bool tree_get(tree_t *tree, tree_key_t key, elem_t *result)
 /// \returns: true if key is a key in the tree
 bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
 {
-  return false;
-}
+  tree_t **c = tree_traverse(tree, key);
+  
+  if (*c)
+    {
+      Free_key((*c)->key); 
+      Free_elem((*c)->elem);         
+      tree_t *temp = *c;
+
+      if(!(*c)->left && !(*c)->right)
+        {
+            *c = NULL;
+        }
+      else if (!(*c)->right && (*c)->left)
+        {
+          *c = (*c)->left;
+        }
+      else if ((*c)->left && !(*c)->right)
+        {
+          *c = (*c)->right;
+        }
+      else
+        {
+          tree_t *successor = find_smallest_successor(*c);
+          tree_t *left = (*c)->left; 
+          (*c)->key    = Copy(successor->key);
+          (*c)->elem   = Copy(successor->elem);
+          (*c)->left   = left;
+          tree_remove((*c)->right, successor->key, result);
+        }
+
+      free(temp);
+      --(tree->size);
+      return true;
+      }
+    return false;
+  }
 
 /// Returns an array holding all the keys in the tree
 /// in ascending order.
@@ -220,5 +292,16 @@ elem_t *tree_elements(tree_t *tree)
 /// \returns the result of all fun calls, combined with OR (||)
 bool tree_apply(tree_t *tree, enum tree_order order, key_elem_apply_fun fun, void *data)
 {
-  return false;
+  if (tree)
+    {
+      switch (order)
+        {
+        case inorder:  { return Apply_left || Apply_key   || Apply_right; }
+        case preorder: { return Apply_key  || Apply_left  || Apply_right; }
+        default:         return Apply_left || Apply_right || Apply_key;   }
+    }
+  else
+    {
+      return false;
+    }
 }

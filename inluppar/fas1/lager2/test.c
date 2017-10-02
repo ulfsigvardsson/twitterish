@@ -3,6 +3,11 @@
 #include "common.h"
 #include "tree.h"
 
+void elem_free(elem_t elem)
+{
+  free(elem.p);
+}
+
 int tree_compare_int(elem_t a, elem_t b)
 {
   if (a.i == b.i) { return 0;}
@@ -242,45 +247,100 @@ void tree_height_test()
   elem_t key4 = { .i = 4 };
   
   tree_insert(tree, key1, elem1);
+  int depth = tree_depth(tree);
+  CU_ASSERT_EQUAL(depth, 0);
   tree_insert(tree, key2, elem2);
   tree_insert(tree, key3, elem3);
   tree_insert(tree, key4, elem4);
 
-  int depth = tree_depth(tree);
+  depth = tree_depth(tree);
   CU_ASSERT_EQUAL(depth, 3);
+}
+
+void tree_get_test()
+{
+  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem4 = { .p = "D" };
+  elem_t result = { .p = "X "};
+
+  elem_t key1 = { .i = 1 };
+  elem_t key2 = { .i = 2 };
+  elem_t key3 = { .i = 3 };
+  elem_t key4 = { .i = 4 };
+  elem_t key_not_in_tree = { .i = 5 };
+
+  tree_insert(tree, key1, elem1);
+  CU_ASSERT_TRUE(tree_get(tree, key1, &result));
+  
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key3, elem3);
+  tree_insert(tree, key4, elem4);
+  CU_ASSERT_TRUE(tree_get(tree, key1, &result));
+  CU_ASSERT_EQUAL(result.p, elem1.p);
+
+  CU_ASSERT_FALSE(tree_get(tree, key_not_in_tree, &result));
+  CU_ASSERT_EQUAL(result.p, elem1.p);
+}
+
+void tree_remove_test()
+{
+  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem4 = { .p = "D" };
+  
+  elem_t key1 = { .p = "FOO" };
+  elem_t key2 = { .p = "BAR" };
+  elem_t key3 = { .p = "BAZ" };
+  elem_t key4 = { .p = "WHATEVS" };
+
+  tree_insert(tree, key1, elem1);
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key3, elem3);
+  tree_insert(tree, key4, elem4);
+
+  tree_remove(tree, key1, &elem4); 
 }
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
 
-   /* initialize the CUnit test registry */
-   if (CUE_SUCCESS != CU_initialize_registry())
-      return CU_get_error();
+  /* initialize the CUnit test registry */
+  if (CUE_SUCCESS != CU_initialize_registry())
+    return CU_get_error();
 
-   /* add a suite to the registry */
-   pSuite = CU_add_suite("List.h", NULL, NULL);
+  /* add a suite to the registry */
+  pSuite = CU_add_suite("List.h", NULL, NULL);
 
-   /* add the tests to the suite */
-   CU_add_test(pSuite, "new_list", list_new_test);
-   CU_add_test(pSuite, "list_insert", list_insert_test);
-   CU_add_test(pSuite, "list_prepend", list_prepend_test);
-   CU_add_test(pSuite, "list_append", list_append_test);
-   CU_add_test(pSuite, "list_get", list_get_test);
-   CU_add_test(pSuite, "list_first", list_first_test);
-   CU_add_test(pSuite, "list_last", list_last_test);
-   CU_add_test(pSuite, "list_remove", list_remove_test);
-   CU_add_test(pSuite, "list_apply", list_apply_test);
-   CU_add_test(pSuite, "list_contains", list_contains_test);
+  /* add the tests to the suite */
+  CU_add_test(pSuite, "new_list", list_new_test);
+  CU_add_test(pSuite, "list_insert", list_insert_test);
+  CU_add_test(pSuite, "list_prepend", list_prepend_test);
+  CU_add_test(pSuite, "list_append", list_append_test);
+  CU_add_test(pSuite, "list_get", list_get_test);
+  CU_add_test(pSuite, "list_first", list_first_test);
+  CU_add_test(pSuite, "list_last", list_last_test);
+  CU_add_test(pSuite, "list_remove", list_remove_test);
+  CU_add_test(pSuite, "list_apply", list_apply_test);
+  CU_add_test(pSuite, "list_contains", list_contains_test);
    
 
-   pSuite = CU_add_suite("Tree.h", NULL, NULL);
-   CU_add_test(pSuite, "tree_new", tree_new_test);
-   CU_add_test(pSuite, "tree_insert", tree_insert_test);
-   CU_add_test(pSuite, "tree_height", tree_height_test);
+  pSuite = CU_add_suite("Tree.h", NULL, NULL);
+  CU_add_test(pSuite, "tree_new", tree_new_test);
+  CU_add_test(pSuite, "tree_insert", tree_insert_test);
+  CU_add_test(pSuite, "tree_height", tree_height_test);
+  CU_add_test(pSuite, "tree_get", tree_get_test);
+  CU_add_test(pSuite, "tree_remove", tree_remove_test);
  
-   /* Run all tests using the CUnit Basic interface */
-   CU_basic_set_mode(CU_BRM_VERBOSE);
-   CU_basic_run_tests();
-   CU_cleanup_registry();
-   return CU_get_error();
+  /* Run all tests using the CUnit Basic interface */
+  CU_basic_set_mode(CU_BRM_VERBOSE);
+  CU_basic_run_tests();
+  CU_cleanup_registry();
+  return CU_get_error();
   return 0;
 }

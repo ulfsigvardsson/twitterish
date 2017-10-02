@@ -40,7 +40,7 @@ void list_delete(276,6718
 bool list_apply(290,7151
 int list_contains(312,7641
 
-test.c,569
+test.c,598
 int tree_compare_int(6,82
 void list_remove_fun_string_aux(13,210
 void free_string(18,273
@@ -59,38 +59,39 @@ void list_contains_test(189,4807
 void tree_new_test(207,5329
 void tree_insert_test(213,5438
 void tree_height_test(230,5812
-int main(252,6344
+void tree_get_test(255,6402
+int main(283,7175
 
-tree.c,835
+tree.c,837
 #define Compare(4,39
-#define Current_key 5,82
-#define Comp 6,112
-#define Copy 7,137
-#define Free_elem 8,163
-#define Free_key 9,196
-struct tree11,229
-  tree_key_t key;13,243
-  elem_t elem;14,261
-  tree_t *right;right15,276
-  tree_t *left;left16,293
-  element_copy_fun copy_f;17,309
-  element_free_fun e_free_f;18,336
-  key_free_fun k_free_f;19,365
-  element_comp_fun cmp_f;20,390
-  size_t size;21,416
-elem_t tree_no_copy(25,436
-tree_t *tree_new(tree_new36,822
-void tree_delete(58,1464
-int tree_size(65,1629
-int max(71,1726
-int tree_depth(79,1859
-tree_t *tree_traverse(tree_traverse93,2150
-bool tree_insert(120,3057
-bool tree_has_key(154,3840
-bool tree_get(166,4226
-bool tree_remove(176,4580
-tree_key_t *tree_keys(tree_keys186,4822
-elem_t *tree_elements(tree_elements197,5096
-bool tree_apply(218,5820
+#define Compare_keys 5,82
+#define Comp 6,131
+#define Copy 7,156
+#define Free_elem 8,182
+#define Free_key 9,215
+struct tree11,248
+  tree_key_t key;13,262
+  elem_t elem;14,280
+  tree_t *right;right15,295
+  tree_t *left;left16,312
+  element_copy_fun copy_f;17,328
+  element_free_fun e_free_f;18,355
+  key_free_fun k_free_f;19,384
+  element_comp_fun cmp_f;20,409
+  size_t size;21,435
+elem_t tree_no_copy(25,455
+tree_t *tree_new(tree_new36,841
+void tree_delete(58,1483
+int tree_size(65,1648
+int max(71,1745
+int tree_depth(79,1878
+tree_t **tree_traverse(tree_traverse95,2311
+bool tree_insert(123,3182
+bool tree_has_key(157,3971
+bool tree_get(169,4359
+bool tree_remove(190,4838
+tree_key_t *tree_keys(tree_keys200,5080
+elem_t *tree_elements(tree_elements211,5354
+bool tree_apply(232,6078
 
 common.c,0
