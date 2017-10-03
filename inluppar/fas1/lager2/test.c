@@ -1,4 +1,5 @@
 #include <CUnit/Basic.h>
+#include <stdio.h>
 #include "list.h"
 #include "common.h"
 #include "tree.h"
@@ -20,6 +21,12 @@ void list_remove_fun_string_aux(char *elem)
   free(elem);
 }
 
+elem_t string_copy(elem_t elem)
+{
+  elem_t new = { .p= elem.p };
+  return new;
+}
+
 void free_string(elem_t elem) {
   list_remove_fun_string_aux(elem.p);
 }
@@ -39,7 +46,8 @@ void list_insert_test()
   elem_t elem3 = { .i = 3 };
   elem_t elem4 = { .i = 4 };
   elem_t result = { .i = 0 };
-  list_insert(list, 0, elem1);
+  
+  list_insert(list, 0, elem1); 
   list_insert(list, 1, elem2);
   CU_ASSERT_TRUE(list_length(list) == 2);
   list_get(list, 1, &result);
@@ -49,8 +57,8 @@ void list_insert_test()
   CU_ASSERT_EQUAL(result.i, elem3.i);
   list_get(list, 2, &result);
   CU_ASSERT_EQUAL(result.i, elem2.i);
-  list_insert(list, -1, elem4); ///FIXME:
-  list_get(list, 3, &result); /// FIXME: 
+  list_insert(list, -1, elem4);
+  list_get(list, 3, &result); 
   CU_ASSERT_EQUAL(result.i, elem4.i);
 }
                     
@@ -128,7 +136,7 @@ void list_first_test()
   CU_ASSERT_EQUAL( 1, result.i);
   list_prepend(list, elem2);
   CU_ASSERT_TRUE(list_first(list, &result));
-  CU_ASSERT_EQUAL(2, result.i);
+  CU_ASSERT_EQUAL(2, result.i); 
 }
 
 void list_last_test()
@@ -250,7 +258,11 @@ void tree_height_test()
   int depth = tree_depth(tree);
   CU_ASSERT_EQUAL(depth, 0);
   tree_insert(tree, key2, elem2);
+  depth = tree_depth(tree);
+  CU_ASSERT_EQUAL(depth, 1);
   tree_insert(tree, key3, elem3);
+  depth = tree_depth(tree);
+  CU_ASSERT_EQUAL(depth, 2);
   tree_insert(tree, key4, elem4);
 
   depth = tree_depth(tree);
@@ -259,7 +271,7 @@ void tree_height_test()
 
 void tree_get_test()
 {
-  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+  tree_t *tree = tree_new(string_copy, NULL, NULL, tree_compare_int);
 
   elem_t elem1 = { .p = "A" };
   elem_t elem2 = { .p = "B" };
@@ -291,21 +303,35 @@ void tree_remove_test()
   tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
 
   elem_t elem1 = { .p = "A" };
-  elem_t elem2 = { .p = "B" };
-  elem_t elem3 = { .p = "C" };
-  elem_t elem4 = { .p = "D" };
+  //elem_t elem2 = { .p = "B" };
+  //elem_t elem3 = { .p = "C" };
+  //elem_t elem4 = { .p = "D" };
   
   elem_t key1 = { .p = "FOO" };
-  elem_t key2 = { .p = "BAR" };
-  elem_t key3 = { .p = "BAZ" };
-  elem_t key4 = { .p = "WHATEVS" };
+  //_t key2 = { .p = "BAR" };
+  //elem_t key3 = { .p = "BAZ" };
+  //elem_t key4 = { .p = "WHATEVS" };
 
+  elem_t result = { .p = "RESULT" };
+  
   tree_insert(tree, key1, elem1);
-  tree_insert(tree, key2, elem2);
-  tree_insert(tree, key3, elem3);
-  tree_insert(tree, key4, elem4);
+  CU_ASSERT_TRUE(tree_size(tree) == 1);
+  //tree_insert(tree, key2, elem2);
+  //tree_insert(tree, key3, elem3);
+  //tree_insert(tree, key4, elem4);
 
-  tree_remove(tree, key1, &elem4); 
+  tree_remove(tree, key1, &result); 
+  //CU_ASSERT_TRUE(strcmp("A", result.p) == 0);
+  //CU_ASSERT_TRUE(tree_size(tree) == 0);
+  CU_ASSERT_TRUE(strcmp("A", result.p) == 0);
+  CU_ASSERT_FALSE(tree_has_key(tree, key1));
+                  // tree_remove(tree, key2, &result);
+  //CU_ASSERT_TRUE(strcmp("B", result.p) == 0);
+
+  // tree_remove(tree, key3, &result);
+  //CU_ASSERT_TRUE(strcmp(elem3.p, result.p) == 0);
+  //CU_ASSERT_TRUE(tree_size(tree) == 2);
+  
 }
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
