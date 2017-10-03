@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include "item.h"
 
 
@@ -24,6 +25,12 @@ shelf_t *shelf_new(char *id, int amount) {
   return s;
 }
 
+shelf_t *shelf_empty()
+{
+  shelf_t *s = calloc(1, sizeof(shelf_t));
+  return s;
+}
+
 item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount) {
   item_t *item = calloc(1, sizeof(item_t));
   item->name   = name;
@@ -35,25 +42,36 @@ item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount)
   return item;
 }
 
+item_t *item_empty() {
+  item_t *item = calloc(1, sizeof(item_t));
+  item->shelves = list_new();
+  return item;
+}
 
-// Hjälpfunktion för edit_db, ändrar på objektsbeskrivningen
-void edit_description(item_t *item, char *descr) {
+void item_set_name(item_t *item, char *name) {
+  item->name = name;
+}
+
+void item_set_description(item_t *item, char *descr) {
   item->descr = descr;
 }
 
-// Hjälpfunktion för edit_db, ändrar på priset
-void edit_price(item_t *item, int price) {
+
+void item_set_price(item_t *item, int price) {
   item->price = price;
 }
 
-// Hjälpfunktion för edit_db, ändrar på hyllan
-void edit_shelf(shelf_t *shelf, char *id) {
+
+void item_set_shelf(shelf_t *shelf, char *id) {
   shelf->id =id;
 }
 
-// Hjälpfunktion för edit_db, ändrar på antalet objekt
-void edit_amount(shelf_t *shelf, int amount) {
+void item_set_amount(shelf_t *shelf, int amount) {
   shelf->amount = amount;
+}
+
+void item_set_shelves(item_t *item, list_t *shelves) {
+  item->shelves = shelves;
 }
 char *item_name(item_t *item) {
   return item->name;
@@ -77,4 +95,32 @@ char *shelf_id(shelf_t *shelf) {
 
 int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
+}
+
+//FIXME: måste kopiera lsitan av hyllor, annars har de samma pekare, samma med beskrivningen
+void item_copy(item_t *original, item_t *copy) {
+  copy->name = strdup(original->name);
+  copy->descr = strdup(original->descr);
+  copy->price = original->price;
+  shelf_copy(original, copy);
+}
+
+void shelf_copy(item_t *original, item_t *copy)
+{
+  list_t *to = copy->shelves;
+  list_t *from = original->shelves;
+  int length = list_length(original->shelves);
+  list_t *temp_list = list_new();
+  
+  for (int i = 0; i < length; ++i)
+  {
+    L *tmp = list_get(from, i);
+    int amount = shelf_amount(*tmp);
+    char *id = strdup(shelf_id(*tmp));
+    shelf_t *new = shelf_new(id, amount);
+    list_append(temp_list, new);
+  }
+
+  copy->shelves = temp_list;
+  free(to); // Måste ihn och gröta djupare än såhär
 }
