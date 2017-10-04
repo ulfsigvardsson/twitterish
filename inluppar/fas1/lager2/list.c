@@ -30,6 +30,7 @@ elem_t list_no_copy(elem_t elem)
 /// \param free (may be NULL) used to free elements in list_delete
 /// \param compare (may be NULL) used to compare elements in list_contains
 /// \returns: empty list
+/// TODO: lägg till en standard compare-funktion för listor så vi slipper if-satserna
 list_t *list_new(element_copy_fun copy, element_free_fun free, element_comp_fun compare)
 {
   list_t *list = calloc(1, sizeof(list_t));
@@ -309,6 +310,7 @@ bool list_apply(list_t *list, elem_apply_fun fun, void *data)
 /// \param list the list
 /// \param elem the element to search for
 /// \returns the index of elem in list, or -1 if not found
+/// TODO: lägg till en standard compare-funktion för listor så vi slipper if-satserna
 int list_contains(list_t *list, elem_t elem)
 {
   int index = -1;
@@ -326,10 +328,10 @@ int list_contains(list_t *list, elem_t elem)
     }
     // Om listan inte har en cmp-funktion
     else
-    {
-      if ((*c)->elem.i == elem.i) { // Ful-lösning, hur jämföra en union med '=='?
-        return counter;
-      }
+      {//FIXME:
+        if ((*c)->elem.i == elem.i) { // Ful-lösning, hur jämföra en union med '=='?
+          return counter;
+        }
     }
     
   c = &((*c)->next);

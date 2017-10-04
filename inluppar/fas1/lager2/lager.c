@@ -19,12 +19,23 @@ void delete_func(elem_t test)
   free(test.p);
 }
 
+int tree_compare_int(elem_t a, elem_t b)
+{
+  if (a.i == b.i) { return 0;}
+  if (a.i > b.i) { return 1;}
+  else { return -1;}
+}
+
 int main(int argc, char *argv[])
 {
-  list_t *list = list_new(NULL, delete_func, NULL);
+  tree_t *tree = tree_new(NULL, NULL, delete_func, tree_compare_int);
   test_t *a = calloc(1, sizeof(test_t));
   elem_t elem = { .p = a };
-  list_append(list, elem);
-  list_delete(list, true);
+  elem_t key = { .i = 1};
+  elem_t result = {.p = "bajs"};
+  tree_insert(tree, key, elem);
+  tree_remove(tree, key, &result);
+  delete_func(result);
+  free(tree);
   return 0;
 }

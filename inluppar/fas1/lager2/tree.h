@@ -7,16 +7,15 @@
 typedef elem_t tree_key_t;
 typedef element_free_fun key_free_fun;
 
-/// Define struct tree in your .c file not here! (why?)
 typedef struct tree tree_t;
 typedef struct node node_t;
 
 /// Creates a new tree
 ///
-/// \param copy (may be NULL) a function applied to all elements when stored in the tree
-/// \param key_free (may be NULL) used to free keys in tree_delete
-/// \param elem_free (may be NULL) used to free elements in tree_delete
-/// \param compare (may be NULL) used to compare keys
+/// @param [in] copy (may be NULL) a function applied to all elements when stored in the tree
+/// @param key_free (may be NULL) used to free keys in tree_delete
+/// @param elem_free (may be NULL) used to free elements in tree_delete
+/// @param compare (may be NULL) used to compare keys
 /// \returns: empty tree
 tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_free_fun elem_free, element_comp_fun compare);
 
