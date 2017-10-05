@@ -90,35 +90,45 @@ void list_append_test()
 
 void list_prepend_test()
 {
-  list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1 };
-  elem_t elem2 = { .i=2 };
+  list_t *list  = list_new(NULL, NULL, NULL);
+  elem_t elem1  = { .i=1 };
+  elem_t elem2  = { .i=2 };
   elem_t result = { .i = 0 };
+  
   list_prepend(list, elem1);
   list_get(list, 0, &result);
+  
   CU_ASSERT_TRUE(list_length(list) == 1);
   CU_ASSERT_EQUAL(result.i, 1);
+  
   list_prepend(list, elem2);
   list_get(list, 0, &result);
+  
   CU_ASSERT_EQUAL(result.i, elem2.i);
   CU_ASSERT_TRUE(list_length(list) == 2);
+  
   list_get(list, 1, &result);
+  
   CU_ASSERT_EQUAL(result.i, elem1.i);
 }
 
 void list_get_test()
 {
   list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1 };
-  elem_t elem2 = { .i=2 };
+  elem_t elem1 = { .i = 1 };
+  elem_t elem2 = { .i = 2 };
   elem_t elem_get = { .i =0 };
+  
   list_prepend(list, elem1);
   list_prepend(list, elem2);
   bool success = list_get(list, 1, &elem_get);
+
   CU_ASSERT_EQUAL(elem_get.i, elem1.i);
   CU_ASSERT_TRUE(success);
+
   list_get(list, -1, &elem_get);
   CU_ASSERT_EQUAL(elem_get.i, elem1.i);
+
   list_get(list, -2, &elem_get);
   CU_ASSERT_EQUAL(elem_get.i, elem2.i);
 }
@@ -129,11 +139,14 @@ void list_first_test()
   elem_t elem1  = { .i = 1 };
   elem_t elem2  = { .i = 2 };
   elem_t result = { .i = 0 };
+
   list_first(list, &result); // Tom lista
   CU_ASSERT_EQUAL(result.i, 0);
+
   list_append(list, elem1);
   CU_ASSERT_TRUE(list_first(list, &result));
   CU_ASSERT_EQUAL( 1, result.i);
+
   list_prepend(list, elem2);
   CU_ASSERT_TRUE(list_first(list, &result));
   CU_ASSERT_EQUAL(2, result.i); 
@@ -390,6 +403,11 @@ void tree_keys_test()
   CU_ASSERT_TRUE(strcmp(keys[1].p, key2.p) == 0);
   CU_ASSERT_TRUE(strcmp(keys[2].p, key3.p) == 0);
   CU_ASSERT_TRUE(strcmp(keys[3].p, key4.p) == 0); 
+}
+
+void tree_delete_test()
+{
+  
 }
 
 int main(int argc, char *argv[]) {

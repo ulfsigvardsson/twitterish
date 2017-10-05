@@ -2,44 +2,73 @@
 #include <string.h>
 #include "item.h"
 
-
-
-struct item {
-  char *name;
-  char *descr;
-  int price;
-  elem_t *shelves;
+/*! \struct En strukt för vara i lagret
+ *
+ * Varuhyllorna är av typen struct shelf
+ */
+struct item
+{
+  char *name; /*!< Varans namn i form av en textsträng*/
+  char *descr; /*!< Varans beskrivning*/
+  int price; /*!< Varans pris*/
+  list_t *shelves; /*!< En lista av varuhyllor*/
 };
-
-struct shelf {
-  char *id;
-  int amount;
+//! \struct En struct för hyllor
+/*!
+ *
+ */
+struct shelf
+{
+  char *id; /*!< Hyllans namn*/
+  int amount; /*!< Antal varor lagrade på hyllan*/
 };
-
-typedef struct shelf shelf_t;
 
 shelf_t *shelf_new(char *id, int amount)
 { 
-  return NULL;
+  shelf_t *s = calloc(1, sizeof(shelf_t));
+  s->id = id;
+  s->amount = amount;
+  return s;
 }
 
-
-item_t *item_new(char *name, char *descr, int price)
+shelf_t *shelf_empty()
 {
-  return NULL;
+  shelf_t *s = calloc(1, sizeof(shelf_t));
+  return s;
 }
 
+item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount)
+{
+  item_t *item = calloc(1, sizeof(item_t));
+  item->name   = name;
+  item->descr  = descr;
+  item->price  = price;
+  shelf_t *new_shelf = shelf_new(shelf_id, amount);
+  item->shelves= list_new();
+  list_append(item->shelves, new_shelf);
+  return item;
+}
 
-void item_set_name(item_t *item, char *name) {
+item_t *item_empty()
+{
+  item_t *item = calloc(1, sizeof(item_t));
+  item->shelves = list_new();
+  return item;
+}
+
+void item_set_name(item_t *item, char *name)
+{
   item->name = name;
 }
 
-void item_set_description(item_t *item, char *descr) {
+void item_set_description(item_t *item, char *descr)
+{
   item->descr = descr;
 }
 
 
-void item_set_price(item_t *item, int price) {
+void item_set_price(item_t *item, int price)
+{
   item->price = price;
 }
 
@@ -52,7 +81,7 @@ void item_set_amount(shelf_t *shelf, int amount) {
   shelf->amount = amount;
 }
 
-void item_set_shelves(item_t *item, elem_t *shelves) {
+void item_set_shelves(item_t *item, list_t *shelves) {
   item->shelves = shelves;
 }
 char *item_name(item_t *item) {
@@ -67,7 +96,7 @@ int item_price(item_t *item) {
   return item->price;
 }
 
-elem_t *item_shelves(item_t *item) {
+list_t *item_shelves(item_t *item) {
   return item->shelves;
 }
 
@@ -79,6 +108,7 @@ int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
 }
 
+//FIXME: måste kopiera lsitan av hyllor, annars har de samma pekare, samma med beskrivningen
 void item_copy(item_t *original, item_t *copy) {
   copy->name = strdup(original->name);
   copy->descr = strdup(original->descr);
@@ -86,7 +116,22 @@ void item_copy(item_t *original, item_t *copy) {
   shelf_copy(original, copy);
 }
 
-void shelf_copy(elem_t *original, elem_t *copy)
+void shelf_copy(item_t *original, item_t *copy)
 {
-  return;
+  list_t *to = copy->shelves;
+  list_t *from = original->shelves;
+  int length = list_length(original->shelves);
+  list_t *temp_list = list_new();
+  
+  for (int i = 0; i < length; ++i)
+    {
+      L *tmp = list_get(from, i);
+      int amount = shelf_amount(*tmp);
+      char *id = strdup(shelf_id(*tmp));
+      shelf_t *new = shelf_new(id, amount);
+      list_append(temp_list, new);
+    }
+
+  copy->shelves = temp_list;
+  free(to); // Måste ihn och gröta djupare än såhär
 }

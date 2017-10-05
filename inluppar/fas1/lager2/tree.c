@@ -13,22 +13,11 @@
 #define Leaf !((*to_remove)->right || (*to_remove)->left)
 #define Full (*to_remove)->right && (*to_remove)->left
 #define Right (*to_remove)->right
-#define Left (*to_remove)->left
-  
-typedef struct elem_array
-{
-  elem_t *elems;
-  int index;
-}elem_array_t;
+#define Left (*to_remove)->left 
   
 struct node
 {
   elem_t elem;
-  /*! \brief Brief description.
-   *         Brief description continued.
-   *
-   *  Detailed description starts here.
-   */
   tree_key_t key;
   node_t *left;
   node_t *right;
@@ -60,7 +49,6 @@ node_t *node_new()
   node_t *node = calloc(1, sizeof(node_t));
   return node;
 }
-
 
 /// Creates a new tree
 ///
@@ -95,9 +83,20 @@ tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_f
 /// \param delete_elements if true, run tree's elem_free function on all elements
 void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)
 {
+  elem_t result;
+  elem_t *keys = tree_keys(tree);
   
+  for (int i = 0; i < (int)tree->size; ++i)
+    {
+      tree_remove(tree, keys[i], &result);
+      Free_key(keys[i]);
+    } 
+  free(keys);
+  free(tree->root);
+  free(tree);
   return;
 }
+
 /// Get the size of the tree 
 ///
 /// \returns: the number of nodes in the tree
@@ -244,7 +243,7 @@ bool tree_get(tree_t *tree, tree_key_t key, elem_t *result)
 void free_node(tree_t *tree, node_t *node)
 {
   Free_key(node->key);
-  Free_elem(node->elem);
+  Free_elem(node->elem); 
   free(node);  
 }
 
@@ -256,6 +255,25 @@ node_t **find_smallest_successor(node_t **node)
       node = &(*node)->left;
     }
   return node;
+}
+
+
+// Balanserar ett träd
+node_t *tree_balance(elem_t elems[], elem_t keys[], int start, int end)
+{
+  // Base case
+  if (start > end)
+    return NULL;
+
+  int middle = (start + end)/2;
+  node_t *n  = node_new();
+  n->elem    = elems[middle];
+  n->key     = keys[middle]; 
+ 
+  n->left =  tree_balance(elems, keys, start, middle-1); 
+  n->right = tree_balance(elems, keys, middle+1, end);
+ 
+  return n;
 }
 
 /// Removes the element for a given key in tree.
@@ -284,24 +302,14 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
         }
       
       // Höger subträd
-      else if (Right)
-        {
-          (*to_remove) = (*to_remove)->right; 
-        }
+      else if (Right) { (*to_remove) = (*to_remove)->right; }
       
       // Vänster subträd
-      else if (Left)
-        {
-          (*to_remove) = (*to_remove)->right; 
-        }
+      else if (Left) { (*to_remove) = (*to_remove)->right; }
       
       // Löv
-      else if (Leaf)
-        {
-          *to_remove = NULL;
-        }
-      
-      free_node(tree, temp);
+      else if (Leaf) { *to_remove = NULL; }
+      free_node(tree, temp); 
       --(tree->size);
       return true;
     }
@@ -332,10 +340,8 @@ tree_key_t *tree_keys(tree_t *tree)
 {
   int size = tree_size(tree);
   elem_t *keys = calloc(size, sizeof(elem_t));
-  int *index = calloc(1, sizeof(int));
-  *index = 0;
-  tree_keys_aux(tree->root, keys, index);
-  free(index);
+  int index = 0;
+  tree_keys_aux(tree->root, keys, &index);
   return keys;
 }
 
@@ -362,11 +368,9 @@ void tree_elements_aux(node_t *node, elem_t *elems, int *index)
 elem_t *tree_elements(tree_t *tree)
 {
   int size = tree_size(tree);
-  elem_t  *elems = calloc(size, sizeof(elem_t));
-  int *index = calloc(1, sizeof(int));
-  *index = 0;
-  tree_elements_aux(tree->root, elems, index);
-  free(index);
+  elem_t *elems = calloc(size, sizeof(elem_t)); 
+  int index = 0;
+  tree_elements_aux(tree->root, elems, &index); 
   return elems;
 }
 

@@ -1,9 +1,13 @@
+/*! \file list.h
+  Listor och grejer
+*/
+
 #ifndef __list_h__
 #define __list_h__
 
 #include <stdbool.h>
 #include "common.h"
-
+/*! Skapar en typedef för list */ 
 typedef struct list list_t;
 
 /// Creates a new list 

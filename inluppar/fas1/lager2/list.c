@@ -202,16 +202,16 @@ bool list_get(list_t *list, int index, elem_t *result)
   link_t **c = list_find(list, index);
   if (*c)
   {
-    if (index < 0 && abs(index) <= list->size) // Negativa tal?
-    {
-      *result = (*c)->elem;
-      return true;
-    }
-    else if (abs(index) < list->size) // Detta ger fel när index är -1 och size är 1
-    {
-      *result = (*c)->elem;
-      return true;
-    }    
+    if (index < 0 && abs(index) <= (int)list->size) // Negativa tal?
+      {
+        *result = (*c)->elem;
+        return true;
+      }
+    else if (abs(index) < (int)list->size) // Detta ger fel när index är -1 och size är 1
+      {
+        *result = (*c)->elem;
+        return true;
+      }    
   }
   return false;
 }

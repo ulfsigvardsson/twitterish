@@ -16,7 +16,7 @@ test:	test.c list.o tree.o common.o
 runtest: test
 	./test
 
-valgrind: lager.o
+valgrind: lager
 	valgrind --leak-check=full ./lager
 
 clean:
