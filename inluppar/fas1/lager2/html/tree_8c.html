@@ -172,6 +172,8 @@ Funktioner</h2></td></tr>
 <tr class="separator:ab933e8f4f079460d5c52f94d29db1929"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afe3d108251031a18ddb04d03bdf68248"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tree_8h.html#a7c02633e18d6aa5f58539b75f08753d9">node_t</a> **&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8c.html#afe3d108251031a18ddb04d03bdf68248">find_smallest_successor</a> (<a class="el" href="tree_8h.html#a7c02633e18d6aa5f58539b75f08753d9">node_t</a> **<a class="el" href="structnode.html">node</a>)</td></tr>
 <tr class="separator:afe3d108251031a18ddb04d03bdf68248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acca718ff8fe02cd81412a4e598f47539"><td class="memItemLeft" align="right" valign="top"><a class="el" href="tree_8h.html#a7c02633e18d6aa5f58539b75f08753d9">node_t</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8c.html#acca718ff8fe02cd81412a4e598f47539">tree_balance</a> (<a class="el" href="common_8h.html#a7fdd31df4fac71b8c34af47c7d45226a">elem_t</a> elems[], <a class="el" href="common_8h.html#a7fdd31df4fac71b8c34af47c7d45226a">elem_t</a> keys[], int start, int end)</td></tr>
+<tr class="separator:acca718ff8fe02cd81412a4e598f47539"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a509c042f786ab4f4c3991947d7f98a8a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8c.html#a509c042f786ab4f4c3991947d7f98a8a">tree_remove</a> (<a class="el" href="tree_8h.html#aabd08cfd7893b1b0d401ce689de8c1b7">tree_t</a> *<a class="el" href="structtree.html">tree</a>, <a class="el" href="tree_8h.html#af42dd67b55ffc67649d20c46e9cbf84f">tree_key_t</a> key, <a class="el" href="common_8h.html#a7fdd31df4fac71b8c34af47c7d45226a">elem_t</a> *result)</td></tr>
 <tr class="separator:a509c042f786ab4f4c3991947d7f98a8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad0d8b471332b726b14c0995e09fe3782"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="tree_8c.html#ad0d8b471332b726b14c0995e09fe3782">tree_keys_aux</a> (<a class="el" href="tree_8h.html#a7c02633e18d6aa5f58539b75f08753d9">node_t</a> *<a class="el" href="structnode.html">node</a>, <a class="el" href="common_8h.html#a7fdd31df4fac71b8c34af47c7d45226a">elem_t</a> *keys, int *index)</td></tr>
@@ -532,6 +534,44 @@ tree_apply(t, inorder, print_item, &amp;number);
   </dd>
 </dl>
 <dl class="section return"><dt>Returnerar</dt><dd>the result of all fun calls, combined with OR (||) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="acca718ff8fe02cd81412a4e598f47539"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="tree_8h.html#a7c02633e18d6aa5f58539b75f08753d9">node_t</a>* tree_balance </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="common_8h.html#a7fdd31df4fac71b8c34af47c7d45226a">elem_t</a>&#160;</td>
+          <td class="paramname"><em>elems</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="common_8h.html#a7fdd31df4fac71b8c34af47c7d45226a">elem_t</a>&#160;</td>
+          <td class="paramname"><em>keys</em>[], </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>start</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>

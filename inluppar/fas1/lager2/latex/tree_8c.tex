@@ -78,6 +78,8 @@ void \hyperlink{tree_8c_ab933e8f4f079460d5c52f94d29db1929}{free\+\_\+node} (\hyp
 \item 
 \hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$$\ast$ \hyperlink{tree_8c_afe3d108251031a18ddb04d03bdf68248}{find\+\_\+smallest\+\_\+successor} (\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$$\ast$\hyperlink{structnode}{node})
 \item 
+\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$ \hyperlink{tree_8c_acca718ff8fe02cd81412a4e598f47539}{tree\+\_\+balance} (\hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} elems\mbox{[}$\,$\mbox{]}, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} keys\mbox{[}$\,$\mbox{]}, int start, int end)
+\item 
 bool \hyperlink{tree_8c_a509c042f786ab4f4c3991947d7f98a8a}{tree\+\_\+remove} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, \hyperlink{tree_8h_af42dd67b55ffc67649d20c46e9cbf84f}{tree\+\_\+key\+\_\+t} key, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} $\ast$result)
 \item 
 void \hyperlink{tree_8c_ad0d8b471332b726b14c0995e09fe3782}{tree\+\_\+keys\+\_\+aux} (\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$\hyperlink{structnode}{node}, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} $\ast$keys, int $\ast$index)
@@ -219,6 +221,16 @@ where print\+\_\+item is a function that prints the number and increments it, an
 \begin{DoxyReturn}{Returnerar}
 the result of all fun calls, combined with OR ($\vert$$\vert$) 
 \end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+balance@{tree\+\_\+balance}}
+\index{tree\+\_\+balance@{tree\+\_\+balance}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+balance(elem\+\_\+t elems[], elem\+\_\+t keys[], int start, int end)}{tree_balance(elem_t elems[], elem_t keys[], int start, int end)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf node\+\_\+t}$\ast$ tree\+\_\+balance (
+\begin{DoxyParamCaption}
+\item[{{\bf elem\+\_\+t}}]{elems\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf elem\+\_\+t}}]{keys\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{start, }
+\item[{int}]{end}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_acca718ff8fe02cd81412a4e598f47539}{}\label{tree_8c_acca718ff8fe02cd81412a4e598f47539}
 \index{tree.\+c@{tree.\+c}!tree\+\_\+delete@{tree\+\_\+delete}}
 \index{tree\+\_\+delete@{tree\+\_\+delete}!tree.\+c@{tree.\+c}}
 \subsubsection[{\texorpdfstring{tree\+\_\+delete(tree\+\_\+t $\ast$tree, bool delete\+\_\+keys, bool delete\+\_\+elements)}{tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)}}]{\setlength{\rightskip}{0pt plus 5cm}void tree\+\_\+delete (

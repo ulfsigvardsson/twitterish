@@ -7,6 +7,7 @@ var searchData=
   ['tree_2ec',['tree.c',['../tree_8c.html',1,'']]],
   ['tree_2eh',['tree.h',['../tree_8h.html',1,'']]],
   ['tree_5fapply',['tree_apply',['../tree_8c.html#a78a81f99c6b5a1014726bd91d0fda32e',1,'tree_apply(tree_t *tree, enum tree_order order, key_elem_apply_fun fun, void *data):&#160;tree.c'],['../tree_8h.html#a78a81f99c6b5a1014726bd91d0fda32e',1,'tree_apply(tree_t *tree, enum tree_order order, key_elem_apply_fun fun, void *data):&#160;tree.c']]],
+  ['tree_5fbalance',['tree_balance',['../tree_8c.html#acca718ff8fe02cd81412a4e598f47539',1,'tree.c']]],
   ['tree_5fcompare_5fint',['tree_compare_int',['../lager_8c.html#ae68190ec80d01f68c9548e712e3d1f6a',1,'tree_compare_int(elem_t a, elem_t b):&#160;lager.c'],['../test_8c.html#ae68190ec80d01f68c9548e712e3d1f6a',1,'tree_compare_int(elem_t a, elem_t b):&#160;test.c']]],
   ['tree_5fdelete',['tree_delete',['../tree_8c.html#afc9838326212e7731f31dcf237e7b76d',1,'tree_delete(tree_t *tree, bool delete_keys, bool delete_elements):&#160;tree.c'],['../tree_8h.html#afc9838326212e7731f31dcf237e7b76d',1,'tree_delete(tree_t *tree, bool delete_keys, bool delete_elements):&#160;tree.c']]],
   ['tree_5fdelete_5ftest',['tree_delete_test',['../test_8c.html#a0506013ca92229f84caab857ba24dbbd',1,'test.c']]],
