@@ -24,6 +24,7 @@ elem_t list_no_copy(elem_t elem)
   return elem;
 }
 
+
 /// Creates a new list 
 ///
 /// \param copy (may be NULL) a function applied to all elements when stored in the list
@@ -34,14 +35,7 @@ list_t *list_new(element_copy_fun copy, element_free_fun free, element_comp_fun 
 {
   list_t *list = calloc(1, sizeof(list_t));
   list->free_f = free;
-  if (copy)
-  {
-    list->copy_f = copy;    
-  }
-  else
-  {
-    list->copy_f = list_no_copy;
-  }
+  list->copy_f = copy ? copy : list_no_copy;
   list->cmp_f  = compare;
 
   return list;
@@ -134,17 +128,17 @@ void list_insert(list_t *list, int index, elem_t elem)
   {  
     link_t **c = list_find(list, index);
     // För insättning längst bak i listan
-    if (index == list->size)
-    {
-      link_t *new = link_new(list->copy_f(elem), NULL);
-      (list->last)->next = new; 
-      list->last = new;
-    }
+    if (index == (int)list->size)
+      {
+        link_t *new = link_new(list->copy_f(elem), NULL);
+        (list->last)->next = new; 
+        list->last = new;
+      }
     // Alla andra fall
     else
-    {
-      *c = link_new(list->copy_f(elem), (*c));
-    }
+      {
+        *c = link_new(list->copy_f(elem), (*c));
+      }
   }
   ++(list->size);
 }

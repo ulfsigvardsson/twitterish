@@ -4,10 +4,6 @@
 #include "common.h"
 #include "tree.h"
 
-void elem_free(elem_t elem)
-{
-  free(elem.p);
-}
 
 int tree_compare_int(elem_t a, elem_t b)
 {
@@ -16,10 +12,6 @@ int tree_compare_int(elem_t a, elem_t b)
   else { return -1;}
 }
 
-void list_remove_fun_string_aux(char *elem)
-{
-  free(elem);
-}
 
 elem_t string_copy(elem_t elem)
 {
@@ -27,9 +19,6 @@ elem_t string_copy(elem_t elem)
   return new;
 }
 
-void free_string(elem_t elem) {
-  list_remove_fun_string_aux(elem.p);
-}
 
 int comp_fun_string(elem_t a, elem_t b)
 {
@@ -303,34 +292,35 @@ void tree_remove_test()
   tree_t *tree = tree_new(NULL, NULL, NULL, comp_fun_string);
 
   elem_t elem1 = { .p = "A" };
-  //  elem_t elem2 = { .p = "B" };
-  //elem_t elem3 = { .p = "C" };
-  //elem_t elem4 = { .p = "D" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem4 = { .p = "D" };
   
   elem_t key1 = { .p = "A" };
-  //elem_t key2 = { .p = "B" };
-  //elem_t key3 = { .p = "C" };
-  //elem_t key4 = { .p = "WHATEVS" };
+  elem_t key2 = { .p = "B" };
+  elem_t key3 = { .p = "C" };
+  elem_t key4 = { .p = "WHATEVS" };
 
   elem_t result = { .p = "RESULT" };
 
-  //  tree_insert(tree, key2, elem2);
-  tree_insert(tree, key1, elem1);
-  CU_ASSERT_TRUE(tree_size(tree) == 1); 
-  //tree_insert(tree, key3, elem3);
-  //tree_insert(tree, key4, elem4);
-
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key1, elem1); 
+  tree_insert(tree, key3, elem3);
+  tree_insert(tree, key4, elem4);
+  
+  CU_ASSERT_TRUE(tree_size(tree) == 4); 
   tree_remove(tree, key1, &result); 
-  //CU_ASSERT_TRUE(strcmp("A", result.p) == 0);
-  //CU_ASSERT_TRUE(tree_size(tree) == 0);
-  CU_ASSERT_TRUE(strcmp("A", result.p) == 0);
-  CU_ASSERT_FALSE(tree_has_key(tree, key1)); 
-  // tree_remove(tree, key2, &result);
-  //CU_ASSERT_TRUE(strcmp("B", result.p) == 0);
 
-  // tree_remove(tree, key3, &result);
+  CU_ASSERT_TRUE(strcmp("A", result.p) == 0);
+  CU_ASSERT_TRUE(tree_size(tree) == 3); 
+  CU_ASSERT_FALSE(tree_has_key(tree, key1)); 
+  tree_remove(tree, key2, &result);
+  
+  CU_ASSERT_TRUE(strcmp("A", result.p) == 0);
+
+  //  tree_remove(tree, key3, &result);
   //CU_ASSERT_TRUE(strcmp(elem3.p, result.p) == 0);
-  //CU_ASSERT_TRUE(tree_size(tree) == 2);
+  //CU_ASSERT_TRUE(tree_size(tree) == 1);
   
 }
 int main(int argc, char *argv[]) {

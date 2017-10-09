@@ -8,8 +8,8 @@
 #define Free_elem tree->e_free_f
 #define Free_key tree->k_free_f
 #define Apply_key fun(node->key, node->elem, data)
-#define Apply_left node_apply(node->left, order, fun, data)
-#define Apply_right node_apply(node->right, order, fun, data)
+#define Apply_left node_apply(node->left, order, fun, success, data)
+#define Apply_right node_apply(node->right, order, fun, success, data)
 #define Is_leaf !((*to_remove)->right || (*to_remove)->left)
 #define Left  
 
@@ -82,6 +82,19 @@ tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_f
 /// \param delete_elements if true, run tree's elem_free function on all elements
 void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)
 {
+  elem_t result;
+  elem_t *keys = tree_keys(tree);
+  int size = tree->size;
+  
+  for (int i = 0; i <= size; ++i)
+    {
+      tree_remove(tree, keys[i], &result); 
+      if (delete_elements) Free_elem(result); 
+    }
+  //OM tree_size == 0 får vi göra något annat
+  free(keys);
+  free(tree->root); 
+  free(tree);
   return;
 }
 /// Get the size of the tree 
@@ -104,13 +117,10 @@ int tree_depth_aux(node_t *node)
     {
       return 1 + max(tree_depth_aux(node->left), tree_depth_aux(node->right));
     }
-  else
-    {
-      return 0;
-    }
 
-
+  return 0; 
 }
+
 /// Get the depth of the tree 
 ///
 /// \returns: the depth of the deepest subtree
@@ -120,27 +130,26 @@ int tree_depth(tree_t *tree)
     {
       return tree_depth_aux(tree->root);
     } 
-  else
-    {
-      return 0;
-    }
+
+  return 0; 
 }
 
 // Allmän traverseringsfunktion som används för insättning, sökning, djup och borttagning.
 /// Returnerar en dubbelpekare till ett träd som antingen är det som matchar 'key' eller ett
 /// tomt subträd där vi borde ha hittat den.
-node_t **tree_traverse(tree_t *tree, elem_t const key)
+node_t **tree_traverse(tree_t *tree, elem_t key)
 {
   node_t **c = &(tree->root);
+  
   while (*c)
     {
-      if (Compare_keys == 0) { return c; }
+      if (Compare_keys == 0) return c;
 
-      if (Compare_keys > 0)
+      else if (Compare_keys < 0)
         {
           c = &((*c)->right);
         }
-      if (Compare_keys < 0)
+      else if (Compare_keys > 0)
         {
           c = &((*c)->left);
         }
@@ -174,7 +183,7 @@ bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
     }
 
   // Trädet innehåller redan nyckeln
-  if (tree_has_key(tree, key))
+  else if (tree_has_key(tree, key))
     {
       return false;
     }
@@ -183,10 +192,14 @@ bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
   else
     {
       node_t **c = tree_traverse(tree, key); 
-      node_t *new = node_new();
+      *c = node_new();
+      (*c)->elem = Copy(elem);
+      (*c)->key = key;
+      /*
+        node_t *new = node_new();
       new->elem = Copy(elem);
       new->key = key;
-      *c = new;
+      *c = new;*/
       ++(tree->size);
     }
   return true;
@@ -255,24 +268,41 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
           (*to_remove)->key = Copy((*minimum)->elem);
           *minimum = NULL; // Nolla pekaren till den minsta efterföljaren (?)
         }
-      if ((*to_remove)->right)
-            {
-              //do work
-            }
-      if ((*to_remove)->left)
+      else if ((*to_remove)->right)
         {
-        
+          *result = Copy((*to_remove)->elem);
+          --(tree->size);
+          node_t *temp = *to_remove;
+          *to_remove = (*to_remove)->right;
+          free(temp);
+        }
+      else if ((*to_remove)->left)
+        {
+          
         } 
-      if (Is_leaf)
+      else if (Is_leaf)
         { 
           *result = Copy((*to_remove)->elem);
           --(tree->size);
-          (*to_remove) = NULL; // Detta funkar, men ska vara för hela subträdet
+          free(*to_remove);
+          (*to_remove) = NULL;
         }
      
       return true;
     }
   return false;
+}
+
+void tree_keys_aux(node_t *node, elem_t *keys, int *index)
+{
+  if (!node) return; 
+  else
+    {
+      tree_keys_aux(node->left, keys, index);
+      keys[*index] = node->key;
+      ++(*index);
+      tree_keys_aux(node->right, keys, index);
+    }
 }
 
 /// Returns an array holding all the keys in the tree
@@ -282,9 +312,24 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
 /// \returns: array of tree_size() keys
 tree_key_t *tree_keys(tree_t *tree)
 {
-  return NULL;
+  int size     = tree_size(tree);  
+  elem_t *keys = calloc(size, sizeof(elem_t));
+  int index    = 0;
+  tree_keys_aux(tree->root, keys, &index);
+  return keys;
 }
 
+void tree_elements_aux(node_t *node, elem_t *elems, int *index)
+{
+  if (!node) return; 
+  else
+    {
+      tree_elements_aux(node->left, elems, index);
+      elems[*index] = node->elem;
+      ++(*index);
+      tree_elements_aux(node->right, elems, index);
+    }
+}
 /// Returns an array holding all the elements in the tree
 /// in ascending order of their keys (which are not part
 /// of the value).
@@ -293,20 +338,47 @@ tree_key_t *tree_keys(tree_t *tree)
 /// \returns: array of tree_size() elements
 elem_t *tree_elements(tree_t *tree)
 {
-  return NULL;
+  int size = tree_size(tree);
+  elem_t *elems = calloc(size, sizeof(elem_t)); 
+  int index = 0;
+  tree_elements_aux(tree->root, elems, &index); 
+  return elems;
 }
 
-
-bool node_apply(node_t *node, enum tree_order order, key_elem_apply_fun fun, void *data)
+bool node_apply(node_t *node, enum tree_order order, key_elem_apply_fun fun, bool *success, void *data)
 {
-  switch (order)
-    {
-    case inorder:  { return Apply_left || Apply_key   || Apply_right; }
-    case preorder: { return Apply_key  || Apply_left  || Apply_right; }
-    default:         return Apply_left || Apply_right || Apply_key;
-    }
+  if (node) {
+   
+    switch (order)
+      {
+      case inorder:
+        Apply_left;
+        if (Apply_key)
+          {
+            *success = true;
+          } 
+        Apply_right;
+        break;
+      case preorder:
+        if (Apply_key)
+          {
+            *success = true;
+          }
+        Apply_left;
+        Apply_right;
+        break;
+      default: 
+        Apply_left; 
+        Apply_right; 
+        if (Apply_key)
+          {
+            *success = true;
+          }
+        break; 
+      } 
+  }
   
-  return false; 
+  return *success; 
 }
 
 /// Applies a function to all elements in the tree in a specified order.
@@ -329,7 +401,8 @@ bool tree_apply(tree_t *tree, enum tree_order order, key_elem_apply_fun fun, voi
 {
   if (tree)
     {
-      return node_apply(tree->root, order, fun, data);
+      bool success = false;
+      return node_apply(tree->root, order, fun, &success, data);
     }
   return false; 
 }

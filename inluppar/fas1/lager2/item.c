@@ -1,14 +1,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include "item.h"
-
+#include <assert.h>
 
 
 struct item {
   char *name;
   char *descr;
   int price;
-  elem_t *shelves;
+  list_t *shelves;
 };
 
 struct shelf {
@@ -20,73 +20,199 @@ typedef struct shelf shelf_t;
 
 shelf_t *shelf_new(char *id, int amount)
 { 
-  return NULL;
+  shelf_t *s = calloc(1, sizeof(shelf_t));
+  assert(s);
+  
+  s->id = id;
+  s->amount = amount;
+  return s;
 }
 
-
-item_t *item_new(char *name, char *descr, int price)
+shelf_t *shelf_empty()
 {
-  return NULL;
+  shelf_t *s = calloc(1, sizeof(shelf_t));
+  return s;
+}
+
+item_t *item_new(char *name, char *descr, int price, char *id, int amount) {
+  item_t *item = calloc(1, sizeof(item_t));
+  assert(item);
+  
+  item->name   = name;
+  item->descr  = descr;
+  item->price  = price;
+
+  shelf_t *shelf = shelf_new(id, amount);
+  elem_t elem = { .p = shelf };
+  list_t *shelves = list_new(shelf_copy, shelf_free, shelf_compare);
+  list_append(shelves, elem);
+  item->shelves = shelves;
+
+  return item;
+}
+
+void item_set_name(item_t *item, char *name)
+{
+  if (item) item->name = name;
+}
+
+void item_set_description(item_t *item, char *descr)
+{
+  if (item) item->descr = descr;
 }
 
 
-void item_set_name(item_t *item, char *name) {
-  item->name = name;
-}
-
-void item_set_description(item_t *item, char *descr) {
-  item->descr = descr;
+void item_set_price(item_t *item, int price)
+{
+  if (item) item->price = price;
 }
 
 
-void item_set_price(item_t *item, int price) {
-  item->price = price;
+void item_set_shelf(shelf_t *shelf, char *id)
+{
+  if (shelf) shelf->id =id;    
 }
 
-
-void item_set_shelf(shelf_t *shelf, char *id) {
-  shelf->id =id;
-}
-
-void item_set_amount(shelf_t *shelf, int amount) {
+void item_set_amount(shelf_t *shelf, int amount)
+{
   shelf->amount = amount;
 }
 
-void item_set_shelves(item_t *item, elem_t *shelves) {
+void item_set_shelves(item_t *item, list_t *shelves)
+{
   item->shelves = shelves;
 }
-char *item_name(item_t *item) {
+
+char *item_name(item_t *item)
+{
   return item->name;
 }
 
-char *item_descr(item_t *item) {
+char *item_descr(item_t *item)
+{
   return item->descr;
 }
 
-int item_price(item_t *item) {
+int item_price(item_t *item)
+{
   return item->price;
 }
 
-elem_t *item_shelves(item_t *item) {
-  return item->shelves;
+list_t *item_shelves(item_t *item)
+{
+  if (item) return item->shelves; 
+
+  return NULL;
 }
 
-char *shelf_id(shelf_t *shelf) {
-  return shelf->id;
+char *shelf_id(shelf_t *shelf)
+{
+  if (shelf) return shelf->id;
+
+  return NULL;
 }
 
 int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
 }
 
-void item_copy(item_t *original, item_t *copy) {
-  copy->name = strdup(original->name);
-  copy->descr = strdup(original->descr);
-  copy->price = original->price;
-  shelf_copy(original, copy);
+void shelf_add_amount(shelf_t *shelf, int amount)
+{
+  if (shelf)
+    {
+      int current = shelf->amount;
+      shelf->amount = current+amount;  
+    }
+  
+}
+int shelf_compare(elem_t elem1, elem_t elem2)
+{
+  shelf_t *a = (shelf_t*)elem1.p;
+  shelf_t *b = (shelf_t*)elem2.p;
+
+  if (a && b) return strcmp(a->id, b->id);
+  return -1;
+  // kanske lägga till att inputvärdet automatiskt är större än NULL för att få ett vettigt returnvärde
+    }
+
+int item_compare(elem_t key1, elem_t key2)
+{
+  char* k1 = (char*)key1.p;
+  char* k2 = (char*)key2.p;
+
+  if (k1 && k2 ) return strcmp(k1, k2); 
+  // kanske lägga till att inputvärdet automatiskt är större än NULL för att få ett vettigt returnvärde 
 }
 
-void shelf_copy(elem_t *original, elem_t *copy)
+void item_free(elem_t elem)
 {
-  return;
+  item_t *item = elem.p;
+
+  if (item)
+    {
+      free(item->name);
+      free(item->descr);
+      list_delete(item->shelves, true);
+      free(item);
+    }
 }
+
+void shelf_free_aux(shelf_t *shelf)
+{
+  if (shelf)
+    {
+      free(shelf->id);
+      free(shelf);
+    }
+}
+
+void shelf_free(elem_t elem)
+{
+  shelf_t *shelf = (shelf_t*)elem.p;
+  if (shelf) shelf_free_aux(shelf);    
+}
+
+elem_t shelf_copy(elem_t shelf)
+{
+  if (1==1) return shelf;
+   
+  shelf_t *copy     = calloc(1, sizeof(shelf_t));
+  shelf_t *original = (shelf_t*)shelf.p;
+  
+  copy->id = strdup(original->id);
+  copy->amount = original->amount;
+  
+  elem_t result = { .p = copy };
+  return result;
+}
+
+//FIXME: vi kan nog ta bort allt utom ifsatsen
+elem_t item_copy(elem_t item)
+{
+  return item;
+
+  //Gammal kopieringsfunktion, sparar den just in case men ska inte användas i nuläget-
+  /*
+    item_t *original = (item_t*)item.p;
+    item_t *copy     = calloc(1, sizeof(item_t));
+
+    copy->name  = original->name;
+    copy->descr = original->descr;
+    copy->price = original->price;
+
+    list_t *shelves_copy = list_new(shelf_copy, shelf_free, shelf_compare); 
+    elem_t tmp;
+    int i = 0;
+  
+    while (list_get(original->shelves, i, &tmp))
+    {
+      elem_t shelf = shelf_copy(tmp);
+      list_append(shelves_copy, shelf);
+      ++i;
+    }
+
+  copy->shelves = shelves_copy;
+  elem_t result = { .p = copy };
+  return result;*/
+}
+
