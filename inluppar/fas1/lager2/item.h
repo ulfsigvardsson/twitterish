@@ -10,14 +10,13 @@ typedef struct item item_t;
 typedef struct shelf shelf_t;
 
 
-/// Allokerar plats på heapen för en ny vara och sätter dess information enligt parametrar
-/// \param name namn på varan
-/// \param descr beskrivning på varan
-/// \param price pris på varan
-/// \param shelf_id hyllplatsen på formen xy där x är en versal och y ett heltal
-/// \param amount antalet varor av denna typ
-/// \returns pekare til den nya varan
-item_t *item_new(char *name, char *descr, int price, char *shelf_id, int amount);
+/// Allokerar plats för en ny vara och sätter dess information
+/// \param name: namn på varan
+/// \param descr: beskrivning på varan
+/// \param price: pris på varan
+/// \param shelf_id: hyllplatsen på formen xy där x är en versal och y ett heltal
+/// \param amount: antalet varor av denna typ
+item_t *item_new(char *name, char *descr, int price, char *id, int amount);
 
 item_t *item_empty();
 
@@ -60,10 +59,9 @@ void item_set_shelf(shelf_t *shelf, char *id);
  */ 
 void item_set_amount(shelf_t *shelf, int amount);
 
-//! Ändrar en varas lista av hyllor
-/*! \param item varan att editera
-  \param shelves den nya listan av hyllor
-*/
+
+void shelf_add_amount(shelf_t *shelf, int amount);
+
 void item_set_shelves(item_t *item, list_t *shelves);
 
 //! Returnerar namnet på en vara
@@ -84,10 +82,8 @@ char *item_descr(item_t *item);
  */
 int item_price(item_t *item);
 
-//! Returnerar en lista av hyllor där en vara finns
-/*! \param item varan att lista hyllplatser för
- *  \returns en lista av varans hyllor 
- */
+/// Returnerar en lista av hyllor där en vara finns
+/// \param item: varan att lista hyllplatser för
 list_t *item_shelves(item_t *item);
 
 //! Returnerar namnet på en hylla
@@ -102,16 +98,14 @@ char *shelf_id(shelf_t *shelf);
  */
 int shelf_amount(shelf_t *shelf);
 
-//! Kopierar en varas information till en annan
-/*! \param original varan att kopiera från
- *  \param copy varan att kopiera till
- */
-void item_copy(item_t *original, item_t *copy);
+int item_compare(elem_t elem1, elem_t elem2);
+elem_t item_copy(elem_t item);
+void item_free(elem_t elem);
+void shelf_free(elem_t elem);
+void shelf_free_aux(shelf_t *shelf);
+int shelf_compare(elem_t elem1, elem_t elem2);
+elem_t shelf_copy(elem_t shelf);
+item_t *item_deep_copy(elem_t from);
 
-//! Kopierar en varas hyllista till en annan
-/*! \param original varan att kopiera från
- *  \param copy varan att kopiera till
- */
-void shelf_copy(item_t *original, item_t *copy);
 
 #endif
