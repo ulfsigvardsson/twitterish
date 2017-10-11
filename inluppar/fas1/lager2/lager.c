@@ -106,13 +106,14 @@ void print_item(elem_t elem)
   print_shelves(item_shelves(item));
 }
 
-bool shelf_is_in_list(elem_t item, void data)
-{
+/*
+  bool shelf_is_in_list(elem_t item, void data)
+  {
   elem_t lookup = (elem_t)data;
   list_t *shelves = item_shelves(item.p);
   int index = list_contains(shelves, lookup);
   return index == -1 ? false : true ;
-}
+}*/
 /// Låter användaren välja en av hyllorna för en vara och lagrar en pekare till
 /// den i result. Returnerar index i listan för denna hylla.
 int select_existing_shelf(elem_t item, elem_t *result)
@@ -149,7 +150,7 @@ void edit_shelves(tree_t *db, elem_t item, char edit_choice, undo_action_t *undo
   if (edit_choice == 'L')
     {
       list_get(shelves, index, &shelf_to_edit);
-      shelf_to_edit = find_available_shelf();
+      //shelf_to_edit = find_available_shelf();
     }
   else
     {
@@ -444,14 +445,11 @@ char *index_menu_choices(int item_count)
   return strdup(menu_choices);
 }
 
-<<<<<<< HEAD
+
 
 /// Låter användaren välja en vara i listan efter index eller avbryta och återgå
 /// till huvudmenyn
 elem_t select_by_index(tree_t *db, int item_count)
-=======
-void elem_delete_func(elem_t test)
->>>>>>> 9a31fbf966132515be79a0267e12c1ad564ed490
 {
   char *menu_choices = index_menu_choices(item_count);
   char answer   = ask_question_menu("Välj index eller [a]vbryt: ", menu_choices); 
@@ -468,8 +466,6 @@ void elem_delete_func(elem_t test)
   free(menu_choices); 
   return result;  
 }
-
-<<<<<<< HEAD
 
 /// Listar databasens varor med index på formen
 ///
@@ -539,22 +535,5 @@ int main(int argc, char *argv[])
   
   event_loop(db);
   tree_delete(db, true, true);
-=======
-int tree_compare_int(elem_t a, elem_t b)
-{
-  if (a.i == b.i) { return 0;}
-  if (a.i > b.i) { return 1;}
-  else { return -1;}
-}
-
-int main(int argc, char *argv[])
-{
-  tree_t *tree = tree_new(NULL, NULL, elem_delete_func, tree_compare_int);
-  test_t *a = calloc(1, sizeof(test_t)); 
-  elem_t elem = { .p = a };
-  elem_t key = { .i = 1};
-  tree_insert(tree, key, elem); 
-  tree_delete(tree, true, true); 
->>>>>>> 9a31fbf966132515be79a0267e12c1ad564ed490
   return 0;
 }

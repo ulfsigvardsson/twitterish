@@ -120,7 +120,6 @@ int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
 }
 
-<<<<<<< HEAD
 void shelf_add_amount(shelf_t *shelf, int amount)
 {
   if (shelf)
