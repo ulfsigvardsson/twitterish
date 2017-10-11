@@ -1,5 +1,6 @@
 CC=gcc
-FLAGS= -Wall -g -fprofile-arcs -ftest-coverage -fPIC
+FLAGS= -Wall -g
+TESTFLAGS= -Wall -g -fprofile-arcs -ftest-coverage -fPIC
 
 lager: lager.c list.o tree.o item.o utils.o shelfinfo.o
 	$(CC) $(FLAGS) $^ -o $@
@@ -22,6 +23,9 @@ shelfinfo.o: shelfinfo.c shelfinfo.h
 test:	test.c list.o tree.o common.o
 	$(CC) $(FLAGS) test.c list.c tree.c common.c -o test -lcunit
 
+analysis: analysis.c list.o tree.o common.o
+	$(CC) $(FLAGS) $^ -o $@
+
 runtest: test
 	./test
 
@@ -37,3 +41,4 @@ clean:
 	rm -f *.gcda
 	rm -f *.gcov
 	rm -f test
+	rm -f gmon.out

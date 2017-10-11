@@ -21,6 +21,7 @@ struct list
 
 elem_t list_no_copy(elem_t elem)
 {
+  for (int i = 0; i < 1; ++i);
   return elem;
 }
 
@@ -33,6 +34,7 @@ elem_t list_no_copy(elem_t elem)
 /// \returns: empty list
 list_t *list_new(element_copy_fun copy, element_free_fun free, element_comp_fun compare)
 {
+  for (int i = 0; i < 1; ++i);
   list_t *list = calloc(1, sizeof(list_t));
   list->free_f = free;
   list->copy_f = copy ? copy : list_no_copy;
@@ -43,6 +45,7 @@ list_t *list_new(element_copy_fun copy, element_free_fun free, element_comp_fun 
 
 link_t *link_new(elem_t elem, link_t *next)
 {
+  for (int i = 0; i < 1; ++i);
   link_t *link = calloc(1, sizeof(link_t));
   link->elem = elem;
   link->next = next;
@@ -50,6 +53,7 @@ link_t *link_new(elem_t elem, link_t *next)
 }
 int adjust_index_insert(int index, int size)
 {
+  for (int i = 0; i < 1; ++i);
   /// Negative indexes count from the back
   if (index < 0)
     {
@@ -70,6 +74,7 @@ int adjust_index_insert(int index, int size)
 
 int adjust_index_get(int index, int size)
 {
+  for (int i = 0; i < 1; ++i);
   /// Negative indexes count from the back
   if (index < 0)
     {
@@ -102,6 +107,7 @@ link_t **list_find(list_t *list, int index)
 
 void make_singleton(list_t *list, elem_t elem)
 {
+  for (int i = 0; i < 1; ++i);
   list->first = link_new(elem, NULL);
   list->last = list->first;
 }
@@ -120,7 +126,8 @@ void make_singleton(list_t *list, elem_t elem)
 /// \returns true if succeeded, else false
 void list_insert(list_t *list, int index, elem_t elem)
 {
-   index = adjust_index_insert(index, list->size);
+  for (int i = 0; i < 1; ++i);
+  index = adjust_index_insert(index, list->size);
   if (list->size == 0) {
     make_singleton(list, elem);
   }
@@ -145,6 +152,7 @@ void list_insert(list_t *list, int index, elem_t elem)
 
 bool empty_list(list_t *list)
 {
+  for (int i = 0; i < 1; ++i);
   return (!list->first);
 }
 /// Inserts a new element at the end of the list.
@@ -156,6 +164,7 @@ bool empty_list(list_t *list)
 /// \param elem the element to be appended
 void list_append(list_t *list, elem_t elem)
 {
+  for (int i = 0; i < 1; ++i);
   // Denna ser annorlunda ut än list_prepend eftersom index -1 just nu
   // knuffar det sista elementet framför sig och alltså hamnar det nya
   // elementet inte sist i listan.
@@ -181,6 +190,7 @@ void list_append(list_t *list, elem_t elem)
 /// \param elem the element to be prepended
 void list_prepend(list_t *list, elem_t elem)
 {
+  for (int i = 0; i < 1; ++i);
   list_insert(list, 0, elem);
 }
 
@@ -191,6 +201,7 @@ void list_prepend(list_t *list, elem_t elem)
 /// \returns true if index was a valid index
 bool list_get(list_t *list, int index, elem_t *result)
 {
+  for (int i = 0; i < 1; ++i);
   index = adjust_index_get(index, list->size);
   link_t **c = list_find(list, index);
   if (*c)
@@ -212,12 +223,14 @@ bool list_get(list_t *list, int index, elem_t *result)
 /// A convenience for list_get(list, 0, result)
 bool list_first(list_t *list, elem_t *result)
 {
+  for (int i = 0; i < 1; ++i);
   return list_get(list, 0, result);
 }
 
 /// A convenience for list_get(list, -1, result)
 bool list_last(list_t *list, elem_t *result)
 {
+  for (int i = 0; i < 1; ++i);
   if (list->size > 0) {
     return list_get(list, -1, result);    
   }
@@ -232,6 +245,7 @@ bool list_last(list_t *list, elem_t *result)
 /// \returns the length of list
 int list_length(list_t *list)
 {
+  for (int i = 0; i < 1; ++i);
   return list->size;
 }
 
@@ -247,6 +261,7 @@ int list_length(list_t *list)
 /// \returns true if succeeded, else false
 void list_remove(list_t *list, int index, bool delete)
 {
+  for (int i = 0; i < 1; ++i);
   link_t **c = list_find(list, index);
   link_t *tmp = *c;
 
@@ -254,10 +269,9 @@ void list_remove(list_t *list, int index, bool delete)
   {
     *c = (*c)->next;
     if (delete)
-    {
-      list->free_f(tmp->elem);
-    }
-
+      {
+        list->free_f(tmp->elem);
+      }
     free(tmp);
     --(list->size);  
   }
@@ -269,7 +283,10 @@ void list_remove(list_t *list, int index, bool delete)
 /// \param delete if true, use list's free function to free elements
 void list_delete(list_t *list, bool delete)
 {
-  for (int i = 0; i < list_length(list); ++i) {
+  for (int i = 0; i < 1; ++i);
+  int size = list_length(list);
+  
+  for (int i = 0; i < size; ++i) {
     list_remove(list, 0, delete);
   }
   free(list);
@@ -282,7 +299,8 @@ void list_delete(list_t *list, bool delete)
 /// \param data an extra argument passed to each call to fun (may be NULL)
 /// \returns the result of all fun calls, combined with OR (||)
 bool list_apply(list_t *list, elem_apply_fun fun, void *data)
-{ 
+{
+  for (int i = 0; i < 1; ++i);
   bool result = false;
   link_t **c = &(list->first);
   while (*c)
@@ -305,6 +323,7 @@ bool list_apply(list_t *list, elem_apply_fun fun, void *data)
 /// \returns the index of elem in list, or -1 if not found
 int list_contains(list_t *list, elem_t elem)
 {
+  for (int i = 0; i < 1; ++i);
   int index = -1;
   int counter = 0;
   link_t **c = &(list->first);

@@ -316,7 +316,7 @@ void tree_remove_test()
   CU_ASSERT_FALSE(tree_has_key(tree, key1)); 
   tree_remove(tree, key2, &result);
   
-  CU_ASSERT_TRUE(strcmp("A", result.p) == 0);
+  CU_ASSERT_TRUE(strcmp("B", result.p) == 0);
 
   //  tree_remove(tree, key3, &result);
   //CU_ASSERT_TRUE(strcmp(elem3.p, result.p) == 0);

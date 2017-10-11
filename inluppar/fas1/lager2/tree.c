@@ -35,11 +35,21 @@ struct tree
 elem_t tree_no_copy(elem_t elem)
 {
   return elem;
-}
+  }
 
 void tree_no_free(elem_t elem)
 {
   return;
+}
+
+int tree_no_compare(elem_t elem1, elem_t elem2)
+{
+  if(elem1.i == elem2.i) return 0;
+  else if (elem1.i > elem2.i)
+    {
+      return 1;
+    }
+  else return -1;
 }
 
 node_t *node_new()
@@ -70,7 +80,7 @@ tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_f
   else { Free_elem = tree_no_free;}
   
   if (compare)      {Comp = compare;}
-  tree->root = node_new();
+  else { Comp = tree_no_compare;}
   return tree;
  
 }
@@ -86,7 +96,7 @@ void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)
   elem_t *keys = tree_keys(tree);
   int size = tree->size;
   
-  for (int i = 0; i <= size; ++i)
+  for (int i = 0; i < size; ++i)
     {
       tree_remove(tree, keys[i], &result); 
       if (delete_elements) Free_elem(result); 
@@ -173,10 +183,10 @@ node_t **tree_traverse(tree_t *tree, elem_t key)
 /// \returns: true if successful, else false
 bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
 {
-
   // Corner case för tomma träd
   if (tree->size == 0)
     {
+      tree->root = node_new();
       tree->root->elem = Copy(elem);
       tree->root->key = key;
       ++(tree->size);

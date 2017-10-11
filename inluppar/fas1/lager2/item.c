@@ -58,7 +58,12 @@ void item_set_name(item_t *item, char *name)
 
 void item_set_description(item_t *item, char *descr)
 {
-  if (item) item->descr = descr;
+  if (item)
+    {
+      char* tmp = item->descr;
+      item->descr = descr;
+      free(tmp);
+    }
 }
 
 
@@ -176,14 +181,6 @@ elem_t shelf_copy(elem_t shelf)
 {
   if (1==1) return shelf;
    
-  shelf_t *copy     = calloc(1, sizeof(shelf_t));
-  shelf_t *original = (shelf_t*)shelf.p;
-  
-  copy->id = strdup(original->id);
-  copy->amount = original->amount;
-  
-  elem_t result = { .p = copy };
-  return result;
 }
 
 //FIXME: vi kan nog ta bort allt utom ifsatsen
@@ -216,3 +213,39 @@ elem_t item_copy(elem_t item)
   return result;*/
 }
 
+
+elem_t shelf_deep_copy(elem_t shelf)
+{
+  
+  shelf_t *copy     = calloc(1, sizeof(shelf_t));
+  shelf_t *original = (shelf_t*)shelf.p;
+  
+  copy->id = strdup(original->id);
+  copy->amount = original->amount;
+  
+  elem_t result = { .p = copy };
+  return result;
+}
+
+item_t *item_deep_copy(elem_t elem)
+{
+  item_t *to = calloc(1, sizeof(item_t));
+  item_t *from = elem.p;
+  to->name  = strdup(from->name);
+  to->descr = strdup(from->descr);
+  to->price = from->price;
+
+  list_t *shelves_copy = list_new(shelf_copy, shelf_free, shelf_compare); 
+  elem_t tmp;
+  int i = 0;
+  
+  while (list_get(from->shelves, i, &tmp))
+     {
+       elem_t shelf = shelf_deep_copy(tmp);
+       list_append(shelves_copy, shelf);
+       ++i;
+     }
+
+   to->shelves = shelves_copy;
+   return to;
+ }
