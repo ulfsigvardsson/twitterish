@@ -205,7 +205,6 @@ void tree_balance(node_t **node )
 /// \param key the key of element to be appended -- this is assumed to be an immutable value
 /// \param elem the element 
 /// \returns: true if successful, else false
-<<<<<<< HEAD
 bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
 {
   // Corner case för tomma träd
@@ -301,8 +300,7 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
 {
   node_t **to_remove = tree_traverse(tree, key);
   
-  <<<<<<< HEAD
-            if (*to_remove)
+  if (*to_remove)
               {
                 if ((*to_remove)->right && (*to_remove)->left)
                   {
