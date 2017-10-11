@@ -57,7 +57,7 @@ void item_set_shelf(shelf_t *shelf, char *id);
 /*! \param item varan att editera
  *  \param amount det nya antalet varor 
  */ 
-void item_set_amount(shelf_t *shelf, int amount);
+void shelf_set_amount(shelf_t *shelf, int amount);
 
 
 void shelf_add_amount(shelf_t *shelf, int amount);

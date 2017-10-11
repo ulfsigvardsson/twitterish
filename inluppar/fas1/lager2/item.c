@@ -79,10 +79,6 @@ void item_set_shelf(shelf_t *shelf, char *id)
   if (shelf) shelf->id =id;    
 }
 
-void item_set_amount(shelf_t *shelf, int amount)
-{
-  shelf->amount = amount;
-}
 
 void item_set_shelves(item_t *item, list_t *shelves)
 {
@@ -120,6 +116,10 @@ int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
 }
 
+void shelf_set_amount(shelf_t *shelf, int amount)
+{
+  shelf->amount = amount;
+}
 void shelf_add_amount(shelf_t *shelf, int amount)
 {
   if (shelf)

@@ -22,10 +22,6 @@
 
 #define AskRemoveShelf ask_question_shelf("Välj hylla att ta bort ifrån: ")
 
-bool list_db(tree_t *db);
-void list_and_select_item(tree_t *db);
-elem_t select_by_index(tree_t *db, int item_count);
-
 typedef enum last_action {NOTHING, ADD, REMOVE, EDIT} last_action_t;
 
 typedef struct undo_action
@@ -35,10 +31,14 @@ typedef struct undo_action
   last_action_t last_action;
 } undo_action_t;
 
+bool list_db(tree_t *db);
+void list_and_select_item(tree_t *db);
+elem_t select_by_index(tree_t *db, int item_count);
+void edit_item(tree_t *db, elem_t item, undo_action_t *undo);
 
 void undo_free(undo_action_t *undo)
 {
-  item_free(undo->new);
+  if (undo->last_action != REMOVE) item_free(undo->new); 
   item_free(undo->old);
   free(undo);
 }
@@ -120,11 +120,11 @@ int select_existing_shelf(elem_t item, elem_t *result)
 {
   list_t *shelves = item_shelves(item.p); 
   int index = 0;
-
+  elem_t lookup;
   do
      {
        char *shelf_to_edit = AskShelf;
-       elem_t lookup = { .p = shelf_new(shelf_to_edit, 0) };
+       lookup.p = shelf_new(shelf_to_edit, 0);
        index = list_contains(shelves, lookup);
 
        if (index == -1)
@@ -136,6 +136,7 @@ int select_existing_shelf(elem_t item, elem_t *result)
      } while (index == -1);
 
    list_get(shelves, index, result);
+   shelf_free(lookup);
    return index;
 }    
 
@@ -154,76 +155,68 @@ void edit_shelves(tree_t *db, elem_t item, char edit_choice, undo_action_t *undo
     }
   else
     {
-      int amount = AskAmount;
-      shelf_add_amount(shelf_to_edit.p, amount);
+      int new_amount = AskAmount;
+      shelf_set_amount(shelf_to_edit.p, new_amount);
     }
 }
 
 
 /// Redigerar beskrivningen på en vara
-  void edit_description(tree_t *db, item_t *item)
-  {  
-    printf("Nuvarande beskrivning: %s\n"                                  \
-           "-----------------------------------------------------\n", item_descr(item));
-    char *new_descr = ask_question_string("Ny beskrivning: ");
-    item_set_description(item, new_descr); 
-  }
+void edit_description(item_t *item)
+{  
+  printf("Nuvarande beskrivning: %s\n"                                  \
+         "-----------------------------------------------------\n", item_descr(item));
+  char *new_descr = ask_question_string("Ny beskrivning: ");
+  item_set_description(item, new_descr); 
+}
 
 
-  /// Redigerar priset på en vara
-  void edit_price(tree_t *db, item_t *item)
-  {  
-    printf("Nuvarande pris: %d\n"                                         \
-           "-----------------------------------------------------\n", item_price(item));
-    int new_price = ask_question_int("Nytt pris: ");
-    item_set_price(item, new_price); 
-  }
+/// Redigerar priset på en vara
+void edit_price(item_t *item)
+{  
+  printf("Nuvarande pris: %d\n"                                         \
+         "-----------------------------------------------------\n", item_price(item));
+  int new_price = ask_question_int("Nytt pris: ");
+  item_set_price(item, new_price); 
+}
 
 
-  /// Redigerar en vara i databasen
-  /// \param tree: databasen
-  /// \param item: varan som ska redigeras
-  /// \param undo: strukt för att ångra
-  void edit_item(tree_t *db, elem_t item, undo_action_t *undo)
-  {  
-    print_item(item);
-    char edit_choice = AskWhatToEdit;
+/// Redigerar en vara i databasen
+/// \param tree: databasen
+/// \param item: varan som ska redigeras
+/// \param undo: strukt för att ångra
+void edit_item_aux(tree_t *db, elem_t item, undo_action_t *undo, char edit_choice)
+{  
   
-    switch (edit_choice)
+  switch (edit_choice)
+    {
+    case 'P':
       {
-      case 'A': return; 
-      case 'P':
-        {
-          undo->old.p = item_deep_copy(item);
-          edit_price(db, item.p);
-          undo->new.p = item_deep_copy(item);
-          break;
-        }
-      case 'B':
-        {
-          undo->old.p = item_deep_copy(item);
-          edit_description(db, item.p);
-          undo->new.p = item_deep_copy(item);
-          break;
-        }
-      default :
-        {
-          edit_shelves(db, item, edit_choice, undo);
-        }
+        edit_price(item.p);
+        break;
       }
-    undo->last_action = EDIT;
-  }
+    case 'B':
+      {
+        edit_description(item.p);
+        break;
+      }
+    default :
+      {
+        edit_shelves(db, item, edit_choice, undo);
+      }
+    }
+}
 
 
-  //TODO: lägg till logik för att hitta en ledig hylla
-  char *find_free_shelf(tree_t *db)
-  {
-    return ask_question_shelf("Välj en ny hylla: ");
-  }
+//TODO: lägg till logik för att hitta en ledig hylla
+char *find_free_shelf(tree_t *db)
+{
+  return ask_question_shelf("Välj en ny hylla: ");
+}
 
 
-  void remove_shelves(list_t *shelves)
-  {
+void remove_shelves(list_t *shelves)
+{
     print_shelves(shelves); 
     int index_to_remove = -1; // list_contains returnerar -1 om hyllan inte finns i listan
   
@@ -239,66 +232,71 @@ void edit_shelves(tree_t *db, elem_t item, char edit_choice, undo_action_t *undo
       
       } while (index_to_remove == -1);
 
-    list_remove(shelves, index_to_remove, true); 
-  }
+    list_remove(shelves, index_to_remove, true);
+}
 
 
-  /// Tar bort en vara från databasen.
-  void db_remove_item(tree_t *db, undo_action_t *undo)
-  {
-    if(!list_db(db)) return;
+/// Tar bort en vara från databasen.
+void db_remove_item(tree_t *db, undo_action_t *undo)
+{
+  if(!list_db(db)) return;
 
+  //Välj vilken vara som ska tas bort
+  elem_t item = select_by_index(db, tree_size(db));
+
+  // select_by_index returnerar en nullpekare om man avbryter
+  if (item.p)
+    {
+      // Hittils räknas handlingen som att vi editerar en hylla
+      undo->last_action = EDIT;
+      undo->old.p = item_deep_copy(item);
+
+      elem_t key = { .p = item_name(item.p) };
+      elem_t result;
+
+      tree_get(db, key, &result); 
+      list_t *shelves = item_shelves(result.p);
+      remove_shelves(shelves);
+
+      if (list_length(shelves) == 0)
+        {
+          // Är det den sista hyllan som tas bort blir det en borttagning av vara
+          undo->last_action = REMOVE;
+          tree_remove(db, key, &result); 
+          item_free(item);
+        }
+    }
+}
+
+
+/// Lägger till en antal av en redan existerande vara i databasen
+void add_existing_item(tree_t *db, elem_t name)
+{
+  elem_t item;
+  tree_get(db, name, &item);
+  list_t *shelves = item_shelves((item_t*)item.p);
+
+  printf("Varan finns redan i databasen.\n");
+  print_item(item);
+
+  char *id     = find_free_shelf(db);
+  int amount   = AskAmount;
+  elem_t shelf = { .p = shelf_new(id, amount) };
+
+  list_append(shelves, shelf); 
+}
+
+
+/// Lägger till en vara i databasen. Om varan redan finns väljer användaren
+/// en hylla att lägga till på. Om hyllan redan innehåller varan läggs det nya
+/// antalet till det existerande.
+void db_add_item(tree_t *db, undo_action_t *undo)
+{
+  printf("\n=====NY VARA====\n");
+  elem_t name = {.p = AskName };
   
-    elem_t item = select_by_index(db, tree_size(db));
-    elem_t key = { .p = item_name(item.p) };
-    undo->last_action = EDIT;
-    undo->old = item;
-  
-    if (item.p)
-      {
-        undo->last_action = REMOVE;
-        elem_t result;
-        tree_get(db, key, &result); 
-        list_t *shelves = item_shelves(result.p);
-        remove_shelves(shelves);
-
-        if (list_length(shelves) == 0)
-          {
-            tree_remove(db, key, &result); 
-            item_free(item);
-          }
-      }
-  }
-
-
-  /// Lägger till en antal av en redan existerande vara i databasen
-  void add_existing_item(tree_t *db, elem_t name)
-  {
-    elem_t item;
-    tree_get(db, name, &item);
-    list_t *shelves = item_shelves((item_t*)item.p);
-
-    printf("Varan finns redan i databasen.\n");
-    print_item(item);
-
-    char *id     = find_free_shelf(db);
-    int amount   = AskAmount;
-    elem_t shelf = { .p = shelf_new(id, amount) };
-
-    list_append(shelves, shelf); 
-  }
-
-
-  /// Lägger till en vara i databasen. Om varan redan finns väljer användaren
-  /// en hylla att lägga till på. Om hyllan redan innehåller varan läggs det nya
-  /// antalet till det existerande.
-  void db_add_item(tree_t *db, undo_action_t *undo)
-  {
-    printf("\n=====NY VARA====\n");
-    elem_t name = {.p = AskName };
-  
-    // Om varan redan finns i databasen
-    if (tree_has_key(db, name))
+  // Om varan redan finns i databasen
+  if (tree_has_key(db, name))
       {
         add_existing_item(db, name);
         free(name.p);
@@ -324,29 +322,32 @@ void edit_shelves(tree_t *db, elem_t item, char edit_choice, undo_action_t *undo
           case 'J':
             {
               undo->last_action = ADD; 
-              tree_insert(db, name, item);
-              undo->new = item;
+              tree_insert(db, name, item); 
               return;
             }
 
-          default:
-            undo->last_action = ADD; 
+          default:            
             tree_insert(db, name, item);
             edit_item(db, item, undo);
-            undo->new = item;
+            undo->last_action = ADD; 
             return;
           }
       }
-  }
+}
 
 
-  /// Ångrar den senaste handlingen
-  void undo_last_action(tree_t *db, undo_action_t *undo)
-  {
-    switch (undo->last_action)
+/// Ångrar den senaste handlingen
+void undo_last_action(tree_t *db, undo_action_t *undo)
+{
+  switch (undo->last_action)
+    {
+    case NOTHING:
       {
-      case ADD:
-        {
+        printf("Inget att ångra. \n");
+        return;
+      }
+    case ADD:
+      {
           elem_t result;
           elem_t key = { .p = item_name(undo->new.p) };
         
@@ -362,6 +363,7 @@ void edit_shelves(tree_t *db, elem_t item, char edit_choice, undo_action_t *undo
         
           tree_insert(db, key, elem);
           undo->old.p = NULL;
+          break;
         }
       case EDIT:
         {
@@ -372,6 +374,7 @@ void edit_shelves(tree_t *db, elem_t item, char edit_choice, undo_action_t *undo
           elem_t reset = {.p = item_deep_copy(undo->old)};
           tree_insert(db, key, reset);
           //reset_undo(undo)
+          break;
         }
       default:
         break;
@@ -484,17 +487,33 @@ void list_and_select_item(tree_t *db)
     }
 }
 
+void edit_item(tree_t *db, elem_t item, undo_action_t *undo)
+{
+  print_item(item);
+  char edit_choice = AskWhatToEdit;
+
+  if (edit_choice == 'A') return;
+      
+  else
+    {
+      undo->last_action = EDIT;
+      undo->old.p = item_deep_copy(item);
+      edit_item_aux(db, item, undo, edit_choice);
+      undo->new.p = item_deep_copy(item);
+    }
+}
 
 /// Huvudfunktion för att redigera en vara i databasen
 void edit_db(tree_t *db, undo_action_t *undo)
 {
-  list_db(db);
+  if (!list_db(db)) return;
+  
   undo->last_action = EDIT;
   elem_t item = select_by_index(db, tree_size(db));
   
   if (item.p)
-    {     
-      edit_item(db, item, undo);
+    {
+      edit_item(db, item, undo); 
     }
 }
 
@@ -534,6 +553,6 @@ int main(int argc, char *argv[])
   tree_t *db = tree_new(item_copy, key_free, item_free, item_compare);
   
   event_loop(db);
-  tree_delete(db, true, true);
+  tree_delete(db, false, true);
   return 0;
 }

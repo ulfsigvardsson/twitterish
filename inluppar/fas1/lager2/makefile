@@ -30,7 +30,7 @@ runtest: test
 	./test
 
 valgrind: lager
-	valgrind --leak-check=full ./lager
+	valgrind --leak-check=full --track-origins=yes ./lager
  
 clean:
 	rm -f *.o
