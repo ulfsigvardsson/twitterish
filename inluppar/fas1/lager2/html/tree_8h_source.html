@@ -1,0 +1,126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>Lagerhanterare: Källkodsfilen tree.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Lagerhanterare
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">Enlagerhanterare</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Skapad av Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Sök');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Huvudsida</span></a></li>
+      <li><a href="pages.html"><span>Besläktade&#160;sidor</span></a></li>
+      <li><a href="annotated.html"><span>Datastrukturer</span></a></li>
+      <li class="current"><a href="files.html"><span>Filer</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Sök" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Fillista</span></a></li>
+      <li><a href="globals.html"><span>Globala&#160;symboler</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">tree.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="tree_8h.html">Gå till denna fils dokumentation.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef __tree_h__</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define __tree_h__</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;</div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &lt;stdbool.h&gt;</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="common_8h.html">common.h</a>&quot;</span></div><div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div><div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="tree_8h.html#af42dd67b55ffc67649d20c46e9cbf84f">    7</a></span>&#160;<span class="keyword">typedef</span> <a class="code" href="unionelement.html">elem_t</a> <a class="code" href="tree_8h.html#af42dd67b55ffc67649d20c46e9cbf84f">tree_key_t</a>;</div><div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="tree_8h.html#aa6e72bc7040d433d1054d4f89e0b3493">    8</a></span>&#160;<span class="keyword">typedef</span> <a class="code" href="common_8h.html#a66551bc5a869ff55fd6e97cdf83f9e27">element_free_fun</a> <a class="code" href="tree_8h.html#aa6e72bc7040d433d1054d4f89e0b3493">key_free_fun</a>;</div><div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;</div><div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="tree_8h.html#aabd08cfd7893b1b0d401ce689de8c1b7">   10</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structtree.html">tree</a> <a class="code" href="structtree.html">tree_t</a>;</div><div class="line"><a name="l00011"></a><span class="lineno"><a class="line" href="tree_8h.html#a7c02633e18d6aa5f58539b75f08753d9">   11</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structnode.html">node</a> <a class="code" href="structnode.html">node_t</a>;</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="tree_8h.html#a6a795c729d8a09e5877f7f1ddfb7c91c">tree_new</a>(<a class="code" href="common_8h.html#a0ca91ee5ad428d2cb3161e07618bd21c">element_copy_fun</a> element_copy, <a class="code" href="tree_8h.html#aa6e72bc7040d433d1054d4f89e0b3493">key_free_fun</a> key_free, <a class="code" href="common_8h.html#a66551bc5a869ff55fd6e97cdf83f9e27">element_free_fun</a> <a class="code" href="test_8c.html#a06928f6db1213c0a2e410fd6693383d4">elem_free</a>, <a class="code" href="common_8h.html#a1ae319bacbeb687146c87de665a96b35">element_comp_fun</a> compare);</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div><div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="tree_8h.html#afc9838326212e7731f31dcf237e7b76d">tree_delete</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>, <span class="keywordtype">bool</span> delete_keys, <span class="keywordtype">bool</span> delete_elements);</div><div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="keywordtype">int</span> <a class="code" href="tree_8h.html#a13827cc121c0826bccee80991ac7dd04">tree_size</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>);</div><div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">int</span> <a class="code" href="tree_8h.html#ac892293edb990109e99f00807f1a9fcd">tree_depth</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>);</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div><div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="tree_8h.html#ab7d2e892ded2ae3fca90b1f7fbcd0f07">tree_insert</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>, <a class="code" href="unionelement.html">tree_key_t</a> <a class="code" href="structnode.html#aa6b692707ee43532d0437efb6f060dfd">key</a>, <a class="code" href="unionelement.html">elem_t</a> <a class="code" href="structnode.html#a5f9ee8710ff865cda6ed144d91a32121">elem</a>);</div><div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="tree_8h.html#a102b066d4b37f6d31765118d39e39202">tree_has_key</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>, <a class="code" href="unionelement.html">tree_key_t</a> <a class="code" href="structnode.html#aa6b692707ee43532d0437efb6f060dfd">key</a>);</div><div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="tree_8h.html#a678b7a8152b3ec50963dd2529950a016">tree_get</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>, <a class="code" href="unionelement.html">tree_key_t</a> <a class="code" href="structnode.html#aa6b692707ee43532d0437efb6f060dfd">key</a>, <a class="code" href="unionelement.html">elem_t</a> *result);</div><div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;</div><div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="tree_8h.html#a509c042f786ab4f4c3991947d7f98a8a">tree_remove</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>, <a class="code" href="unionelement.html">tree_key_t</a> <a class="code" href="structnode.html#aa6b692707ee43532d0437efb6f060dfd">key</a>, <a class="code" href="unionelement.html">elem_t</a> *result);</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;</div><div class="line"><a name="l00087"></a><span class="lineno"><a class="line" href="tree_8h.html#ac1737de07bd116e8c179726df0a30780">   87</a></span>&#160;<span class="preprocessor">#define tree_update(t, k, e, tmp) \</span></div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="preprocessor">  (tree_remove(t, k, &amp;tmp) ? tree_insert(t, k, e) : false)</span></div><div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;</div><div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;<a class="code" href="unionelement.html">tree_key_t</a> *<a class="code" href="tree_8h.html#a2e86ac9f939bfc474c8026be870adadb">tree_keys</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>);</div><div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<a class="code" href="unionelement.html">elem_t</a> *<a class="code" href="tree_8h.html#a1428bfa67d419b8bf13824adfc3458f8">tree_elements</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>);</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div><div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="tree_8h.html#a7da81ed45282293e2728c4e80c10e634">  107</a></span>&#160;<span class="keyword">typedef</span> bool(*<a class="code" href="tree_8h.html#a7da81ed45282293e2728c4e80c10e634">key_elem_apply_fun</a>)(<a class="code" href="unionelement.html">tree_key_t</a> <a class="code" href="structnode.html#aa6b692707ee43532d0437efb6f060dfd">key</a>, <a class="code" href="unionelement.html">elem_t</a> <a class="code" href="structnode.html#a5f9ee8710ff865cda6ed144d91a32121">elem</a>, <span class="keywordtype">void</span> *data);</div><div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;</div><div class="line"><a name="l00109"></a><span class="lineno"><a class="line" href="tree_8h.html#abe996c0b99220479aa7355185109749f">  109</a></span>&#160;<span class="keyword">enum</span> <a class="code" href="tree_8h.html#abe996c0b99220479aa7355185109749f">tree_order</a> { <a class="code" href="tree_8h.html#abe996c0b99220479aa7355185109749faa002ebdf4489d42997eeeb3f424381c8">inorder</a> = 0, <a class="code" href="tree_8h.html#abe996c0b99220479aa7355185109749fadefb5d09673c144dc5b4dc177e278696">preorder</a> = -1, <a class="code" href="tree_8h.html#abe996c0b99220479aa7355185109749fa2b26810565bd469bf0fcda626669d3dc">postorder</a> = 1 };</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div><div class="line"><a name="l00127"></a><span class="lineno">  127</span>&#160;<span class="keywordtype">bool</span> <a class="code" href="tree_8h.html#a78a81f99c6b5a1014726bd91d0fda32e">tree_apply</a>(<a class="code" href="structtree.html">tree_t</a> *<a class="code" href="structtree.html">tree</a>, <span class="keyword">enum</span> <a class="code" href="tree_8h.html#abe996c0b99220479aa7355185109749f">tree_order</a> order, <a class="code" href="tree_8h.html#a7da81ed45282293e2728c4e80c10e634">key_elem_apply_fun</a> fun, <span class="keywordtype">void</span> *data);</div><div class="line"><a name="l00128"></a><span class="lineno">  128</span>&#160;</div><div class="line"><a name="l00129"></a><span class="lineno">  129</span>&#160;<span class="preprocessor">#endif</span></div><div class="line"><a name="l00130"></a><span class="lineno">  130</span>&#160;</div><div class="ttc" id="structnode_html"><div class="ttname"><a href="structnode.html">node</a></div><div class="ttdef"><b>Definition:</b> tree.c:18</div></div>
+<div class="ttc" id="common_8h_html_a1ae319bacbeb687146c87de665a96b35"><div class="ttname"><a href="common_8h.html#a1ae319bacbeb687146c87de665a96b35">element_comp_fun</a></div><div class="ttdeci">int(* element_comp_fun)(elem_t, elem_t)</div><div class="ttdef"><b>Definition:</b> common.h:24</div></div>
+<div class="ttc" id="tree_8h_html_ac892293edb990109e99f00807f1a9fcd"><div class="ttname"><a href="tree_8h.html#ac892293edb990109e99f00807f1a9fcd">tree_depth</a></div><div class="ttdeci">int tree_depth(tree_t *tree)</div><div class="ttdef"><b>Definition:</b> tree.c:130</div></div>
+<div class="ttc" id="tree_8h_html_a13827cc121c0826bccee80991ac7dd04"><div class="ttname"><a href="tree_8h.html#a13827cc121c0826bccee80991ac7dd04">tree_size</a></div><div class="ttdeci">int tree_size(tree_t *tree)</div><div class="ttdef"><b>Definition:</b> tree.c:103</div></div>
+<div class="ttc" id="tree_8h_html_abe996c0b99220479aa7355185109749faa002ebdf4489d42997eeeb3f424381c8"><div class="ttname"><a href="tree_8h.html#abe996c0b99220479aa7355185109749faa002ebdf4489d42997eeeb3f424381c8">inorder</a></div><div class="ttdef"><b>Definition:</b> tree.h:109</div></div>
+<div class="ttc" id="tree_8h_html_ab7d2e892ded2ae3fca90b1f7fbcd0f07"><div class="ttname"><a href="tree_8h.html#ab7d2e892ded2ae3fca90b1f7fbcd0f07">tree_insert</a></div><div class="ttdeci">bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)</div><div class="ttdef"><b>Definition:</b> tree.c:178</div></div>
+<div class="ttc" id="structtree_html"><div class="ttname"><a href="structtree.html">tree</a></div><div class="ttdef"><b>Definition:</b> tree.c:26</div></div>
+<div class="ttc" id="tree_8h_html_a102b066d4b37f6d31765118d39e39202"><div class="ttname"><a href="tree_8h.html#a102b066d4b37f6d31765118d39e39202">tree_has_key</a></div><div class="ttdeci">bool tree_has_key(tree_t *tree, tree_key_t key)</div><div class="ttdef"><b>Definition:</b> tree.c:214</div></div>
+<div class="ttc" id="tree_8h_html_a7da81ed45282293e2728c4e80c10e634"><div class="ttname"><a href="tree_8h.html#a7da81ed45282293e2728c4e80c10e634">key_elem_apply_fun</a></div><div class="ttdeci">bool(* key_elem_apply_fun)(tree_key_t key, elem_t elem, void *data)</div><div class="ttdef"><b>Definition:</b> tree.h:107</div></div>
+<div class="ttc" id="tree_8h_html_aa6e72bc7040d433d1054d4f89e0b3493"><div class="ttname"><a href="tree_8h.html#aa6e72bc7040d433d1054d4f89e0b3493">key_free_fun</a></div><div class="ttdeci">element_free_fun key_free_fun</div><div class="ttdef"><b>Definition:</b> tree.h:8</div></div>
+<div class="ttc" id="tree_8h_html_a678b7a8152b3ec50963dd2529950a016"><div class="ttname"><a href="tree_8h.html#a678b7a8152b3ec50963dd2529950a016">tree_get</a></div><div class="ttdeci">bool tree_get(tree_t *tree, tree_key_t key, elem_t *result)</div><div class="ttdef"><b>Definition:</b> tree.c:226</div></div>
+<div class="ttc" id="tree_8h_html_af42dd67b55ffc67649d20c46e9cbf84f"><div class="ttname"><a href="tree_8h.html#af42dd67b55ffc67649d20c46e9cbf84f">tree_key_t</a></div><div class="ttdeci">elem_t tree_key_t</div><div class="ttdef"><b>Definition:</b> tree.h:7</div></div>
+<div class="ttc" id="tree_8h_html_abe996c0b99220479aa7355185109749fadefb5d09673c144dc5b4dc177e278696"><div class="ttname"><a href="tree_8h.html#abe996c0b99220479aa7355185109749fadefb5d09673c144dc5b4dc177e278696">preorder</a></div><div class="ttdef"><b>Definition:</b> tree.h:109</div></div>
+<div class="ttc" id="structnode_html_aa6b692707ee43532d0437efb6f060dfd"><div class="ttname"><a href="structnode.html#aa6b692707ee43532d0437efb6f060dfd">node::key</a></div><div class="ttdeci">tree_key_t key</div><div class="ttdef"><b>Definition:</b> tree.c:21</div></div>
+<div class="ttc" id="tree_8h_html_a6a795c729d8a09e5877f7f1ddfb7c91c"><div class="ttname"><a href="tree_8h.html#a6a795c729d8a09e5877f7f1ddfb7c91c">tree_new</a></div><div class="ttdeci">tree_t * tree_new(element_copy_fun element_copy, key_free_fun key_free, element_free_fun elem_free, element_comp_fun compare)</div><div class="ttdef"><b>Definition:</b> tree.c:60</div></div>
+<div class="ttc" id="tree_8h_html_a78a81f99c6b5a1014726bd91d0fda32e"><div class="ttname"><a href="tree_8h.html#a78a81f99c6b5a1014726bd91d0fda32e">tree_apply</a></div><div class="ttdeci">bool tree_apply(tree_t *tree, enum tree_order order, key_elem_apply_fun fun, void *data)</div><div class="ttdef"><b>Definition:</b> tree.c:409</div></div>
+<div class="ttc" id="tree_8h_html_a2e86ac9f939bfc474c8026be870adadb"><div class="ttname"><a href="tree_8h.html#a2e86ac9f939bfc474c8026be870adadb">tree_keys</a></div><div class="ttdeci">tree_key_t * tree_keys(tree_t *tree)</div><div class="ttdef"><b>Definition:</b> tree.c:339</div></div>
+<div class="ttc" id="structnode_html_a5f9ee8710ff865cda6ed144d91a32121"><div class="ttname"><a href="structnode.html#a5f9ee8710ff865cda6ed144d91a32121">node::elem</a></div><div class="ttdeci">elem_t elem</div><div class="ttdef"><b>Definition:</b> tree.c:20</div></div>
+<div class="ttc" id="tree_8h_html_a509c042f786ab4f4c3991947d7f98a8a"><div class="ttname"><a href="tree_8h.html#a509c042f786ab4f4c3991947d7f98a8a">tree_remove</a></div><div class="ttdeci">bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)</div><div class="ttdef"><b>Definition:</b> tree.c:285</div></div>
+<div class="ttc" id="tree_8h_html_abe996c0b99220479aa7355185109749f"><div class="ttname"><a href="tree_8h.html#abe996c0b99220479aa7355185109749f">tree_order</a></div><div class="ttdeci">tree_order</div><div class="ttdef"><b>Definition:</b> tree.h:109</div></div>
+<div class="ttc" id="unionelement_html"><div class="ttname"><a href="unionelement.html">element</a></div><div class="ttdef"><b>Definition:</b> common.h:13</div></div>
+<div class="ttc" id="common_8h_html"><div class="ttname"><a href="common_8h.html">common.h</a></div></div>
+<div class="ttc" id="common_8h_html_a0ca91ee5ad428d2cb3161e07618bd21c"><div class="ttname"><a href="common_8h.html#a0ca91ee5ad428d2cb3161e07618bd21c">element_copy_fun</a></div><div class="ttdeci">elem_t(* element_copy_fun)(elem_t)</div><div class="ttdoc">Functions for handling genericity. </div><div class="ttdef"><b>Definition:</b> common.h:22</div></div>
+<div class="ttc" id="common_8h_html_a66551bc5a869ff55fd6e97cdf83f9e27"><div class="ttname"><a href="common_8h.html#a66551bc5a869ff55fd6e97cdf83f9e27">element_free_fun</a></div><div class="ttdeci">void(* element_free_fun)(elem_t)</div><div class="ttdef"><b>Definition:</b> common.h:23</div></div>
+<div class="ttc" id="tree_8h_html_afc9838326212e7731f31dcf237e7b76d"><div class="ttname"><a href="tree_8h.html#afc9838326212e7731f31dcf237e7b76d">tree_delete</a></div><div class="ttdeci">void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)</div><div class="ttdef"><b>Definition:</b> tree.c:84</div></div>
+<div class="ttc" id="tree_8h_html_a1428bfa67d419b8bf13824adfc3458f8"><div class="ttname"><a href="tree_8h.html#a1428bfa67d419b8bf13824adfc3458f8">tree_elements</a></div><div class="ttdeci">elem_t * tree_elements(tree_t *tree)</div><div class="ttdef"><b>Definition:</b> tree.c:368</div></div>
+<div class="ttc" id="test_8c_html_a06928f6db1213c0a2e410fd6693383d4"><div class="ttname"><a href="test_8c.html#a06928f6db1213c0a2e410fd6693383d4">elem_free</a></div><div class="ttdeci">void elem_free(elem_t elem)</div><div class="ttdef"><b>Definition:</b> test.c:7</div></div>
+<div class="ttc" id="tree_8h_html_abe996c0b99220479aa7355185109749fa2b26810565bd469bf0fcda626669d3dc"><div class="ttname"><a href="tree_8h.html#abe996c0b99220479aa7355185109749fa2b26810565bd469bf0fcda626669d3dc">postorder</a></div><div class="ttdef"><b>Definition:</b> tree.h:109</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Skapad av &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.11
+</small></address>
+</body>
+</html>

@@ -444,10 +444,14 @@ char *index_menu_choices(int item_count)
   return strdup(menu_choices);
 }
 
+<<<<<<< HEAD
 
 /// Låter användaren välja en vara i listan efter index eller avbryta och återgå
 /// till huvudmenyn
 elem_t select_by_index(tree_t *db, int item_count)
+=======
+void elem_delete_func(elem_t test)
+>>>>>>> 9a31fbf966132515be79a0267e12c1ad564ed490
 {
   char *menu_choices = index_menu_choices(item_count);
   char answer   = ask_question_menu("Välj index eller [a]vbryt: ", menu_choices); 
@@ -465,6 +469,7 @@ elem_t select_by_index(tree_t *db, int item_count)
   return result;  
 }
 
+<<<<<<< HEAD
 
 /// Listar databasens varor med index på formen
 ///
@@ -534,5 +539,22 @@ int main(int argc, char *argv[])
   
   event_loop(db);
   tree_delete(db, true, true);
+=======
+int tree_compare_int(elem_t a, elem_t b)
+{
+  if (a.i == b.i) { return 0;}
+  if (a.i > b.i) { return 1;}
+  else { return -1;}
+}
+
+int main(int argc, char *argv[])
+{
+  tree_t *tree = tree_new(NULL, NULL, elem_delete_func, tree_compare_int);
+  test_t *a = calloc(1, sizeof(test_t)); 
+  elem_t elem = { .p = a };
+  elem_t key = { .i = 1};
+  tree_insert(tree, key, elem); 
+  tree_delete(tree, true, true); 
+>>>>>>> 9a31fbf966132515be79a0267e12c1ad564ed490
   return 0;
 }

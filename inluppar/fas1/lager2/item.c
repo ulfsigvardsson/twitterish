@@ -10,19 +10,20 @@ struct item {
   int price;
   list_t *shelves;
 };
-
-struct shelf {
-  char *id;
-  int amount;
+//! \struct En struct för hyllor
+/*!
+ *
+ */
+struct shelf
+{
+  char *id; /*!< Hyllans namn*/
+  int amount; /*!< Antal varor lagrade på hyllan*/
 };
-
-typedef struct shelf shelf_t;
 
 shelf_t *shelf_new(char *id, int amount)
 { 
   shelf_t *s = calloc(1, sizeof(shelf_t));
   assert(s);
-  
   s->id = id;
   s->amount = amount;
   return s;
@@ -47,13 +48,13 @@ item_t *item_new(char *name, char *descr, int price, char *id, int amount) {
   list_t *shelves = list_new(shelf_copy, shelf_free, shelf_compare);
   list_append(shelves, elem);
   item->shelves = shelves;
-
   return item;
 }
 
 void item_set_name(item_t *item, char *name)
 {
   if (item) item->name = name;
+
 }
 
 void item_set_description(item_t *item, char *descr)
@@ -106,14 +107,12 @@ int item_price(item_t *item)
 list_t *item_shelves(item_t *item)
 {
   if (item) return item->shelves; 
-
   return NULL;
 }
 
 char *shelf_id(shelf_t *shelf)
 {
   if (shelf) return shelf->id;
-
   return NULL;
 }
 
@@ -121,6 +120,7 @@ int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
 }
 
+<<<<<<< HEAD
 void shelf_add_amount(shelf_t *shelf, int amount)
 {
   if (shelf)
@@ -179,44 +179,18 @@ void shelf_free(elem_t elem)
 
 elem_t shelf_copy(elem_t shelf)
 {
-  if (1==1) return shelf;
-   
+  return shelf; 
 }
 
 //FIXME: vi kan nog ta bort allt utom ifsatsen
 elem_t item_copy(elem_t item)
 {
   return item;
-
-  //Gammal kopieringsfunktion, sparar den just in case men ska inte användas i nuläget-
-  /*
-    item_t *original = (item_t*)item.p;
-    item_t *copy     = calloc(1, sizeof(item_t));
-
-    copy->name  = original->name;
-    copy->descr = original->descr;
-    copy->price = original->price;
-
-    list_t *shelves_copy = list_new(shelf_copy, shelf_free, shelf_compare); 
-    elem_t tmp;
-    int i = 0;
-  
-    while (list_get(original->shelves, i, &tmp))
-    {
-      elem_t shelf = shelf_copy(tmp);
-      list_append(shelves_copy, shelf);
-      ++i;
-    }
-
-  copy->shelves = shelves_copy;
-  elem_t result = { .p = copy };
-  return result;*/
 }
 
 
 elem_t shelf_deep_copy(elem_t shelf)
 {
-  
   shelf_t *copy     = calloc(1, sizeof(shelf_t));
   shelf_t *original = (shelf_t*)shelf.p;
   

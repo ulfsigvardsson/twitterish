@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.11"/>
+<title>Lagerhanterare: Källkodsfilen item.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() { init_search(); });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Lagerhanterare
+   &#160;<span id="projectnumber">1.0</span>
+   </div>
+   <div id="projectbrief">Enlagerhanterare</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Skapad av Doxygen 1.8.11 -->
+<script type="text/javascript">
+var searchBox = new SearchBox("searchBox", "search",false,'Sök');
+</script>
+  <div id="navrow1" class="tabs">
+    <ul class="tablist">
+      <li><a href="index.html"><span>Huvudsida</span></a></li>
+      <li><a href="pages.html"><span>Besläktade&#160;sidor</span></a></li>
+      <li><a href="annotated.html"><span>Datastrukturer</span></a></li>
+      <li class="current"><a href="files.html"><span>Filer</span></a></li>
+      <li>
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <img id="MSearchSelect" src="search/mag_sel.png"
+               onmouseover="return searchBox.OnSearchSelectShow()"
+               onmouseout="return searchBox.OnSearchSelectHide()"
+               alt=""/>
+          <input type="text" id="MSearchField" value="Sök" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><img id="MSearchCloseImg" border="0" src="search/close.png" alt=""/></a>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div id="navrow2" class="tabs2">
+    <ul class="tablist">
+      <li><a href="files.html"><span>Fillista</span></a></li>
+      <li><a href="globals.html"><span>Globala&#160;symboler</span></a></li>
+    </ul>
+  </div>
+</div><!-- top -->
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+<div class="header">
+  <div class="headertitle">
+<div class="title">item.h</div>  </div>
+</div><!--header-->
+<div class="contents">
+<a href="item_8h.html">Gå till denna fils dokumentation.</a><div class="fragment"><div class="line"><a name="l00001"></a><span class="lineno">    1</span>&#160;<span class="preprocessor">#ifndef ITEM_H</span></div><div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor">#define ITEM_H</span></div><div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="list_8h.html">list.h</a>&quot;</span></div><div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="common_8h.html">common.h</a>&quot;</span></div><div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div><div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="item_8h.html#a5f7c318c142af804ee86f66bf961b9f0">    7</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structitem.html">item</a> <a class="code" href="structitem.html">item_t</a>;</div><div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;</div><div class="line"><a name="l00010"></a><span class="lineno"><a class="line" href="item_8h.html#aa22659a82ce63c9d49693304d0b318f3">   10</a></span>&#160;<span class="keyword">typedef</span> <span class="keyword">struct </span><a class="code" href="structshelf.html">shelf</a> <a class="code" href="structshelf.html">shelf_t</a>;</div><div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div><div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div><div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<a class="code" href="structitem.html">item_t</a> *<a class="code" href="item_8h.html#a9747de304a78f9923c9eb0d705f31a3a">item_new</a>(<span class="keywordtype">char</span> *name, <span class="keywordtype">char</span> *descr, <span class="keywordtype">int</span> price, <span class="keywordtype">char</span> *<a class="code" href="item_8h.html#a27c42a1128d484ab799ac0592ac91eed">shelf_id</a>, <span class="keywordtype">int</span> <a class="code" href="structshelf.html#a6a1b09835f421eb1aa0d752411484733">amount</a>);</div><div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div><div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<a class="code" href="structitem.html">item_t</a> *<a class="code" href="item_8h.html#a61d6678c7ed605de0bddca0e4ca18fe9">item_empty</a>();</div><div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div><div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div><div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<a class="code" href="structshelf.html">shelf_t</a> *<a class="code" href="item_8h.html#ae26c7dffc76e0bce2c6f6125a824ed68">shelf_new</a>(<span class="keywordtype">char</span> *<span class="keywordtype">id</span>, <span class="keywordtype">int</span> <a class="code" href="structshelf.html#a6a1b09835f421eb1aa0d752411484733">amount</a>);</div><div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div><div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;</div><div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#a9a4d9903de8e5e9bd9587897aa40d822">item_set_name</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>, <span class="keywordtype">char</span> *name);</div><div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;</div><div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div><div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#af91f053fc82bd0eff14d0516fb4f485b">item_set_description</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>, <span class="keywordtype">char</span> *descr);</div><div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;</div><div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;</div><div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#a603c9d920b7eb4ee1b81eb4e52774bca">item_set_price</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>, <span class="keywordtype">int</span> price);</div><div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;</div><div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;</div><div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#ab46b74d2acc43a7a02e81eed5c7b978d">item_set_shelf</a>(<a class="code" href="structshelf.html">shelf_t</a> *<a class="code" href="structshelf.html">shelf</a>, <span class="keywordtype">char</span> *<span class="keywordtype">id</span>);</div><div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;</div><div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;</div><div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#a118e978fcc60fe129db48452aac4d1fe">item_set_amount</a>(<a class="code" href="structshelf.html">shelf_t</a> *<a class="code" href="structshelf.html">shelf</a>, <span class="keywordtype">int</span> <a class="code" href="structshelf.html#a6a1b09835f421eb1aa0d752411484733">amount</a>);</div><div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;</div><div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;</div><div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#a0a9734f282ca6b95426e075e7b6d3bbe">item_set_shelves</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>, <a class="code" href="structlist.html">list_t</a> *shelves);</div><div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;</div><div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;</div><div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;<span class="keywordtype">char</span> *<a class="code" href="item_8h.html#ad7b3deeb4f718901776d733a23421b20">item_name</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>);</div><div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;</div><div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;</div><div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="keywordtype">char</span> *<a class="code" href="item_8h.html#ab3c5c39494086216913dbcf6647caeac">item_descr</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>);</div><div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;</div><div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;</div><div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;<span class="keywordtype">int</span> <a class="code" href="item_8h.html#a5ade45a3109c2effab1672931219f737">item_price</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>);</div><div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div><div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;</div><div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<a class="code" href="structlist.html">list_t</a> *<a class="code" href="item_8h.html#a765c90de118a940146bba638cb21f31b">item_shelves</a>(<a class="code" href="structitem.html">item_t</a> *<a class="code" href="structitem.html">item</a>);</div><div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;</div><div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;</div><div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;<span class="keywordtype">char</span> *<a class="code" href="item_8h.html#a27c42a1128d484ab799ac0592ac91eed">shelf_id</a>(<a class="code" href="structshelf.html">shelf_t</a> *<a class="code" href="structshelf.html">shelf</a>);</div><div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;</div><div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;</div><div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="keywordtype">int</span> <a class="code" href="item_8h.html#a9c80c81c308a60c10e47081a6ac533ae">shelf_amount</a>(<a class="code" href="structshelf.html">shelf_t</a> *<a class="code" href="structshelf.html">shelf</a>);</div><div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;</div><div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div><div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#a3bb52edb6576ef34a2fb292c198d0c65">item_copy</a>(<a class="code" href="structitem.html">item_t</a> *original, <a class="code" href="structitem.html">item_t</a> *copy);</div><div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;</div><div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160;</div><div class="line"><a name="l00115"></a><span class="lineno">  115</span>&#160;<span class="keywordtype">void</span> <a class="code" href="item_8h.html#ab7202b1c5cd0a899a66a30b37db3919e">shelf_copy</a>(<a class="code" href="structitem.html">item_t</a> *original, <a class="code" href="structitem.html">item_t</a> *copy);</div><div class="line"><a name="l00116"></a><span class="lineno">  116</span>&#160;</div><div class="line"><a name="l00117"></a><span class="lineno">  117</span>&#160;<span class="preprocessor">#endif</span></div><div class="ttc" id="item_8h_html_ab46b74d2acc43a7a02e81eed5c7b978d"><div class="ttname"><a href="item_8h.html#ab46b74d2acc43a7a02e81eed5c7b978d">item_set_shelf</a></div><div class="ttdeci">void item_set_shelf(shelf_t *shelf, char *id)</div><div class="ttdoc">Ändrar hyllplats för en vara. </div><div class="ttdef"><b>Definition:</b> item.c:76</div></div>
+<div class="ttc" id="item_8h_html_af91f053fc82bd0eff14d0516fb4f485b"><div class="ttname"><a href="item_8h.html#af91f053fc82bd0eff14d0516fb4f485b">item_set_description</a></div><div class="ttdeci">void item_set_description(item_t *item, char *descr)</div><div class="ttdoc">Ändrar varasbeskrivningen för ett vara. </div><div class="ttdef"><b>Definition:</b> item.c:64</div></div>
+<div class="ttc" id="structitem_html"><div class="ttname"><a href="structitem.html">item</a></div><div class="ttdef"><b>Definition:</b> item.c:9</div></div>
+<div class="ttc" id="item_8h_html_ab3c5c39494086216913dbcf6647caeac"><div class="ttname"><a href="item_8h.html#ab3c5c39494086216913dbcf6647caeac">item_descr</a></div><div class="ttdeci">char * item_descr(item_t *item)</div><div class="ttdoc">Returnerar beskrivningen på en vara. </div><div class="ttdef"><b>Definition:</b> item.c:91</div></div>
+<div class="ttc" id="item_8h_html_ab7202b1c5cd0a899a66a30b37db3919e"><div class="ttname"><a href="item_8h.html#ab7202b1c5cd0a899a66a30b37db3919e">shelf_copy</a></div><div class="ttdeci">void shelf_copy(item_t *original, item_t *copy)</div><div class="ttdoc">Kopierar en varas hyllista till en annan. </div><div class="ttdef"><b>Definition:</b> item.c:119</div></div>
+<div class="ttc" id="item_8h_html_a0a9734f282ca6b95426e075e7b6d3bbe"><div class="ttname"><a href="item_8h.html#a0a9734f282ca6b95426e075e7b6d3bbe">item_set_shelves</a></div><div class="ttdeci">void item_set_shelves(item_t *item, list_t *shelves)</div><div class="ttdoc">Ändrar en varas lista av hyllor. </div><div class="ttdef"><b>Definition:</b> item.c:84</div></div>
+<div class="ttc" id="list_8h_html"><div class="ttname"><a href="list_8h.html">list.h</a></div></div>
+<div class="ttc" id="item_8h_html_a5ade45a3109c2effab1672931219f737"><div class="ttname"><a href="item_8h.html#a5ade45a3109c2effab1672931219f737">item_price</a></div><div class="ttdeci">int item_price(item_t *item)</div><div class="ttdoc">Returnerar priset på ett item. </div><div class="ttdef"><b>Definition:</b> item.c:95</div></div>
+<div class="ttc" id="item_8h_html_a603c9d920b7eb4ee1b81eb4e52774bca"><div class="ttname"><a href="item_8h.html#a603c9d920b7eb4ee1b81eb4e52774bca">item_set_price</a></div><div class="ttdeci">void item_set_price(item_t *item, int price)</div><div class="ttdoc">Ändrar priset för en vara. </div><div class="ttdef"><b>Definition:</b> item.c:70</div></div>
+<div class="ttc" id="item_8h_html_a765c90de118a940146bba638cb21f31b"><div class="ttname"><a href="item_8h.html#a765c90de118a940146bba638cb21f31b">item_shelves</a></div><div class="ttdeci">list_t * item_shelves(item_t *item)</div><div class="ttdoc">Returnerar en lista av hyllor där en vara finns. </div><div class="ttdef"><b>Definition:</b> item.c:99</div></div>
+<div class="ttc" id="item_8h_html_a27c42a1128d484ab799ac0592ac91eed"><div class="ttname"><a href="item_8h.html#a27c42a1128d484ab799ac0592ac91eed">shelf_id</a></div><div class="ttdeci">char * shelf_id(shelf_t *shelf)</div><div class="ttdoc">Returnerar namnet på en hylla. </div><div class="ttdef"><b>Definition:</b> item.c:103</div></div>
+<div class="ttc" id="item_8h_html_a9747de304a78f9923c9eb0d705f31a3a"><div class="ttname"><a href="item_8h.html#a9747de304a78f9923c9eb0d705f31a3a">item_new</a></div><div class="ttdeci">item_t * item_new(char *name, char *descr, int price, char *shelf_id, int amount)</div><div class="ttdef"><b>Definition:</b> item.c:40</div></div>
+<div class="ttc" id="item_8h_html_a9c80c81c308a60c10e47081a6ac533ae"><div class="ttname"><a href="item_8h.html#a9c80c81c308a60c10e47081a6ac533ae">shelf_amount</a></div><div class="ttdeci">int shelf_amount(shelf_t *shelf)</div><div class="ttdoc">Returnerar antalet lagrade varor på en hylla. </div><div class="ttdef"><b>Definition:</b> item.c:107</div></div>
+<div class="ttc" id="item_8h_html_a61d6678c7ed605de0bddca0e4ca18fe9"><div class="ttname"><a href="item_8h.html#a61d6678c7ed605de0bddca0e4ca18fe9">item_empty</a></div><div class="ttdeci">item_t * item_empty()</div><div class="ttdef"><b>Definition:</b> item.c:52</div></div>
+<div class="ttc" id="item_8h_html_ae26c7dffc76e0bce2c6f6125a824ed68"><div class="ttname"><a href="item_8h.html#ae26c7dffc76e0bce2c6f6125a824ed68">shelf_new</a></div><div class="ttdeci">shelf_t * shelf_new(char *id, int amount)</div><div class="ttdoc">Skapar en ny hylla. </div><div class="ttdef"><b>Definition:</b> item.c:26</div></div>
+<div class="ttc" id="item_8h_html_ad7b3deeb4f718901776d733a23421b20"><div class="ttname"><a href="item_8h.html#ad7b3deeb4f718901776d733a23421b20">item_name</a></div><div class="ttdeci">char * item_name(item_t *item)</div><div class="ttdoc">Returnerar namnet på en vara. </div><div class="ttdef"><b>Definition:</b> item.c:87</div></div>
+<div class="ttc" id="structshelf_html_a6a1b09835f421eb1aa0d752411484733"><div class="ttname"><a href="structshelf.html#a6a1b09835f421eb1aa0d752411484733">shelf::amount</a></div><div class="ttdeci">int amount</div><div class="ttdef"><b>Definition:</b> item.c:23</div></div>
+<div class="ttc" id="structlist_html"><div class="ttname"><a href="structlist.html">list</a></div><div class="ttdef"><b>Definition:</b> list.c:11</div></div>
+<div class="ttc" id="structshelf_html"><div class="ttname"><a href="structshelf.html">shelf</a></div><div class="ttdef"><b>Definition:</b> item.c:20</div></div>
+<div class="ttc" id="common_8h_html"><div class="ttname"><a href="common_8h.html">common.h</a></div></div>
+<div class="ttc" id="item_8h_html_a9a4d9903de8e5e9bd9587897aa40d822"><div class="ttname"><a href="item_8h.html#a9a4d9903de8e5e9bd9587897aa40d822">item_set_name</a></div><div class="ttdeci">void item_set_name(item_t *item, char *name)</div><div class="ttdoc">Ändrar namnet för ett vara. </div><div class="ttdef"><b>Definition:</b> item.c:59</div></div>
+<div class="ttc" id="item_8h_html_a118e978fcc60fe129db48452aac4d1fe"><div class="ttname"><a href="item_8h.html#a118e978fcc60fe129db48452aac4d1fe">item_set_amount</a></div><div class="ttdeci">void item_set_amount(shelf_t *shelf, int amount)</div><div class="ttdoc">Ändrar antalet lagrade varor av en viss typ. </div><div class="ttdef"><b>Definition:</b> item.c:80</div></div>
+<div class="ttc" id="item_8h_html_a3bb52edb6576ef34a2fb292c198d0c65"><div class="ttname"><a href="item_8h.html#a3bb52edb6576ef34a2fb292c198d0c65">item_copy</a></div><div class="ttdeci">void item_copy(item_t *original, item_t *copy)</div><div class="ttdoc">Kopierar en varas information till en annan. </div><div class="ttdef"><b>Definition:</b> item.c:112</div></div>
+</div><!-- fragment --></div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Skapad av &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.11
+</small></address>
+</body>
+</html>

@@ -79,35 +79,45 @@ void list_append_test()
 
 void list_prepend_test()
 {
-  list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1 };
-  elem_t elem2 = { .i=2 };
+  list_t *list  = list_new(NULL, NULL, NULL);
+  elem_t elem1  = { .i=1 };
+  elem_t elem2  = { .i=2 };
   elem_t result = { .i = 0 };
+  
   list_prepend(list, elem1);
   list_get(list, 0, &result);
+  
   CU_ASSERT_TRUE(list_length(list) == 1);
   CU_ASSERT_EQUAL(result.i, 1);
+  
   list_prepend(list, elem2);
   list_get(list, 0, &result);
+  
   CU_ASSERT_EQUAL(result.i, elem2.i);
   CU_ASSERT_TRUE(list_length(list) == 2);
+  
   list_get(list, 1, &result);
+  
   CU_ASSERT_EQUAL(result.i, elem1.i);
 }
 
 void list_get_test()
 {
   list_t *list = list_new(NULL, NULL, NULL);
-  elem_t elem1 = { .i=1 };
-  elem_t elem2 = { .i=2 };
+  elem_t elem1 = { .i = 1 };
+  elem_t elem2 = { .i = 2 };
   elem_t elem_get = { .i =0 };
+  
   list_prepend(list, elem1);
   list_prepend(list, elem2);
   bool success = list_get(list, 1, &elem_get);
+
   CU_ASSERT_EQUAL(elem_get.i, elem1.i);
   CU_ASSERT_TRUE(success);
+
   list_get(list, -1, &elem_get);
   CU_ASSERT_EQUAL(elem_get.i, elem1.i);
+
   list_get(list, -2, &elem_get);
   CU_ASSERT_EQUAL(elem_get.i, elem2.i);
 }
@@ -118,11 +128,14 @@ void list_first_test()
   elem_t elem1  = { .i = 1 };
   elem_t elem2  = { .i = 2 };
   elem_t result = { .i = 0 };
+
   list_first(list, &result); // Tom lista
   CU_ASSERT_EQUAL(result.i, 0);
+
   list_append(list, elem1);
   CU_ASSERT_TRUE(list_first(list, &result));
   CU_ASSERT_EQUAL( 1, result.i);
+
   list_prepend(list, elem2);
   CU_ASSERT_TRUE(list_first(list, &result));
   CU_ASSERT_EQUAL(2, result.i); 
@@ -170,8 +183,7 @@ void list_remove_test()
 bool list_apply_fun(elem_t elem, void *data)
 {
   if (elem.i < 2) {
-     printf("%d är mindre än två\n", elem.i);
-     return true;
+    return true;
   }
   return false;
 }
@@ -221,10 +233,11 @@ void tree_insert_test()
   
   elem_t key1 = { .i = 1 };
   elem_t key2 = { .i = 2 };
-  
-  tree_insert(tree, key1, elem1);
-  tree_insert(tree, key2, elem2);
 
+  
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key1, elem1);
+  
   CU_ASSERT_TRUE(tree_has_key(tree, key1));
   CU_ASSERT_TRUE(tree_has_key(tree, key2));
 }
@@ -307,6 +320,7 @@ void tree_remove_test()
   tree_insert(tree, key1, elem1); 
   tree_insert(tree, key3, elem3);
   tree_insert(tree, key4, elem4);
+
   
   CU_ASSERT_TRUE(tree_size(tree) == 4); 
   tree_remove(tree, key1, &result); 
@@ -323,6 +337,7 @@ void tree_remove_test()
   //CU_ASSERT_TRUE(tree_size(tree) == 1);
   
 }
+
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
 
@@ -352,6 +367,8 @@ int main(int argc, char *argv[]) {
   CU_add_test(pSuite, "tree_height", tree_height_test);
   CU_add_test(pSuite, "tree_get", tree_get_test);
   CU_add_test(pSuite, "tree_remove", tree_remove_test);
+  CU_add_test(pSuite, "tree_elements", tree_elements_test);
+  CU_add_test(pSuite, "tree_keys", tree_keys_test);
  
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);

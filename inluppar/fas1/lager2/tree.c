@@ -11,8 +11,11 @@
 #define Apply_left node_apply(node->left, order, fun, success, data)
 #define Apply_right node_apply(node->right, order, fun, success, data)
 #define Is_leaf !((*to_remove)->right || (*to_remove)->left)
-#define Left  
-
+#define Leaf !((*to_remove)->right || (*to_remove)->left)
+#define Full (*to_remove)->right && (*to_remove)->left
+#define Right (*to_remove)->right
+#define Left (*to_remove)->left 
+  
 struct node
 {
   elem_t elem;
@@ -57,7 +60,6 @@ node_t *node_new()
   node_t *node = calloc(1, sizeof(node_t));
   return node;
 }
-
 
 /// Creates a new tree
 ///
@@ -107,6 +109,7 @@ void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)
   free(tree);
   return;
 }
+
 /// Get the size of the tree 
 ///
 /// \returns: the number of nodes in the tree
@@ -167,6 +170,27 @@ node_t **tree_traverse(tree_t *tree, elem_t key)
   return c;
 }
 
+int get_balance(node_t *node)
+{
+  return(tree_depth_aux(node->left) - tree_depth_aux(node->right));
+}
+
+node_t *left_rotate(node_t ** node)
+{
+  node_t *A  = *node; 
+  node_t *B  = (*node)->right;
+  node_t *T2 = B->left;
+  A->right = T2;
+  B->left  = A; 
+}
+
+// Balanserar ett träd
+void tree_balance(node_t **node )
+{
+  int balance = get_balance(*node);
+  
+}
+
 /// Insert element into the tree. Returns false if the key is already used.
 ///
 /// Uses the tree's compare function to compare keys.
@@ -181,6 +205,7 @@ node_t **tree_traverse(tree_t *tree, elem_t key)
 /// \param key the key of element to be appended -- this is assumed to be an immutable value
 /// \param elem the element 
 /// \returns: true if successful, else false
+<<<<<<< HEAD
 bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
 {
   // Corner case för tomma träd
@@ -245,16 +270,23 @@ bool tree_get(tree_t *tree, tree_key_t key, elem_t *result)
   else
     {
       return false;
-    }
-  
+    }  
 }
 
-// Kanske måste sätta denn till dubbelpe
+// Frigör en nod i trädet
+void free_node(tree_t *tree, node_t *node)
+{
+  Free_key(node->key);
+  Free_elem(node->elem); 
+  free(node);  
+}
+
+// Hittar den minsta efterträdaren till ett element i trädet
 node_t **find_smallest_successor(node_t **node)
 {
   while ((*node)->left)
     {
-      *node = (*node)->left;
+      node = &(*node)->left;
     }
   return node;
 }
@@ -269,37 +301,38 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
 {
   node_t **to_remove = tree_traverse(tree, key);
   
-  if (*to_remove)
-    {
-      if ((*to_remove)->right && (*to_remove)->left)
-        {
-          node_t **minimum = find_smallest_successor(to_remove); // Elementet att ersätta med 
-          (*to_remove)->elem = Copy((*minimum)->elem); // Kopiera data
-          (*to_remove)->key = Copy((*minimum)->elem);
-          *minimum = NULL; // Nolla pekaren till den minsta efterföljaren (?)
-        }
-      else if ((*to_remove)->right)
-        {
-          *result = Copy((*to_remove)->elem);
-          --(tree->size);
-          node_t *temp = *to_remove;
-          *to_remove = (*to_remove)->right;
-          free(temp);
-        }
-      else if ((*to_remove)->left)
-        {
+  <<<<<<< HEAD
+            if (*to_remove)
+              {
+                if ((*to_remove)->right && (*to_remove)->left)
+                  {
+                    node_t **minimum = find_smallest_successor(to_remove); // Elementet att ersätta med 
+                    (*to_remove)->elem = Copy((*minimum)->elem); // Kopiera data
+                    (*to_remove)->key = Copy((*minimum)->elem);
+                    *minimum = NULL; // Nolla pekaren till den minsta efterföljaren (?)
+                  }
+                else if ((*to_remove)->right)
+                  {
+                    *result = Copy((*to_remove)->elem);
+                    --(tree->size);
+                    node_t *temp = *to_remove;
+                    *to_remove = (*to_remove)->right;
+                    free(temp);
+                  }
+                else if ((*to_remove)->left)
+                  {
           
-        } 
-      else if (Is_leaf)
-        { 
-          *result = Copy((*to_remove)->elem);
-          --(tree->size);
-          free(*to_remove);
-          (*to_remove) = NULL;
-        }
+                  } 
+                else if (Is_leaf)
+                  { 
+                    *result = Copy((*to_remove)->elem);
+                    --(tree->size);
+                    free(*to_remove);
+                    (*to_remove) = NULL;
+                  }
      
-      return true;
-    }
+                return true;
+              }
   return false;
 }
 

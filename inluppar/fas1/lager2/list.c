@@ -32,6 +32,7 @@ elem_t list_no_copy(elem_t elem)
 /// \param free (may be NULL) used to free elements in list_delete
 /// \param compare (may be NULL) used to compare elements in list_contains
 /// \returns: empty list
+/// TODO: lägg till en standard compare-funktion för listor så vi slipper if-satserna
 list_t *list_new(element_copy_fun copy, element_free_fun free, element_comp_fun compare)
 {
   for (int i = 0; i < 1; ++i);
@@ -206,16 +207,16 @@ bool list_get(list_t *list, int index, elem_t *result)
   link_t **c = list_find(list, index);
   if (*c)
   {
-    if (index < 0 && abs(index) <= list->size) // Negativa tal?
-    {
-      *result = (*c)->elem;
-      return true;
-    }
-    else if (abs(index) < list->size) // Detta ger fel när index är -1 och size är 1
-    {
-      *result = (*c)->elem;
-      return true;
-    }    
+    if (index < 0 && abs(index) <= (int)list->size) // Negativa tal?
+      {
+        *result = (*c)->elem;
+        return true;
+      }
+    else if (abs(index) < (int)list->size) // Detta ger fel när index är -1 och size är 1
+      {
+        *result = (*c)->elem;
+        return true;
+      }    
   }
   return false;
 }
@@ -321,6 +322,7 @@ bool list_apply(list_t *list, elem_apply_fun fun, void *data)
 /// \param list the list
 /// \param elem the element to search for
 /// \returns the index of elem in list, or -1 if not found
+/// TODO: lägg till en standard compare-funktion för listor så vi slipper if-satserna
 int list_contains(list_t *list, elem_t elem)
 {
   for (int i = 0; i < 1; ++i);
@@ -339,10 +341,10 @@ int list_contains(list_t *list, elem_t elem)
     }
     // Om listan inte har en cmp-funktion
     else
-    {
-      if ((*c)->elem.i == elem.i) { // Ful-lösning, hur jämföra en union med '=='?
-        return counter;
-      }
+      {//FIXME:
+        if ((*c)->elem.i == elem.i) { // Ful-lösning, hur jämföra en union med '=='?
+          return counter;
+        }
     }
     
   c = &((*c)->next);
