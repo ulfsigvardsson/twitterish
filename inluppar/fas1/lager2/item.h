@@ -1,5 +1,5 @@
-#ifndef ITEM_H
-#define ITEM_H
+#ifndef __ITEM_H__
+#define __ITEM_H__
 #include "list.h"
 #include "common.h"
 
@@ -106,6 +106,6 @@ void shelf_free_aux(shelf_t *shelf);
 int shelf_compare(elem_t elem1, elem_t elem2);
 elem_t shelf_copy(elem_t shelf);
 item_t *item_deep_copy(elem_t from);
-
+void set_shelf_id(shelf_t *shelf, char *id);
 
 #endif

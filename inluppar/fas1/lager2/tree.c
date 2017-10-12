@@ -170,26 +170,6 @@ node_t **tree_traverse(tree_t *tree, elem_t key)
   return c;
 }
 
-int get_balance(node_t *node)
-{
-  return(tree_depth_aux(node->left) - tree_depth_aux(node->right));
-}
-
-node_t *left_rotate(node_t ** node)
-{
-  node_t *A  = *node; 
-  node_t *B  = (*node)->right;
-  node_t *T2 = B->left;
-  A->right = T2;
-  B->left  = A; 
-}
-
-// Balanserar ett träd
-void tree_balance(node_t **node )
-{
-  int balance = get_balance(*node);
-  
-}
 
 /// Insert element into the tree. Returns false if the key is already used.
 ///
@@ -319,7 +299,11 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
                   }
                 else if ((*to_remove)->left)
                   {
-          
+                    *result = Copy((*to_remove)->elem);
+                    --(tree->size);
+                    node_t *temp = *to_remove;
+                    *to_remove = (*to_remove)->left;
+                    free(temp);          
                   } 
                 else if (Is_leaf)
                   { 

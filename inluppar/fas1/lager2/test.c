@@ -194,9 +194,11 @@ void list_apply_test()
   elem_t elem1 = { .i = 1 };
   elem_t elem2 = { .i = 2 };
   elem_t elem3 = { .i = 0 };
+
   list_append(list, elem1);
   list_append(list, elem2);
   list_append(list, elem3);
+
   CU_ASSERT_TRUE(list_apply(list, list_apply_fun, NULL));
 }
 
@@ -367,8 +369,8 @@ int main(int argc, char *argv[]) {
   CU_add_test(pSuite, "tree_height", tree_height_test);
   CU_add_test(pSuite, "tree_get", tree_get_test);
   CU_add_test(pSuite, "tree_remove", tree_remove_test);
-  CU_add_test(pSuite, "tree_elements", tree_elements_test);
-  CU_add_test(pSuite, "tree_keys", tree_keys_test);
+  // CU_add_test(pSuite, "tree_elements", tree_elements_test);
+  //CU_add_test(pSuite, "tree_keys", tree_keys_test);
  
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);
