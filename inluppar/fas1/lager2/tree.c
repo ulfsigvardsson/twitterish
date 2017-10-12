@@ -15,7 +15,7 @@
 #define Full (*to_remove)->right && (*to_remove)->left
 #define Right (*to_remove)->right
 #define Left (*to_remove)->left 
-  
+ 
 struct node
 {
   elem_t elem;
@@ -34,6 +34,11 @@ struct tree
   size_t size;
 };
 
+
+void *get_root_elem(tree_t *tree)
+{
+  return (tree->root->elem.p);
+}
 
 elem_t tree_no_copy(elem_t elem)
 {
@@ -175,20 +180,39 @@ int get_balance(node_t *node)
   return(tree_depth_aux(node->left) - tree_depth_aux(node->right));
 }
 
-node_t *left_rotate(node_t ** node)
+// Balanserar ett träd
+void build_tree_aux(tree_t* tree, elem_t *element_list, tree_key_t *key_list, int low, int high)
 {
-  node_t *A  = *node; 
-  node_t *B  = (*node)->right;
-  node_t *T2 = B->left;
-  A->right = T2;
-  B->left  = A; 
+  int index = (high+low)/2;
+  elem_t element = element_list[index];
+  tree_key_t key = key_list[index];
+  tree_insert(tree, key, element);
+  if (index > low)
+    {
+      build_tree_aux(tree, element_list, key_list, low, index-1);
+    }
+  if(index < high)
+    {
+      build_tree_aux(tree, element_list, key_list, index+1, high);
+    }
 }
 
-// Balanserar ett träd
-void tree_balance(node_t **node )
+tree_t *tree_balance(tree_t *tree)
 {
-  int balance = get_balance(*node);
+  if(tree->size < 3){
+    return tree;
+  }
+  elem_t *element_list = tree_elements(tree);
+  tree_key_t *key_list = tree_keys(tree);
   
+  tree_t *new_tree = tree_new(Copy, Free_key, Free_elem, Comp);
+
+  build_tree_aux(new_tree, element_list, key_list, 0, tree->size-1);
+  free (element_list);
+  free (key_list);
+  
+  tree_delete(tree, Free_key, Free_elem);
+  return new_tree;
 }
 
 /// Insert element into the tree. Returns false if the key is already used.
@@ -229,11 +253,6 @@ bool tree_insert(tree_t *tree, tree_key_t key, elem_t elem)
       *c = node_new();
       (*c)->elem = Copy(elem);
       (*c)->key = key;
-      /*
-        node_t *new = node_new();
-      new->elem = Copy(elem);
-      new->key = key;
-      *c = new;*/
       ++(tree->size);
     }
   return true;
@@ -319,7 +338,11 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
                   }
                 else if ((*to_remove)->left)
                   {
-          
+                    *result = Copy((*to_remove)->elem);
+                    --(tree->size);
+                    node_t *temp = *to_remove;
+                    *to_remove = (*to_remove)->left;
+                    free(temp);
                   } 
                 else if (Is_leaf)
                   { 

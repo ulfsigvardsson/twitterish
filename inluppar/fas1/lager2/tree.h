@@ -126,5 +126,15 @@ enum tree_order { inorder = 0, preorder = -1, postorder = 1 };
 /// \returns the result of all fun calls, combined with OR (||)
 bool tree_apply(tree_t *tree, enum tree_order order, key_elem_apply_fun fun, void *data);
 
+
+/// Returns the void pointer of the root element
+///
+///\param tree the tree
+void *get_root_elem(tree_t *tree);
+
+/// Balances a tree
+///
+/// \param tree the tree
+tree_t *tree_balance(tree_t *tree);
 #endif
 
