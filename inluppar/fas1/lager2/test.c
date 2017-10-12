@@ -194,9 +194,11 @@ void list_apply_test()
   elem_t elem1 = { .i = 1 };
   elem_t elem2 = { .i = 2 };
   elem_t elem3 = { .i = 0 };
+
   list_append(list, elem1);
   list_append(list, elem2);
   list_append(list, elem3);
+
   CU_ASSERT_TRUE(list_apply(list, list_apply_fun, NULL));
 }
 

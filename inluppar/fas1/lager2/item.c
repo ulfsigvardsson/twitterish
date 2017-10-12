@@ -79,10 +79,6 @@ void item_set_shelf(shelf_t *shelf, char *id)
   if (shelf) shelf->id =id;    
 }
 
-void item_set_amount(shelf_t *shelf, int amount)
-{
-  shelf->amount = amount;
-}
 
 void item_set_shelves(item_t *item, list_t *shelves)
 {
@@ -116,10 +112,19 @@ char *shelf_id(shelf_t *shelf)
   return NULL;
 }
 
+void set_shelf_id(shelf_t *shelf, char *id)
+{
+  shelf->id = id;
+}
+
 int shelf_amount(shelf_t *shelf) {
   return shelf->amount;
 }
 
+void shelf_set_amount(shelf_t *shelf, int amount)
+{
+  shelf->amount = amount;
+}
 void shelf_add_amount(shelf_t *shelf, int amount)
 {
   if (shelf)
@@ -137,7 +142,7 @@ int shelf_compare(elem_t elem1, elem_t elem2)
   if (a && b) return strcmp(a->id, b->id);
   return -1;
   // kanske lägga till att inputvärdet automatiskt är större än NULL för att få ett vettigt returnvärde
-    }
+}
 
 int item_compare(elem_t key1, elem_t key2)
 {
@@ -218,7 +223,7 @@ item_t *item_deep_copy(elem_t elem)
        list_append(shelves_copy, shelf);
        ++i;
      }
-
-   to->shelves = shelves_copy;
-   return to;
+  
+  to->shelves = shelves_copy;
+  return to;
  }

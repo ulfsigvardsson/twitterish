@@ -175,6 +175,7 @@ node_t **tree_traverse(tree_t *tree, elem_t key)
   return c;
 }
 
+
 int get_balance(node_t *node)
 {
   return(tree_depth_aux(node->left) - tree_depth_aux(node->right));
@@ -343,6 +344,7 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
                     node_t *temp = *to_remove;
                     *to_remove = (*to_remove)->left;
                     free(temp);
+
                   } 
                 else if (Is_leaf)
                   { 
