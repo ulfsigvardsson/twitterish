@@ -42,10 +42,21 @@ void edit_item(tree_t *db, elem_t item, undo_action_t *undo);
 void undo_reset(undo_action_t *undo)
 {
   if (undo->last_action == NOTHING) return; 
-
+  else if (undo->last_action == EDIT)
+    {
+      item_free(undo->new);
+      item_free(undo->old);       
+    }
+  else if(undo->last_action == REMOVE)
+    {
+      item_free(undo->old);
+    }
+  else if (undo->last_action == ADD)
+    {
+      item_free(undo->new);
+    }
   undo->last_action = NOTHING;
-  item_free(undo->new);
-  item_free(undo->old); 
+  
 }
 /// Free-funktion för undo_action-strukten
 /// Om sista aktionen var att ta bort en vara är undo->new == NULL
@@ -62,7 +73,7 @@ void undo_free(undo_action_t *undo)
   if (undo->last_action == ADD)
     {
       item_free(undo->new);
-    }
+    } 
   free(undo);
 }
 
@@ -78,14 +89,6 @@ undo_action_t *undo_new()
   undo->last_action = NOTHING;
   return undo;
 }
-
-
-void key_free(elem_t elem)
-{
-  // char *key = elem.p;
-  //free(key);
-}
-
 
 /// Skriver ut huvudmenyn
 void print_main_menu()
@@ -225,30 +228,57 @@ char *find_available_shelf(tree_t *db, char *name, shelf_info_t *info)
   return chosen_id; 
 }
 
+void merge_shelves(shelf_info_t *info, elem_t shelf_to_edit, list_t *shelves, int index)
+{
+  char *chosen_id = info_id(info);
+  printf("Du valde att slå ihop med %s\n", chosen_id);
 
-void edit_shelf_name(tree_t * db, elem_t shelf_to_edit, char *name)
+  int amount = shelf_amount(shelf_to_edit.p);
+  elem_t result;
+
+  // Lägg till antalet varor från den gamla hyllan på den nya
+  list_get(shelves, index, &result);      
+  shelf_add_amount(result.p, amount);
+
+  // Ta bort den gamla hyllan från listan
+  int index_to_remove = list_contains(shelves, shelf_to_edit);
+  list_remove(shelves, index_to_remove, true);
+}
+
+/// Redigerar namn på en varas hylla
+/// TODO: slå ihop hyllor om man ändrar till en beintlig hylla
+void edit_shelf_name(tree_t * db, elem_t shelf_to_edit, char *name, int index, list_t *shelves)
 {
   shelf_info_t *info = info_initiate();
   char *new_id = find_available_shelf(db, name, info);
-  
-  char *tmp = shelf_id(shelf_to_edit.p);
-  set_shelf_id(shelf_to_edit.p, new_id);
+
+  if (info_owner(info) == SELF)
+    {
+      free(new_id);
+      merge_shelves(info, shelf_to_edit, shelves, index);
+    }
+  else
+    {
+      char *tmp = shelf_id(shelf_to_edit.p);
+      set_shelf_id(shelf_to_edit.p, new_id); 
+      free(tmp);
+    }
   free(info);
-  free(tmp); 
 }
 
 
 void edit_shelves(tree_t *db, elem_t item, char edit_choice, undo_action_t *undo)
 {
-  print_shelves(item_shelves(item.p));
+  list_t *shelves = item_shelves(item.p);
+  print_shelves(shelves);
   
   elem_t shelf_to_edit;
-  int index = select_existing_shelf(item, &shelf_to_edit);
-  char *name = item_name(item.p);
+  int index_in_list  = select_existing_shelf(item, &shelf_to_edit);
+  char *name         = item_name(item.p);
   
   if (edit_choice == 'L')
     {
-      edit_shelf_name(db, shelf_to_edit, name);
+      edit_shelf_name(db, shelf_to_edit, name, index_in_list, shelves);
     }
   else
     {
@@ -359,7 +389,6 @@ void db_remove_item(tree_t *db, undo_action_t *undo)
       if (list_length(shelves) == 0)
         {
           // Är det den sista hyllan som tas bort blir det en borttagning av vara
-          undo_reset(undo);
           undo->last_action = REMOVE;
           tree_remove(db, key, &result); 
           item_free(item);
@@ -419,6 +448,7 @@ void db_add_item(tree_t *db, undo_action_t *undo)
       undo_reset(undo);
       undo->last_action = EDIT;
       undo->old.p = item_deep_copy(item); 
+
       add_existing_item(db, name); 
       undo->new.p = item_deep_copy(item);
       free(name.p);
@@ -427,11 +457,16 @@ void db_add_item(tree_t *db, undo_action_t *undo)
   else
     {
       shelf_info_t *info = info_initiate();
-      char *descr  = AskDescription;
-      int price    = AskPrice; 
-      char *new_id = find_available_shelf(db, name.p, info); 
-      int amount   = AskAmount;
-      elem_t item = { .p = item_new((char*)name.p, descr, price, new_id, amount)};
+      char *descr        = AskDescription;
+      int price          = AskPrice; 
+      char *new_id       = find_available_shelf(db, name.p, info); 
+      int amount         = AskAmount;
+
+      elem_t item  = { .p = item_new((char*)name.p, descr, price)};
+      elem_t shelf = { .p = shelf_new(new_id, amount) };
+
+      item_add_shelf(item.p, shelf);
+
       print_item(item);
       char answer = ConfirmAddition;
 
@@ -454,7 +489,9 @@ void db_add_item(tree_t *db, undo_action_t *undo)
         default:            
           tree_insert(db, name, item);
           edit_item(db, item, undo);
+          undo_reset(undo);
           undo->last_action = ADD;
+          undo->new.p = item.p;
           break;
         }
       free(info);
@@ -485,8 +522,7 @@ void undo_last_action(tree_t *db, undo_action_t *undo)
     case REMOVE:
       {
         elem_t key  = { .p = item_name(undo->old.p) };
-        elem_t elem = { .p = undo->old.p };
-        
+        elem_t elem = { .p = undo->old.p }; 
         tree_insert(db, key, elem); 
         break;
       }
@@ -495,15 +531,15 @@ void undo_last_action(tree_t *db, undo_action_t *undo)
         elem_t key  = { .p = item_name(undo->old.p)};
         elem_t item_to_undo;
         tree_remove(db, key, &item_to_undo);
-        item_free(item_to_undo);
+        
         elem_t reset = {.p = item_deep_copy(undo->old)};
-        tree_insert(db, key, reset); 
+        tree_insert(db, key, reset);
+        item_free(item_to_undo);
         break;
       }
     default:
       break;
-    }
-  undo_reset(undo);
+    } 
 }
 
 
@@ -559,11 +595,11 @@ bool list_db(tree_t *db)
 // Konverterar ett intervall av heltal till en sträng och lägger till 'a' samt 'A' i slutet av den.
 /// Strängen används för att välja ett intervall av index i menyn.
 char *index_menu_choices(int item_count)
-{
-  int index = 1+'0';               //Heltals-motsvarigheten till '1'
-  char menu_choices[item_count+2]; // Char-array för alla index med två extra platser för 'A' och 'a'
+  {
+    int index = 1+'0';               //Heltals-motsvarigheten till '1'
+    char menu_choices[item_count+2]; // Char-array för alla index med två extra platser för 'A' och 'a'
 
-  for (int i = 0; i < item_count; ++i)
+    for (int i = 0; i < item_count; ++i)
     {
       menu_choices[i] = index+i;   // ASCI-motsvarigheten till 'i'
     }
@@ -647,6 +683,85 @@ void db_check_sorting(tree_t *db)
 {
   return;
 }
+
+/// Returnerar antalet poster i databasfilen
+int db_size(FILE *f)
+{
+  int size = 0;
+  fscanf(f, " %d ", &size);
+  return size;
+}
+
+bool write_item_to_file(tree_key_t key, elem_t elem,  void *f)
+{
+  char *name = item_name(elem.p);
+  char *descr = item_descr(elem.p);
+  int price = item_price(elem.p);
+  list_t *shelves = item_shelves(elem.p);
+
+  int number_of_shelves = list_length(shelves);
+  fprintf(f, "%s\n", name);
+  fprintf(f, "%s", descr);
+  fprintf(f, "%d\n", price);
+  fprintf(f, "%d\n", number_of_shelves);
+
+  elem_t shelf;
+   for (int i = 0; i < number_of_shelves; ++i)
+     {
+       list_get(shelves, i, &shelf);
+       fprintf(f, "%s %d\n", shelf_id(shelf.p), shelf_amount(shelf.p));
+     }
+   return true;
+}
+
+void save_db(tree_t *db, char *path)
+{
+  FILE *f = fopen(path, "w");
+  int size = tree_size(db);
+  fprintf(f, "%d\n", size);
+  tree_apply(db, preorder, write_item_to_file, f);
+  fclose(f);
+}
+
+tree_t *load_db(char *path)
+{
+  FILE *f = fopen(path, "r");
+  char name[20], descr[100];
+  int price, shelf_count;
+        
+  int size = db_size(f);
+  tree_t *db = tree_new(item_copy, key_free, item_free, item_compare);
+    
+  for (int i = 0; i < size; ++i) 
+    {
+      fscanf(f, "%s ", name);
+      fgets(descr, 100, f); // Beskrivningen är troligtvis flera ord, därav fgets(), måste bli av med newlinekaraktären här
+      fscanf(f, "%d ", &price);
+      fscanf(f, "%d ", &shelf_count);
+      
+      char id[3];
+      int amount;
+
+      elem_t key = { .p = strdup(name) };
+      elem_t item = { .p = item_new(strdup(name), strdup(descr), price) };
+       
+      list_t *shelves = item_shelves(item.p);
+      
+      for (int i = 0; i < shelf_count; ++i)
+        {
+          fscanf(f, "%s %d ", id, &amount);
+          elem_t shelf = { .p = shelf_new(strdup(id), amount) };
+          list_append(shelves, shelf);
+        }
+      
+      //      item_set_shelves(item.p, shelves);
+      tree_insert(db, key, item);
+    }
+ 
+  fclose(f);
+  return db;
+}
+
 /// Huvudloop för programmet. 
 void event_loop(tree_t *db)
 {
@@ -676,9 +791,9 @@ void event_loop(tree_t *db)
 
 int main(int argc, char *argv[])
 {
-  tree_t *db = tree_new(item_copy, NULL, item_free, item_compare);
-  
+  tree_t *db = load_db(argv[1]); 
   event_loop(db);
-  tree_delete(db, false, true);
+  save_db(db, argv[1]);
+  tree_delete(db, true, true);
   return 0;
 }

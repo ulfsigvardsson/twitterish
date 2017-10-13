@@ -16,7 +16,7 @@ typedef struct shelf shelf_t;
 /// \param price: pris på varan
 /// \param shelf_id: hyllplatsen på formen xy där x är en versal och y ett heltal
 /// \param amount: antalet varor av denna typ
-item_t *item_new(char *name, char *descr, int price, char *id, int amount);
+item_t *item_new(char *name, char *descr, int price);
 
 item_t *item_empty();
 
@@ -35,11 +35,15 @@ shelf_t *shelf_new(char *id, int amount);
  */
 void item_set_name(item_t *item, char *name);
 
+void item_add_shelf(item_t *item, elem_t shelf);
+
 //! Ändrar varasbeskrivningen för ett vara
 /*! \param item varan att editera
  *  \param descr ny beskrivning på varan
  */
 void item_set_description(item_t *item, char *descr);
+
+void key_free(elem_t elem);
 
 //! Ändrar priset för en vara
 /*! \param ite: varan att editera

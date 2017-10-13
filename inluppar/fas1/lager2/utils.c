@@ -121,8 +121,8 @@ bool not_empty(char *str) {
 
 
 answer_t ask_question(char *question, check_func check, convert_func convert) {
-  int buffer = 20;
-  char str[20];
+  int buffer = 200;
+  char str[200];
   answer_t result;
   do {
     print(question);

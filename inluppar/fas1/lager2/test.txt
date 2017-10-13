@@ -1,6 +1,11 @@
-Banan
-En gul frukt
-15
 2
-A1 3
-A2 5
+Banan
+En banan
+12
+2
+A1 4
+A2 3
+B
+B3
+1
+F43 2

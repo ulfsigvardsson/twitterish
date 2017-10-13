@@ -35,20 +35,23 @@ shelf_t *shelf_empty()
   return s;
 }
 
-item_t *item_new(char *name, char *descr, int price, char *id, int amount) {
+item_t *item_new(char *name, char *descr, int price) {
   item_t *item = calloc(1, sizeof(item_t));
   assert(item);
   
   item->name   = name;
   item->descr  = descr;
   item->price  = price;
-
-  shelf_t *shelf = shelf_new(id, amount);
-  elem_t elem = { .p = shelf };
+  
   list_t *shelves = list_new(shelf_copy, shelf_free, shelf_compare);
-  list_append(shelves, elem);
+
   item->shelves = shelves;
   return item;
+}
+
+void item_add_shelf(item_t *item, elem_t shelf)
+{
+  list_append(item->shelves, shelf);
 }
 
 void item_set_name(item_t *item, char *name)
@@ -150,7 +153,8 @@ int item_compare(elem_t key1, elem_t key2)
   char* k2 = (char*)key2.p;
 
   if (k1 && k2 ) return strcmp(k1, k2); 
-  // kanske lägga till att inputvärdet automatiskt är större än NULL för att få ett vettigt returnvärde 
+  // kanske lägga till att inputvärdet automatiskt är större än NULL för att få ett vettigt returnvärde
+  return -1000;
 }
 
 void item_free(elem_t elem)
@@ -159,8 +163,10 @@ void item_free(elem_t elem)
 
   if (item)
     {
-      free(item->name);
-      free(item->descr);
+      if (item->name) free(item->name);
+      item->name=NULL;
+      if (item->descr) free(item->descr);
+      item->descr = NULL;
       list_delete(item->shelves, true);
       free(item);
     }
@@ -173,6 +179,12 @@ void shelf_free_aux(shelf_t *shelf)
       free(shelf->id);
       free(shelf);
     }
+}
+
+void key_free(elem_t elem)
+{
+  char *key = elem.p;
+  free(key);
 }
 
 void shelf_free(elem_t elem)
