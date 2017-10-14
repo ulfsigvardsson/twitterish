@@ -64,9 +64,10 @@ void item_set_description(item_t *item, char *descr)
 {
   if (item)
     {
-      char* tmp = item->descr;
+      //char* tmp = item->descr;
       item->descr = descr;
-      free(tmp);
+      //free(tmp);
+      //Dessa rader free:ar en del av item strukten, vilket kraschar skit
     }
 }
 

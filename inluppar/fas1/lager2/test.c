@@ -3,6 +3,7 @@
 #include "list.h"
 #include "common.h"
 #include "tree.h"
+#include "item.h"
 
 
 int tree_compare_int(elem_t a, elem_t b)
@@ -380,6 +381,150 @@ void tree_balance_test()
   CU_ASSERT_TRUE(strcmp("D", (char*)get_root_elem(tree)) == 0);
 }
 
+
+void item_new_test()
+{
+  item_t *item = item_new("Foo", "Bar", 20);
+  CU_ASSERT_TRUE(strcmp(item_name(item), "Foo") == 0);
+  CU_ASSERT_TRUE(strcmp(item_descr(item), "Bar") == 0);
+  CU_ASSERT_TRUE(item_price(item) == 20);
+  
+  item_set_name(item, "Lorem");
+  item_set_description(item, "Ipsum");
+  item_set_price(item, 100);
+
+  CU_ASSERT_TRUE(strcmp(item_name(item), "Lorem") == 0);
+  CU_ASSERT_TRUE(strcmp(item_descr(item), "Ipsum") == 0);
+  CU_ASSERT_TRUE(item_price(item) == 100);
+
+  list_t *shelves = item_shelves(item);
+  CU_ASSERT_PTR_NOT_NULL(shelves);
+
+  CU_ASSERT_TRUE(list_length(shelves) == 0);
+}
+
+void item_set_name_test()
+{
+  item_t *item = item_new("Foo", "Bar", 20);
+  item_set_name(item, "Lorem");
+  CU_ASSERT_TRUE(strcmp(item_name(item), "Lorem") == 0);
+}
+
+void item_set_description_test()
+{
+  item_t *item = item_new("Foo", "Bar", 20);
+  item_set_description(item, "Ipsum");
+  CU_ASSERT_TRUE(strcmp(item_descr(item), "Ipsum") == 0);
+}
+
+void item_set_price_test()
+{
+  item_t *item = item_new("Foo", "Bar", 20);
+   item_set_price(item, 100);
+   CU_ASSERT_TRUE(item_price(item) == 100);
+}
+
+void shelf_new_test()
+{
+  shelf_t *shelf = shelf_new("A1", 10);
+  CU_ASSERT_TRUE(strcmp(shelf_id(shelf), "A1") == 0);
+  CU_ASSERT_TRUE(shelf_amount(shelf) == 10);
+}
+
+void item_set_shelf_test()
+{
+  shelf_t *shelf = shelf_new("A1", 10);
+  item_set_shelf(shelf, "B1");
+  CU_ASSERT_TRUE(strcmp(shelf_id(shelf), "B1") == 0);
+}
+/*
+void item_set_amount_test()
+{
+  shelf_t *shelf = shelf_new("A1", 10);
+  item_set_amount(shelf, 100);
+  CU_ASSERT_TRUE(shelf_amount(shelf) == 100);
+}
+*/
+void shelf_add_amount_test()
+{
+  shelf_t *shelf = shelf_new("A1", 10);
+  shelf_add_amount(shelf, 100);
+  CU_ASSERT_TRUE(shelf_amount(shelf) == 110);
+}
+
+void item_set_shelves_test()
+{
+  item_t *item = item_new("Foo", "Bar", 20);
+  shelf_t *shelf = shelf_new("A1", 10);
+  list_t *shelves = list_new(shelf_copy, shelf_free, shelf_compare);
+  elem_t element = { .p = shelf };
+  list_append(shelves, element); // Lägger till elementet i listan
+
+  item_set_shelves(item, shelves); // Lägger till listan till item
+  list_t* shelves2 = item_shelves(item);
+  // Plockar fram listan igen och kollar längden
+  CU_ASSERT_TRUE(list_length(shelves2) == 1);
+  //Kollar elementet i listan
+  elem_t shelf2 = { .p = NULL};
+  CU_ASSERT_TRUE(list_get(shelves2, 0, &shelf2));
+  shelf_t *shelf2_shelf = (shelf_t *)shelf2.p;
+  
+  CU_ASSERT_TRUE(strcmp(shelf_id(shelf2_shelf), "A1") == 0);
+  CU_ASSERT_TRUE(shelf_amount(shelf2_shelf) == 10);
+}
+
+void shelf_compare_test()
+{
+  elem_t shelfA = { .p = shelf_new("A100", 1)};
+  elem_t shelfB = { .p = shelf_new("B100", 1)};
+  elem_t shelfC = { .p = shelf_new("A100", 1)};
+
+  CU_ASSERT_TRUE(shelf_compare(shelfA, shelfB) != 0);
+  CU_ASSERT_TRUE(shelf_compare(shelfA, shelfC) == 0);
+}
+
+void item_compare_test()
+{
+  elem_t key1 = { .p = "Kritor"};
+  elem_t key2 = { .p = "Pennor"};
+  elem_t key3 = { .p = "Kritor"};
+
+  CU_ASSERT_TRUE(item_compare(key1, key2) != 0);
+  CU_ASSERT_TRUE(item_compare(key1, key3) == 0);
+}
+
+void shelf_deep_copy_test()
+{
+  elem_t shelf1 = { .p = shelf_new("A1", 1)};
+  elem_t shelf2 = shelf_deep_copy(shelf1);
+  shelf_t *shelf2_shelf = shelf2.p;
+  CU_ASSERT_TRUE(strcmp(shelf_id(shelf2_shelf), "A1") == 0);
+  CU_ASSERT_TRUE(shelf_amount(shelf2_shelf) == 1);
+}
+
+void item_deep_copy_test()
+{
+  item_t *item1 = item_new("Foo", "Bar", 20);
+  shelf_t *shelf = shelf_new("A1", 10);
+  list_t *shelves = list_new(shelf_copy, shelf_free, shelf_compare);
+  elem_t element1 = { .p = shelf };
+  list_append(shelves, element1); // Lägger till elementet i listan
+  item_set_shelves(item1, shelves); // Lägger till listan till item
+  
+  elem_t elem = { .p = item1};
+  item_t *item2 = item_deep_copy(elem);
+
+  CU_ASSERT_TRUE(strcmp(item_name(item1), item_name(item2)) == 0);
+  CU_ASSERT_TRUE(strcmp(item_descr(item1), item_descr(item2)) == 0);
+  CU_ASSERT_TRUE(item_price(item1) == item_price(item2));
+  //Testar ifall hyllorna är lika
+  list_t *item2_shelves = item_shelves(item2);
+  elem_t element2 = { .p = NULL};
+  CU_ASSERT_TRUE(list_get(item2_shelves, 0, &element2));
+  CU_ASSERT_TRUE(shelf_compare(element1, element2) == 0);
+  
+}
+
 int main(int argc, char *argv[]) {
   CU_pSuite pSuite = NULL;
 
@@ -391,7 +536,7 @@ int main(int argc, char *argv[]) {
   pSuite = CU_add_suite("List.h", NULL, NULL);
 
   /* add the tests to the suite */
-  CU_add_test(pSuite, "new_list", list_new_test);
+  /*CU_add_test(pSuite, "new_list", list_new_test);
   CU_add_test(pSuite, "list_insert", list_insert_test);
   CU_add_test(pSuite, "list_prepend", list_prepend_test);
   CU_add_test(pSuite, "list_append", list_append_test);
@@ -401,8 +546,8 @@ int main(int argc, char *argv[]) {
   CU_add_test(pSuite, "list_remove", list_remove_test);
   CU_add_test(pSuite, "list_apply", list_apply_test);
   CU_add_test(pSuite, "list_contains", list_contains_test);
-   
-
+  */ 
+  /*
   pSuite = CU_add_suite("Tree.h", NULL, NULL);
   CU_add_test(pSuite, "tree_new", tree_new_test);
   CU_add_test(pSuite, "tree_insert", tree_insert_test);
@@ -412,7 +557,25 @@ int main(int argc, char *argv[]) {
   //CU_add_test(pSuite, "tree_elements", tree_elements_test);
   //CU_add_test(pSuite, "tree_keys", tree_keys_test);
   CU_add_test(pSuite, "tree_balance", tree_balance_test);
- 
+  */
+
+  pSuite = CU_add_suite("Item.h", NULL, NULL);
+  CU_add_test(pSuite, "item_new", item_new_test);
+  CU_add_test(pSuite, "item_set_name", item_set_name_test);
+  CU_add_test(pSuite, "item_set_description", item_set_description_test);
+  CU_add_test(pSuite, "item_set_price", item_set_price_test);
+  CU_add_test(pSuite, "shelf_new", shelf_new_test);
+  CU_add_test(pSuite, "item_set_shelf", item_set_shelf_test);
+  //CU_add_test(pSuite, "item_set_amount", item_set_amount_test);
+  //Cunit hittar inte item_set_amount FIXME
+  CU_add_test(pSuite, "shelf_add_amount", shelf_add_amount_test);
+  CU_add_test(pSuite, "item_set_shelf", item_set_shelf_test);
+  CU_add_test(pSuite, "item_set_shelves", item_set_shelves_test);
+  CU_add_test(pSuite, "shelf_compare", shelf_compare_test);
+  CU_add_test(pSuite, "item_compare", item_compare_test);
+  CU_add_test(pSuite, "shelf_deep_copy", shelf_deep_copy_test);
+  CU_add_test(pSuite, "item_deep_copy", item_deep_copy_test);
+  
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);
   CU_basic_run_tests();
