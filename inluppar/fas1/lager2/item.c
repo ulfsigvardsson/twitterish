@@ -209,6 +209,8 @@ elem_t shelf_deep_copy(elem_t shelf)
 {
   shelf_t *copy     = calloc(1, sizeof(shelf_t));
   shelf_t *original = (shelf_t*)shelf.p;
+
+  assert(original);
   
   copy->id = strdup(original->id);
   copy->amount = original->amount;
@@ -221,6 +223,9 @@ item_t *item_deep_copy(elem_t elem)
 {
   item_t *to = calloc(1, sizeof(item_t));
   item_t *from = elem.p;
+
+  assert(from);
+  
   to->name  = strdup(from->name);
   to->descr = strdup(from->descr);
   to->price = from->price;

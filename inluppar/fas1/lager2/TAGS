@@ -2,10 +2,10 @@
 analysis.c,15
 int main(6,74
 
-file.c,69
+file.c,57
 int db_size(9,113
-tree_t *load_db(load_db18,200
-int main(60,1317
+int load_db(18,200
+int main(53,1006
 
 item.c,1067
 struct item 7,80
@@ -39,13 +39,13 @@ int item_compare(150,2426
 void item_free(160,2700
 void shelf_free_aux(175,2972
 void key_free(184,3080
-void shelf_free(190,3152
-elem_t shelf_copy(196,3263
-elem_t item_copy(202,3364
-elem_t shelf_deep_copy(208,3415
-item_t *item_deep_copy(item_deep_copy220,3674
+void shelf_free(190,3147
+elem_t shelf_copy(196,3258
+elem_t item_copy(202,3359
+elem_t shelf_deep_copy(208,3410
+item_t *item_deep_copy(item_deep_copy222,3690
 
-lager.c,1814
+lager.c,2023
 #define MainMenuChoice 11,175
 #define AskName 12,258
 #define AskDescription 13,309
@@ -63,43 +63,50 @@ typedef enum last_action {NOTHING, ADD, REMOVE,27,1175
 typedef enum last_action {NOTHING, ADD, REMOVE, EDIT}EDIT27,1175
 typedef enum last_action {NOTHING, ADD, REMOVE, EDIT} last_action_t;27,1175
 typedef struct undo_action29,1245
-    elem_t new;31,1276
-    elem_t old;32,1292
-    last_action_t last_action;33,1308
-  } undo_action_t;34,1339
-void undo_reset(42,1606
-void undo_free(65,2203
-undo_action_t *undo_new(undo_new82,2542
-void print_main_menu(94,2792
-bool print_shelf(107,3218
-void print_shelves(115,3406
-void print_item(124,3597
-int select_existing_shelf(141,4078
-bool shelf_is_equal(168,4734
-bool shelf_is_in_list(189,5343
-char *find_available_shelf(find_available_shelf206,5837
-void merge_shelves(231,6402
-void edit_shelf_name(250,7055
-void edit_shelves(269,7496
-void edit_description(291,8023
-void edit_price(301,8364
-void edit_item_aux(314,8792
-char *find_free_shelf(find_free_shelf338,9209
-void remove_shelves(344,9301
-void db_remove_item(366,9984
-void add_existing_item(401,10941
-void db_add_item(437,11968
-void undo_last_action(503,13573
-void list_20_items(548,14589
-bool list_db(561,14910
-char *index_menu_choices(index_menu_choices598,15729
-elem_t select_by_index(617,16290
-void list_and_select_item(642,16879
-void edit_item(652,17068
-void edit_db(670,17497
-void db_check_sorting(683,17722
-void event_loop(688,17802
-int main(714,18460
+    elem_t added;31,1276
+    elem_t removed;32,1294
+    elem_t edit_old;33,1314
+    elem_t edit_new;34,1335
+    last_action_t last_action;35,1356
+  } undo_action_t;36,1387
+void undo_reset(44,1654
+void undo_free(68,2283
+undo_action_t *undo_new(undo_new85,2638
+void print_main_menu(93,2800
+bool print_shelf(106,3226
+void print_shelves(114,3414
+void print_item(123,3605
+int select_existing_shelf(140,4086
+bool shelf_is_equal(167,4742
+bool shelf_is_in_list(188,5351
+char *find_available_shelf(find_available_shelf205,5845
+void merge_shelves(230,6410
+void edit_shelf_name(249,7063
+void edit_shelves(269,7524
+void edit_description(291,8076
+void edit_price(301,8417
+void edit_item_aux(314,8845
+char *find_free_shelf(find_free_shelf338,9262
+void remove_shelves(344,9354
+void db_remove_item(366,10037
+void add_existing_item(407,11177
+void db_add_item(443,12204
+void undo_last_action(510,13840
+void list_20_items(553,14925
+bool list_db(566,15246
+int *index_menu_choices(index_menu_choices603,16065
+bool valid_index(613,16388
+elem_t select_by_index(624,16686
+void list_and_select_item(654,17270
+void edit_item(664,17459
+void edit_db(682,17898
+void db_check_sorting(695,18126
+int db_size(701,18220
+bool write_item_to_file(708,18305
+void save_db(730,18934
+tree_t *load_db(load_db740,19198
+void event_loop(783,20290
+int main(810,20951
 
 list.c,839
 typedef struct link link_t;3,19
@@ -174,7 +181,7 @@ void tree_remove_test(305,7238
 void tree_balance_test(343,8198
 int main(383,9211
 
-tree.c,1525
+tree.c,1524
 #define Compare(4,39
 #define Compare_keys 5,82
 #define Comp 6,131
@@ -208,26 +215,26 @@ int tree_no_compare(53,1093
 node_t *node_new(node_new63,1257
 tree_t *tree_new(tree_new76,1674
 void tree_delete(100,2411
-int tree_size(121,2890
-int max(127,2987
-int tree_depth_aux(132,3038
-int tree_depth(145,3306
-node_t **tree_traverse(tree_traverse158,3658
-int get_balance(179,3988
-void build_tree_aux(185,4115
-tree_t *tree_balance(tree_balance201,4551
-bool tree_insert(233,5579
-bool tree_has_key(268,6369
-bool tree_get(280,6757
-void free_node(296,7004
-node_t **find_smallest_successor(find_smallest_successor304,7180
-bool tree_remove(319,7587
-void tree_keys_aux(362,9119
-tree_key_t *tree_keys(tree_keys379,9525
-void tree_elements_aux(388,9727
-elem_t *tree_elements(tree_elements405,10209
-bool node_apply(414,10411
-bool tree_apply(466,11726
+int tree_size(122,2931
+int max(128,3028
+int tree_depth_aux(133,3079
+int tree_depth(146,3347
+node_t **tree_traverse(tree_traverse159,3699
+int get_balance(180,4029
+void build_tree_aux(186,4156
+tree_t *tree_balance(tree_balance202,4592
+bool tree_insert(234,5620
+bool tree_has_key(269,6410
+bool tree_get(281,6798
+void free_node(297,7045
+node_t **find_smallest_successor(find_smallest_successor305,7221
+bool tree_remove(320,7628
+void tree_keys_aux(364,8881
+tree_key_t *tree_keys(tree_keys381,9287
+void tree_elements_aux(390,9489
+elem_t *tree_elements(tree_elements407,9971
+bool node_apply(416,10173
+bool tree_apply(468,11488
 
 utils.c,790
   int   i;4,36
@@ -247,13 +254,13 @@ bool is_float(83,1967
 void clear_input_buffer(103,2398
 bool not_empty(117,2770
 answer_t ask_question(123,2829
-int ask_question_int(142,3263
-char *ask_question_string(ask_question_string148,3483
-char ask_question_char(154,3661
-char chardup(159,3803
-bool is_single_char(163,3847
-void print_menu(167,3908
-int read_string(171,3963
-bool is_number(198,4657
-void print(221,5204
-void println(229,5322
+int ask_question_int(142,3265
+char *ask_question_string(ask_question_string148,3485
+char ask_question_char(154,3663
+char chardup(159,3805
+bool is_single_char(163,3849
+void print_menu(167,3910
+int read_string(171,3965
+bool is_number(198,4659
+void print(221,5206
+void println(229,5324

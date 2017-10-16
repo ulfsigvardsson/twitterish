@@ -106,7 +106,8 @@ void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)
   for (int i = 0; i < size; ++i)
     {
       tree_remove(tree, keys[i], &result); 
-      if (delete_elements) Free_elem(result); 
+      if (delete_elements) Free_elem(result);
+      if (delete_keys) Free_key(keys[i]);
     }
   //OM tree_size == 0 får vi göra något annat
   free(keys);
@@ -176,8 +177,9 @@ node_t **tree_traverse(tree_t *tree, elem_t key)
 }
 
 
-int get_balance(node_t *node)
+int get_balance(tree_t *tree)
 {
+  node_t *node = tree->root;
   return(tree_depth_aux(node->left) - tree_depth_aux(node->right));
 }
 
@@ -321,41 +323,42 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
   node_t **to_remove = tree_traverse(tree, key);
   
   if (*to_remove)
-              {
-                if ((*to_remove)->right && (*to_remove)->left)
-                  {
-                    node_t **minimum = find_smallest_successor(to_remove); // Elementet att ersätta med 
-                    (*to_remove)->elem = Copy((*minimum)->elem); // Kopiera data
-                    (*to_remove)->key = Copy((*minimum)->elem);
-                    *minimum = NULL; // Nolla pekaren till den minsta efterföljaren (?)
-                  }
-                else if ((*to_remove)->right)
-                  {
-                    *result = Copy((*to_remove)->elem);
-                    --(tree->size);
-                    node_t *temp = *to_remove;
-                    *to_remove = (*to_remove)->right;
-                    free(temp);
-                  }
-                else if ((*to_remove)->left)
-                  {
-                    *result = Copy((*to_remove)->elem);
-                    --(tree->size);
-                    node_t *temp = *to_remove;
-                    *to_remove = (*to_remove)->left;
-                    free(temp);
+    {
+      if ((*to_remove)->right && (*to_remove)->left)
+        {
+          node_t **minimum   = find_smallest_successor(to_remove); // Elementet att ersätta med
+          (*to_remove)->elem = Copy((*minimum)->elem); // Kopiera data
+          (*to_remove)->key  = Copy((*minimum)->elem);
+          *minimum = NULL; // Nolla pekaren till den minsta efterföljaren (?)
+        }
+      else if ((*to_remove)->right)
+        {
+          *result = Copy((*to_remove)->elem); 
+          node_t *temp = *to_remove;
+          *to_remove   = (*to_remove)->right;
+          Free_key(temp->key);
+          free(temp);
+        }
+      else if ((*to_remove)->left)
+        {
+          *result = Copy((*to_remove)->elem); 
+          node_t *temp = *to_remove;
+          *to_remove = (*to_remove)->left;
+          Free_key(temp->key);
+          free(temp);
 
-                  } 
-                else if (Is_leaf)
-                  { 
-                    *result = Copy((*to_remove)->elem);
-                    --(tree->size);
-                    free(*to_remove);
-                    (*to_remove) = NULL;
-                  }
-     
-                return true;
-              }
+        }
+      else if (Is_leaf)
+        { 
+          *result = Copy((*to_remove)->elem);
+          Free_key((*to_remove)->key);
+          free(*to_remove);
+          (*to_remove) = NULL;
+        }
+      --(tree->size);
+      return true;
+      
+    }
   return false;
 }
 

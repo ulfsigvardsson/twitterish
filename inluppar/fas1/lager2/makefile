@@ -26,6 +26,9 @@ test:	test.c list.o tree.o common.o
 analysis: analysis.c list.o tree.o common.o
 	$(CC) $(FLAGS) $^ -o $@
 
+run : lager
+	./lager test.txt
+
 runtest: test
 	./test
 
