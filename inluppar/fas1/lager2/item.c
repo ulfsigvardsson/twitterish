@@ -56,7 +56,12 @@ void item_add_shelf(item_t *item, elem_t shelf)
 
 void item_set_name(item_t *item, char *name)
 {
-  if (item) item->name = name;
+  if (item)
+    {
+      char *tmp = item->name;
+      item->name = name;
+      free(tmp);
+    }  
 
 }
 
@@ -64,9 +69,9 @@ void item_set_description(item_t *item, char *descr)
 {
   if (item)
     {
-      //char* tmp = item->descr;
+      char* tmp = item->descr;
       item->descr = descr;
-      //free(tmp);
+      free(tmp);
       //Dessa rader free:ar en del av item strukten, vilket kraschar skit
     }
 }
@@ -97,6 +102,14 @@ char *item_name(item_t *item)
 char *item_descr(item_t *item)
 {
   return item->descr;
+}
+
+void set_item_name(item_t *item, char *name)
+{
+  if (item)
+    {
+      item->name = name;
+    }
 }
 
 int item_price(item_t *item)
@@ -184,8 +197,12 @@ void shelf_free_aux(shelf_t *shelf)
 
 void key_free(elem_t elem)
 {
-  char *key = elem.p;
-  free(key);
+  if(elem.p)
+    {
+      char *key = elem.p;
+      free(key);
+      elem.p = 0;
+    }
 }
 
 void shelf_free(elem_t elem)
@@ -220,7 +237,7 @@ elem_t shelf_deep_copy(elem_t shelf)
   return result;
 }
 
-item_t *item_deep_copy(elem_t elem)
+elem_t item_deep_copy(elem_t elem)
 {
   item_t *to = calloc(1, sizeof(item_t));
   item_t *from = elem.p;
@@ -243,5 +260,6 @@ item_t *item_deep_copy(elem_t elem)
      }
   
   to->shelves = shelves_copy;
-  return to;
- }
+  elem_t result = { .p = to };
+  return result;
+}

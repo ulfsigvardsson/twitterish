@@ -92,6 +92,33 @@ tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_f
  
 }
 
+bool tree_delete_elems(tree_key_t key, elem_t elem, void *free_elem)
+{
+  element_free_fun fun = free_elem;
+  fun(elem);
+  return true;
+}
+
+bool tree_delete_keys(tree_key_t key, elem_t elem, void *free_key)
+{
+  element_free_fun fun = free_key;
+  fun(key);
+  return true;
+}
+
+void tree_delete_nodes(node_t **node)
+{
+  if (*node)
+    {
+      tree_delete_nodes(&(*node)->left);
+      tree_delete_nodes(&(*node)->right);
+      free(*node);
+    }
+  else
+    {
+      return;
+    }
+}
 /// Remove a tree along with all elem_t elements.
 ///
 /// \param tree the tree
@@ -99,19 +126,14 @@ tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_f
 /// \param delete_elements if true, run tree's elem_free function on all elements
 void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)
 {
-  elem_t result;
-  elem_t *keys = tree_keys(tree);
-  int size = tree->size;
-  
-  for (int i = 0; i < size; ++i)
-    {
-      tree_remove(tree, keys[i], &result); 
-      if (delete_elements) Free_elem(result);
-      if (delete_keys) Free_key(keys[i]);
-    }
-  //OM tree_size == 0 får vi göra något annat
-  free(keys);
-  free(tree->root); 
+  if (delete_elements) {
+    tree_apply(tree, inorder, tree_delete_elems, Free_elem);    
+  }
+  if (delete_keys) {
+    tree_apply(tree, inorder, tree_delete_keys, Free_key);    
+  }
+
+  tree_delete_nodes(&tree->root); 
   free(tree);
   return;
 }
@@ -186,10 +208,11 @@ int get_balance(tree_t *tree)
 // Balanserar ett träd
 void build_tree_aux(tree_t* tree, elem_t *element_list, tree_key_t *key_list, int low, int high)
 {
-  int index = (high+low)/2;
+  int index      = (high+low)/2;
   elem_t element = element_list[index];
   tree_key_t key = key_list[index];
   tree_insert(tree, key, element);
+  
   if (index > low)
     {
       build_tree_aux(tree, element_list, key_list, low, index-1);
@@ -200,22 +223,22 @@ void build_tree_aux(tree_t* tree, elem_t *element_list, tree_key_t *key_list, in
     }
 }
 
-tree_t *tree_balance(tree_t *tree)
+void tree_balance(tree_t **tree)
 {
-  if(tree->size < 3){
-    return tree;
+  if((*tree)->size < 3){
+    return;
   }
-  elem_t *element_list = tree_elements(tree);
-  tree_key_t *key_list = tree_keys(tree);
+  elem_t *element_list = tree_elements(*tree);
+  tree_key_t *key_list = tree_keys(*tree);
   
-  tree_t *new_tree = tree_new(Copy, Free_key, Free_elem, Comp);
+  tree_t *new_tree = tree_new((*tree)->copy_f, (*tree)->k_free_f, (*tree)->e_free_f, (*tree)->cmp_f);
 
-  build_tree_aux(new_tree, element_list, key_list, 0, tree->size-1);
+  build_tree_aux(new_tree, element_list, key_list, 0, (*tree)->size-1);
   free (element_list);
   free (key_list);
   
-  tree_delete(tree, Free_key, Free_elem);
-  return new_tree;
+  tree_delete(*tree, false, false);
+  *tree = new_tree;
 }
 
 /// Insert element into the tree. Returns false if the key is already used.
@@ -328,6 +351,7 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
         {
           node_t **minimum   = find_smallest_successor(to_remove); // Elementet att ersätta med
           (*to_remove)->elem = Copy((*minimum)->elem); // Kopiera data
+          Free_key((*to_remove)->key);
           (*to_remove)->key  = Copy((*minimum)->elem);
           *minimum = NULL; // Nolla pekaren till den minsta efterföljaren (?)
         }

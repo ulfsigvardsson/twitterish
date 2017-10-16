@@ -102,6 +102,9 @@ list_t *item_shelves(item_t *item); //Done, testas i item_set_shelves_test
  *  \returns hyllans namn
  */
 char *shelf_id(shelf_t *shelf); //Done
+void shelf_set_amount(shelf_t *shelf, int amount);
+
+void set_shelf_id(shelf_t *shelf, char *id);
 
 //! Returnerar antalet lagrade varor på en hylla
 /*! \param shelf hyllan för vilken att returnera antalet varor 
@@ -136,7 +139,9 @@ elem_t shelf_copy(elem_t shelf);
 /// Allokerar minne för och kopierar ett item
 ///
 /// \param from det item som ska kopieras 
-item_t *item_deep_copy(elem_t item);
+elem_t item_deep_copy(elem_t item);
 
+void key_free(elem_t elem);
+void item_add_shelf(item_t *item, elem_t shelf);
 
 #endif
