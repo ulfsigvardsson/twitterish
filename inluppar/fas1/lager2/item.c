@@ -60,7 +60,7 @@ void item_set_name(item_t *item, char *name)
     {
       char *tmp = item->name;
       item->name = name;
-      free(tmp);
+       free(tmp);
     }  
 
 }
@@ -71,8 +71,7 @@ void item_set_description(item_t *item, char *descr)
     {
       char* tmp = item->descr;
       item->descr = descr;
-      free(tmp);
-      //Dessa rader free:ar en del av item strukten, vilket kraschar skit
+      free(tmp); 
     }
 }
 

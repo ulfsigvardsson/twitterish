@@ -111,8 +111,9 @@ void tree_delete_nodes(node_t **node)
   if (*node)
     {
       tree_delete_nodes(&(*node)->left);
-      tree_delete_nodes(&(*node)->right);
+      tree_delete_nodes(&(*node)->right); 
       free(*node);
+      (*node) = NULL;
     }
   else
     {
@@ -133,7 +134,8 @@ void tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)
     tree_apply(tree, inorder, tree_delete_keys, Free_key);    
   }
 
-  tree_delete_nodes(&tree->root); 
+  tree_delete_nodes(&tree->root);
+  tree->size = 0;
   free(tree);
   return;
 }
@@ -222,6 +224,7 @@ void build_tree_aux(tree_t* tree, elem_t *element_list, tree_key_t *key_list, in
       build_tree_aux(tree, element_list, key_list, index+1, high);
     }
 }
+
 
 void tree_balance(tree_t **tree)
 {

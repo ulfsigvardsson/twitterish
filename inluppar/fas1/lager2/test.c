@@ -344,13 +344,105 @@ void tree_remove_test()
 
 void tree_elements_test()
 {
-  return;
+  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+  
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem4 = { .p = "D" };
+  elem_t elem5 = { .p = "E" };
+  elem_t elem6 = { .p = "F" };
+  elem_t elem7 = { .p = "G" };
+
+  elem_t key1 = { .i = 1 };
+  elem_t key2 = { .i = 2 };
+  elem_t key3 = { .i = 3 };
+  elem_t key4 = { .i = 4 };
+  elem_t key5 = { .i = 5 };
+  elem_t key6 = { .i = 6 };
+  elem_t key7 = { .i = 7 };
+
+  tree_insert(tree, key7, elem7);
+  tree_insert(tree, key4, elem4);
+  tree_insert(tree, key1, elem1);
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key3, elem3);
+  tree_insert(tree, key6, elem6);
+  tree_insert(tree, key5, elem5);
+
+  elem_t *keys = tree_keys(tree);
+
+  for (int i = 0; i < 7; ++i)
+    {
+      CU_ASSERT_TRUE(keys[i].i == i+1);
+    }
 }
 
 void tree_keys_test()
 {
-  return; 
+  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+  
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem4 = { .p = "D" };
+  elem_t elem5 = { .p = "E" };
+  elem_t elem6 = { .p = "F" };
+  elem_t elem7 = { .p = "G" };
+
+  elem_t key1 = { .i = 1 };
+  elem_t key2 = { .i = 2 };
+  elem_t key3 = { .i = 3 };
+  elem_t key4 = { .i = 4 };
+  elem_t key5 = { .i = 5 };
+  elem_t key6 = { .i = 6 };
+  elem_t key7 = { .i = 7 };
+
+  tree_insert(tree, key7, elem7);
+  tree_insert(tree, key4, elem4);
+  tree_insert(tree, key1, elem1);
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key3, elem3);
+  tree_insert(tree, key6, elem6);
+  tree_insert(tree, key5, elem5);
+
+  elem_t *elems = tree_elements(tree);
+  CU_ASSERT_TRUE(strcmp(elems[0].p, "A") == 0);
+  CU_ASSERT_TRUE(strcmp(elems[6].p, "G") == 0);
 }
+
+void tree_delete_test()
+{
+  tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
+  
+  elem_t elem1 = { .p = "A" };
+  elem_t elem2 = { .p = "B" };
+  elem_t elem3 = { .p = "C" };
+  elem_t elem4 = { .p = "D" };
+  elem_t elem5 = { .p = "E" };
+  elem_t elem6 = { .p = "F" };
+  elem_t elem7 = { .p = "G" };
+
+  elem_t key1 = { .i = 1 };
+  elem_t key2 = { .i = 2 };
+  elem_t key3 = { .i = 3 };
+  elem_t key4 = { .i = 4 };
+  elem_t key5 = { .i = 5 };
+  elem_t key6 = { .i = 6 };
+  elem_t key7 = { .i = 7 };
+
+  tree_insert(tree, key7, elem7);
+  tree_insert(tree, key4, elem4);
+  tree_insert(tree, key1, elem1);
+  tree_insert(tree, key2, elem2);
+  tree_insert(tree, key3, elem3);
+  tree_insert(tree, key6, elem6);
+  tree_insert(tree, key5, elem5);
+
+  tree_delete(tree, false, true);
+  CU_ASSERT_TRUE(tree_size(tree) == 0);
+}
+
 void tree_balance_test()
 {
   tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
@@ -373,8 +465,7 @@ void tree_balance_test()
 
   tree_insert(tree, key1, elem1);
   tree_insert(tree, key2, elem2);
-  tree_insert(tree, key3, elem3);
-  tree_insert(tree, key4, elem4);
+  tree_insert(tree, key3, elem3); tree_insert(tree, key4, elem4);
 
   CU_ASSERT_TRUE(strcmp("A", (char*)get_root_elem(tree)) == 0);
 
@@ -394,7 +485,7 @@ void tree_balance_test()
 
 void item_new_test()
 {
-  item_t *item = item_new("Foo", "Bar", 20);
+  item_t *item = item_new(strdup("Foo"), strdup("Bar"), 20);
   CU_ASSERT_TRUE(strcmp(item_name(item), "Foo") == 0);
   CU_ASSERT_TRUE(strcmp(item_descr(item), "Bar") == 0);
   CU_ASSERT_TRUE(item_price(item) == 20);
@@ -415,23 +506,23 @@ void item_new_test()
 
 void item_set_name_test()
 {
-  item_t *item = item_new("Foo", "Bar", 20);
+  item_t *item = item_new(strdup("Foo"), strdup("Bar"), 20);
   item_set_name(item, "Lorem");
   CU_ASSERT_TRUE(strcmp(item_name(item), "Lorem") == 0);
 }
 
 void item_set_description_test()
 {
-  item_t *item = item_new("Foo", "Bar", 20);
+  item_t *item = item_new(strdup("Foo"), strdup("Bar"), 20);
   item_set_description(item, "Ipsum");
   CU_ASSERT_TRUE(strcmp(item_descr(item), "Ipsum") == 0);
 }
 
 void item_set_price_test()
 {
-  item_t *item = item_new("Foo", "Bar", 20);
-   item_set_price(item, 100);
-   CU_ASSERT_TRUE(item_price(item) == 100);
+  item_t *item = item_new(strdup("Foo"), strdup("Bar"), 20);
+  item_set_price(item, 100);
+  CU_ASSERT_TRUE(item_price(item) == 100);
 }
 
 void shelf_new_test()
@@ -535,56 +626,74 @@ void item_deep_copy_test()
   
 }
 
-int main(int argc, char *argv[]) {
-  CU_pSuite pSuite = NULL;
+void undo_new_test()
+{
+  undo_action_t *undo = undo_new();
+  CU_ASSERT_TRUE(undo != NULL); 
+}
 
+void undo_reset_test()
+{
+  undo_action_t *undo = undo_new();
+  return;
+}
+
+void shelf_is_equal_test()
+{
+  undo_action_t *undo = undo_new();
+  return;
+}
+int main(int argc, char *argv[]) {
+  CU_pSuite listSuite = NULL;
+  CU_pSuite treeSuite = NULL;
+  CU_pSuite itemSuite = NULL;
   /* initialize the CUnit test registry */
   if (CUE_SUCCESS != CU_initialize_registry())
     return CU_get_error();
 
   /* add a suite to the registry */
-  pSuite = CU_add_suite("List.h", NULL, NULL);
+  listSuite = CU_add_suite("List.h", NULL, NULL);
 
   /* add the tests to the suite */
-  /*CU_add_test(pSuite, "new_list", list_new_test);
-  CU_add_test(pSuite, "list_insert", list_insert_test);
-  CU_add_test(pSuite, "list_prepend", list_prepend_test);
-  CU_add_test(pSuite, "list_append", list_append_test);
-  CU_add_test(pSuite, "list_get", list_get_test);
-  CU_add_test(pSuite, "list_first", list_first_test);
-  CU_add_test(pSuite, "list_last", list_last_test);
-  CU_add_test(pSuite, "list_remove", list_remove_test);
-  CU_add_test(pSuite, "list_apply", list_apply_test);
-  CU_add_test(pSuite, "list_contains", list_contains_test);
-  */ 
+  CU_add_test(listSuite, "new_list", list_new_test);
+  CU_add_test(listSuite, "list_insert", list_insert_test);
+  CU_add_test(listSuite, "list_prepend", list_prepend_test);
+  CU_add_test(listSuite, "list_append", list_append_test);
+  CU_add_test(listSuite, "list_get", list_get_test);
+  CU_add_test(listSuite, "list_first", list_first_test);
+  CU_add_test(listSuite, "list_last", list_last_test);
+  CU_add_test(listSuite, "list_remove", list_remove_test);
+  CU_add_test(listSuite, "list_apply", list_apply_test);
+  CU_add_test(listSuite, "list_contains", list_contains_test);
+   
   
-  pSuite = CU_add_suite("Tree.h", NULL, NULL);
-  CU_add_test(pSuite, "tree_new", tree_new_test);
-  CU_add_test(pSuite, "tree_insert", tree_insert_test);
-  CU_add_test(pSuite, "tree_height", tree_height_test);
-  CU_add_test(pSuite, "tree_get", tree_get_test);
-  CU_add_test(pSuite, "tree_remove", tree_remove_test);
-  CU_add_test(pSuite, "tree_elements", tree_elements_test);
-  CU_add_test(pSuite, "tree_keys", tree_keys_test);
-  CU_add_test(pSuite, "tree_balance", tree_balance_test);
-  
+  treeSuite = CU_add_suite("Tree.h", NULL, NULL);
+  CU_add_test(treeSuite, "tree_new", tree_new_test);
+  CU_add_test(treeSuite, "tree_insert", tree_insert_test);
+  CU_add_test(treeSuite, "tree_height", tree_height_test);
+  CU_add_test(treeSuite, "tree_get", tree_get_test);
+  CU_add_test(treeSuite, "tree_remove", tree_remove_test);
+  CU_add_test(treeSuite, "tree_elements", tree_elements_test);
+  CU_add_test(treeSuite, "tree_keys", tree_keys_test);
+  CU_add_test(treeSuite, "tree_balance", tree_balance_test);
+  CU_add_test(treeSuite, "tree_delete", tree_delete_test);
 
-  pSuite = CU_add_suite("Item.h", NULL, NULL);
-  CU_add_test(pSuite, "item_new", item_new_test);
-  CU_add_test(pSuite, "item_set_name", item_set_name_test);
-  CU_add_test(pSuite, "item_set_description", item_set_description_test);
-  CU_add_test(pSuite, "item_set_price", item_set_price_test);
-  CU_add_test(pSuite, "shelf_new", shelf_new_test);
-  CU_add_test(pSuite, "item_set_shelf", item_set_shelf_test);
-  //CU_add_test(pSuite, "item_set_amount", item_set_amount_test);
+  itemSuite = CU_add_suite("Item.h", NULL, NULL);
+  CU_add_test(itemSuite, "item_new", item_new_test);
+  CU_add_test(itemSuite, "item_set_name", item_set_name_test);
+  CU_add_test(itemSuite, "item_set_description", item_set_description_test);
+  CU_add_test(itemSuite, "item_set_price", item_set_price_test);
+  CU_add_test(itemSuite, "shelf_new", shelf_new_test);
+  CU_add_test(itemSuite, "item_set_shelf", item_set_shelf_test);
+  //CU_add_test(itemSuite, "item_set_amount", item_set_amount_test);
   //Cunit hittar inte item_set_amount FIXME
-  CU_add_test(pSuite, "shelf_add_amount", shelf_add_amount_test);
-  CU_add_test(pSuite, "item_set_shelf", item_set_shelf_test);
-  CU_add_test(pSuite, "item_set_shelves", item_set_shelves_test);
-  CU_add_test(pSuite, "shelf_compare", shelf_compare_test);
-  CU_add_test(pSuite, "item_compare", item_compare_test);
-  CU_add_test(pSuite, "shelf_deep_copy", shelf_deep_copy_test);
-  CU_add_test(pSuite, "item_deep_copy", item_deep_copy_test);
+  CU_add_test(itemSuite, "shelf_add_amount", shelf_add_amount_test);
+  CU_add_test(itemSuite, "item_set_shelf", item_set_shelf_test);
+  CU_add_test(itemSuite, "item_set_shelves", item_set_shelves_test);
+  CU_add_test(itemSuite, "shelf_compare", shelf_compare_test);
+  CU_add_test(itemSuite, "item_compare", item_compare_test);
+  CU_add_test(itemSuite, "shelf_deep_copy", shelf_deep_copy_test);
+  CU_add_test(itemSuite, "item_deep_copy", item_deep_copy_test);
   
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);

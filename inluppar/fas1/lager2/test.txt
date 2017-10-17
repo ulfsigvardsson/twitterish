@@ -1,4 +1,4 @@
-20
+19
 Kaffe
 Gevalia Mörkrost
 25
@@ -14,11 +14,6 @@ a3
 1
 1
 A12 3
-A
-A1
-1
-1
-A1 1
 Bröd
 Pågenlimpa
 13
@@ -98,4 +93,4 @@ Xbox
 TV-spelskonsol från Microsoft
 2500
 1
-G44 80
+G44 204
