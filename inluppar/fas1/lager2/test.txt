@@ -1,0 +1,101 @@
+20
+Kaffe
+Gevalia Mörkrost
+25
+1
+A2 33
+Chokladkaka
+Marabou Helnöt
+21
+1
+H11 94
+Bananas
+a3
+1
+1
+A12 3
+A
+A1
+1
+1
+A1 1
+Bröd
+Pågenlimpa
+13
+1
+T9 34
+Glass
+Vaniljglass
+60
+1
+F9 55
+Cornflakes
+Kellog's Cornflakes
+46
+1
+F2 33
+Cykel
+En orange mountainbike
+6995
+1
+G4 20
+Gummistövlar
+Tretornstövlar
+95
+1
+L5 60
+Hammare
+Ett verktyg
+69
+1
+F4 35
+Pennor
+Kulspetspennor
+1
+1
+A75 600
+Läsk
+Coca Cola
+12
+1
+R4 428
+Kexchoklad
+Kexchoklad
+20
+1
+E4 66
+Miniräknare
+CASIO Grafritare
+750
+1
+O9 30
+Mjölk
+Mellanmjölk
+10
+1
+A7 100
+Snus
+General portion
+43
+1
+E9 540
+Päron
+Gröna päron
+12
+1
+H88 274
+Skruvmejsel
+En skruvmejsel
+47
+1
+W11 59
+Strumpor
+Ankelsockor, vita40
+1
+1
+D12 600
+Xbox
+TV-spelskonsol från Microsoft
+2500
+1
+G44 80

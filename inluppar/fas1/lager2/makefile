@@ -11,17 +11,17 @@ list.o: list.h list.c
 tree.o: tree.h tree.c
 	$(CC) $(FLAGS) tree.c -c
 
-item.o: list.o item.c
+item.o: list.o item.c item.h
 	$(CC) $(FLAGS) item.c list.c -c
 
-utils.o: utils.c
+utils.o: utils.c utils.h
 	$(CC) $(FLAGS) utils.c -c
 
 shelfinfo.o: shelfinfo.c shelfinfo.h
 	$(CC) $(FLAGS) shelfinfo.c -c
 
-test:	test.c list.o tree.o common.o
-	$(CC) $(FLAGS) test.c list.c tree.c common.c -o test -lcunit
+test:	test.c list.o tree.o item.o
+	$(CC) $(FLAGS) test.c list.c tree.c item.c -o test -lcunit
 
 analysis: analysis.c list.o tree.o common.o
 	$(CC) $(FLAGS) $^ -o $@

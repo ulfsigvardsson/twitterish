@@ -4,6 +4,7 @@
 #include "common.h"
 #include "tree.h"
 #include "item.h"
+#include "lager.h"
 
 
 int tree_compare_int(elem_t a, elem_t b)
@@ -341,6 +342,15 @@ void tree_remove_test()
   
 }
 
+void tree_elements_test()
+{
+  return;
+}
+
+void tree_keys_test()
+{
+  return; 
+}
 void tree_balance_test()
 {
   tree_t *tree = tree_new(NULL, NULL, NULL, tree_compare_int);
@@ -367,8 +377,8 @@ void tree_balance_test()
   tree_insert(tree, key4, elem4);
 
   CU_ASSERT_TRUE(strcmp("A", (char*)get_root_elem(tree)) == 0);
-  
-  tree = tree_balance(tree);
+
+  tree_balance(&tree);
   
   CU_ASSERT_TRUE(strcmp("B", (char*)get_root_elem(tree)) == 0);
   
@@ -376,7 +386,7 @@ void tree_balance_test()
   tree_insert(tree, key6, elem6);
   tree_insert(tree, key7, elem7);
 
-  tree = tree_balance(tree);
+  tree_balance(&tree);
   
   CU_ASSERT_TRUE(strcmp("D", (char*)get_root_elem(tree)) == 0);
 }
@@ -512,13 +522,13 @@ void item_deep_copy_test()
   item_set_shelves(item1, shelves); // Lägger till listan till item
   
   elem_t elem = { .p = item1};
-  item_t *item2 = item_deep_copy(elem);
+  elem_t item2 = item_deep_copy(elem);
 
-  CU_ASSERT_TRUE(strcmp(item_name(item1), item_name(item2)) == 0);
-  CU_ASSERT_TRUE(strcmp(item_descr(item1), item_descr(item2)) == 0);
-  CU_ASSERT_TRUE(item_price(item1) == item_price(item2));
+  CU_ASSERT_TRUE(strcmp(item_name(item1), item_name(item2.p)) == 0);
+  CU_ASSERT_TRUE(strcmp(item_descr(item1), item_descr(item2.p)) == 0);
+  CU_ASSERT_TRUE(item_price(item1) == item_price(item2.p));
   //Testar ifall hyllorna är lika
-  list_t *item2_shelves = item_shelves(item2);
+  list_t *item2_shelves = item_shelves(item2.p);
   elem_t element2 = { .p = NULL};
   CU_ASSERT_TRUE(list_get(item2_shelves, 0, &element2));
   CU_ASSERT_TRUE(shelf_compare(element1, element2) == 0);
@@ -547,17 +557,17 @@ int main(int argc, char *argv[]) {
   CU_add_test(pSuite, "list_apply", list_apply_test);
   CU_add_test(pSuite, "list_contains", list_contains_test);
   */ 
-  /*
+  
   pSuite = CU_add_suite("Tree.h", NULL, NULL);
   CU_add_test(pSuite, "tree_new", tree_new_test);
   CU_add_test(pSuite, "tree_insert", tree_insert_test);
   CU_add_test(pSuite, "tree_height", tree_height_test);
   CU_add_test(pSuite, "tree_get", tree_get_test);
   CU_add_test(pSuite, "tree_remove", tree_remove_test);
-  //CU_add_test(pSuite, "tree_elements", tree_elements_test);
-  //CU_add_test(pSuite, "tree_keys", tree_keys_test);
+  CU_add_test(pSuite, "tree_elements", tree_elements_test);
+  CU_add_test(pSuite, "tree_keys", tree_keys_test);
   CU_add_test(pSuite, "tree_balance", tree_balance_test);
-  */
+  
 
   pSuite = CU_add_suite("Item.h", NULL, NULL);
   CU_add_test(pSuite, "item_new", item_new_test);
