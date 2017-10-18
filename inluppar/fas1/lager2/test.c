@@ -5,7 +5,7 @@
 #include "tree.h"
 #include "item.h"
 #include "lager.h"
-
+#include "undo.h"
 
 int tree_compare_int(elem_t a, elem_t b)
 {
@@ -634,19 +634,65 @@ void undo_new_test()
 
 void undo_reset_test()
 {
+  elem_t item = { .p = item_new("test", "ett test", 14) };
   undo_action_t *undo = undo_new();
+  undo_set_last_action(undo, ADD);
+  undo_set_added(undo, item);
+  undo_reset(undo);
+  CU_ASSERT_TRUE(undo_get_last_action(undo) == NOTHING);
+  
   return;
 }
 
 void shelf_is_equal_test()
 {
-  undo_action_t *undo = undo_new();
+  elem_t shelf = { .p = shelf_new("A1", 2 )};
+  shelf_info_t *info = shelf_info_new();
+  set_info_id("A1", info);
+  CU_ASSERT_TRUE(shelf_is_equal(shelf, info));
   return;
 }
+
+void shelf_is_in_list_test()
+{
+  shelf_info_t *info = shelf_info_new();
+  set_info_name("Banan", info);
+  set_info_id("A1", info);
+  elem_t key    = { .p = "Banan" };
+  elem_t item   = { .p = item_new("Banan", "En banan", 12) };
+  
+  elem_t shelf1 = { .p = shelf_new("A1", 1) };
+  elem_t shelf2 = { .p = shelf_new("A2", 1) };
+
+  list_t *shelves = list_new(shelf_copy, shelf_free, shelf_compare);
+  list_append(shelves, shelf1);
+  list_append(shelves, shelf2);
+  item_set_shelves(item.p, shelves);
+
+  CU_ASSERT_TRUE(shelf_is_in_list(key, item, info));
+}
+
+void merge_shelves_test()
+{
+  shelf_info_t *info = shelf_info_new();
+  set_info_id(strdup("A3"), info);
+  list_t *shelves = list_new(shelf_copy, shelf_free, shelf_compare);
+  elem_t shelf1   = { .p = shelf_new(strdup("A1"), 1) };
+  elem_t shelf2   = { .p = shelf_new("A2", 1) };
+  
+  list_append(shelves, shelf1);
+  list_append(shelves, shelf2);
+
+  merge_shelves(info, shelf1, shelves);
+  elem_t temp = { .p = shelf_new("A1", 1) };
+  CU_ASSERT_FALSE(list_contains(shelves, temp));
+}
+
 int main(int argc, char *argv[]) {
-  CU_pSuite listSuite = NULL;
-  CU_pSuite treeSuite = NULL;
-  CU_pSuite itemSuite = NULL;
+  CU_pSuite listSuite  = NULL;
+  CU_pSuite treeSuite  = NULL;
+  CU_pSuite itemSuite  = NULL;
+  CU_pSuite lagerSuite = NULL;
   /* initialize the CUnit test registry */
   if (CUE_SUCCESS != CU_initialize_registry())
     return CU_get_error();
@@ -694,7 +740,12 @@ int main(int argc, char *argv[]) {
   CU_add_test(itemSuite, "item_compare", item_compare_test);
   CU_add_test(itemSuite, "shelf_deep_copy", shelf_deep_copy_test);
   CU_add_test(itemSuite, "item_deep_copy", item_deep_copy_test);
-  
+
+  lagerSuite = CU_add_suite("Lager.h", NULL, NULL);
+  CU_add_test(lagerSuite, "shelf_is_equal", shelf_is_equal_test);
+  CU_add_test(lagerSuite, "undo_reset", undo_reset_test);
+  CU_add_test(lagerSuite, "shelf_is_in_list", shelf_is_in_list_test);
+  CU_add_test(lagerSuite, "merge_shelves", merge_shelves_test);
   /* Run all tests using the CUnit Basic interface */
   CU_basic_set_mode(CU_BRM_VERBOSE);
   CU_basic_run_tests();

@@ -133,21 +133,21 @@ void list_insert(list_t *list, int index, elem_t elem)
     make_singleton(list, elem);
   }
   else
-  {  
-    link_t **c = list_find(list, index);
-    // För insättning längst bak i listan
-    if (index == (int)list->size)
-      {
-        link_t *new = link_new(list->copy_f(elem), NULL);
-        (list->last)->next = new; 
-        list->last = new;
-      }
-    // Alla andra fall
-    else
-      {
-        *c = link_new(list->copy_f(elem), (*c));
-      }
-  }
+    {  
+      link_t **c = list_find(list, index);
+      // För insättning längst bak i listan
+      if (index == (int)list->size)
+        {
+          link_t *new = link_new(list->copy_f(elem), NULL);
+          (list->last)->next = new; 
+          list->last = new;
+        }
+      // Alla andra fall
+      else
+        {
+          *c = link_new(list->copy_f(elem), (*c));
+        }
+    }
   ++(list->size);
 }
 
@@ -174,12 +174,12 @@ void list_append(list_t *list, elem_t elem)
     make_singleton(list, elem);
   }
   else
-  {
-    link_t *current_last = list->last;
-    link_t *new = link_new(elem, NULL);
-    current_last->next = new;
-    list->last = new;
-  }
+    {
+      link_t *current_last = list->last;
+      link_t *new = link_new(elem, NULL);
+      current_last->next = new;
+      list->last = new;
+    }
   ++(list->size); 
 }
 /// Inserts a new element at the beginning of the list
@@ -206,18 +206,18 @@ bool list_get(list_t *list, int index, elem_t *result)
   index = adjust_index_get(index, list->size);
   link_t **c = list_find(list, index);
   if (*c)
-  {
-    if (index < 0 && abs(index) <= (int)list->size) // Negativa tal?
-      {
-        *result = (*c)->elem;
-        return true;
-      }
-    else if (abs(index) < (int)list->size) // Detta ger fel när index är -1 och size är 1
-      {
-        *result = (*c)->elem;
-        return true;
-      }    
-  }
+    {
+      if (index < 0 && abs(index) <= (int)list->size) // Negativa tal?
+        {
+          *result = (*c)->elem;
+          return true;
+        }
+      else if (abs(index) < (int)list->size) // Detta ger fel när index är -1 och size är 1
+        {
+          *result = (*c)->elem;
+          return true;
+        }    
+    }
   return false;
 }
 
@@ -267,15 +267,15 @@ void list_remove(list_t *list, int index, bool delete)
   link_t *tmp = *c;
 
   if (*c) // Kollar att pekare inte är NULL, vi kan köra på tomma listor
-  {
-    *c = (*c)->next;
-    if (delete)
-      {
-        list->free_f(tmp->elem);
-      }
-    free(tmp);
-    --(list->size);  
-  }
+    {
+      *c = (*c)->next;
+      if (delete)
+        {
+          list->free_f(tmp->elem);
+        }
+      free(tmp);
+      --(list->size);  
+    }
   
 }
 /// Deletes a list. 
@@ -305,13 +305,13 @@ bool list_apply(list_t *list, elem_apply_fun fun, void *data)
   bool result = false;
   link_t **c = &(list->first);
   while (*c)
-  {
-    if(fun((*c)->elem, data))
     {
-      result = true;
+      if(fun((*c)->elem, data))
+        {
+          result = true;
+        }
+      c = &((*c)->next);
     }
-    c = &((*c)->next);
-  }
   return result;
 }
 
@@ -331,25 +331,25 @@ int list_contains(list_t *list, elem_t elem)
   link_t **c = &(list->first);
 
   while (*c)
-  {
-    //Om listan har en cmp-funktion
-    if (list->cmp_f)
     {
-      if (list->cmp_f((*c)->elem, elem) == 0) {
-        return counter;
-      }
-    }
-    // Om listan inte har en cmp-funktion
-    else
-      {//FIXME:
-        if ((*c)->elem.i == elem.i) { // Ful-lösning, hur jämföra en union med '=='?
-          return counter;
+      //Om listan har en cmp-funktion
+      if (list->cmp_f)
+        {
+          if (list->cmp_f((*c)->elem, elem) == 0) {
+            return counter;
+          }
         }
-    }
+      // Om listan inte har en cmp-funktion
+      else
+        {
+          if ((*c)->elem.i == elem.i) { // Ful-lösning, hur jämföra en union med '=='?
+            return counter;
+          }
+        }
     
-  c = &((*c)->next);
-  ++counter;
-  }
+      c = &((*c)->next);
+      ++counter;
+    }
   return index;
 }
 

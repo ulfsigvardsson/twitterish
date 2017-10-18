@@ -137,6 +137,6 @@ void *get_root_elem(tree_t *tree);
 /// \param tree the tree
 void tree_balance(tree_t **tree);
 
-int get_balance(tree_t *tree);
+bool get_balance(tree_t *tree);
 #endif
 

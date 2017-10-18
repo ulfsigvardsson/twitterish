@@ -9,7 +9,7 @@
 int db_size(FILE *f)
 {
   int size = 0;
-  fscanf(f, " %d ", &size);
+  fscanf(f, "%d\n", &size);
   return size;
 }
 

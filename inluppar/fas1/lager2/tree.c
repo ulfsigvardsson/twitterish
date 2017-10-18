@@ -15,41 +15,51 @@
 #define Full (*to_remove)->right && (*to_remove)->left
 #define Right (*to_remove)->right
 #define Left (*to_remove)->left 
- 
+
+/// \brief En nod i trädet
 struct node
 {
-  elem_t elem;
-  tree_key_t key;
-  node_t *left;
-  node_t *right;
+  elem_t elem; ///< Nodens element
+  tree_key_t key; ///< Nodens nyckel
+  node_t *left; ///< Nodens vänstra subträd
+  node_t *right; ///< Nodens högra subträd
 };
 
+/// \brief Strukt för det binära sökträdet
 struct tree
 {
-  node_t *root;
-  element_copy_fun copy_f;
-  element_free_fun e_free_f;
-  key_free_fun k_free_f;
-  element_comp_fun cmp_f;
-  size_t size;
+  node_t *root; ///< Trädets rotnod
+  element_copy_fun copy_f; ///< Trädets funktion för att kopiera sina element
+  element_free_fun e_free_f; ///< Funktion för att frigöra element i trädet
+  key_free_fun k_free_f; ///< Funktion för att frigöra nycklar i trädet
+  element_comp_fun cmp_f; ///< Funktion för att jämföra element i trädet
+  size_t size; ///< Antal noder i trädet
 };
 
-
+/// \brief Returnerar rotnoden i ett träd, endast för tester
+/// \param tree ett binärt sökträd
 void *get_root_elem(tree_t *tree)
 {
   return (tree->root->elem.p);
 }
 
+/// \brief defaultfunktion för kopiering av element om användaren inte anger en egen
+/// \param elem ett element i trädet
 elem_t tree_no_copy(elem_t elem)
 {
   return elem;
-  }
+}
 
+/// \brief defaultfunktion för frigörning av element och nycklar om användaren inte anger en egen
+/// \param elem ett element eller nyckel i trädet
 void tree_no_free(elem_t elem)
 {
   return;
 }
 
+/// \brief defaultfunktion för jämförelse av element om användaren inte anger en egen
+/// \param elem1 ett element i trädet
+/// \param elem2 elementet att jämföra med elem1
 int tree_no_compare(elem_t elem1, elem_t elem2)
 {
   if(elem1.i == elem2.i) return 0;
@@ -60,6 +70,8 @@ int tree_no_compare(elem_t elem1, elem_t elem2)
   else return -1;
 }
 
+/// \brief skapar och allokerar minnesplats för en ny nod
+/// \returns den nya noden
 node_t *node_new()
 {
   node_t *node = calloc(1, sizeof(node_t));
@@ -92,6 +104,11 @@ tree_t *tree_new(element_copy_fun element_copy, key_free_fun key_free, element_f
  
 }
 
+/// \brief hjälpfunktion för tree_delete. Frigör ett element i trädet
+/// \param key en nyckel tillhörande elem
+/// \param elem elementet att frigöra
+/// \param free_elem trädets frigörningsfunktion för element
+/// \returns true
 bool tree_delete_elems(tree_key_t key, elem_t elem, void *free_elem)
 {
   element_free_fun fun = free_elem;
@@ -99,6 +116,11 @@ bool tree_delete_elems(tree_key_t key, elem_t elem, void *free_elem)
   return true;
 }
 
+/// \brief hjälpfunktion för tree_delete. Frigör en key i trädet
+/// \param key en nyckel att frigöra
+/// \param elem ett element i trädet tillhörande key
+/// \param free_key trädets frigörningsfunktion för key
+/// \returns true
 bool tree_delete_keys(tree_key_t key, elem_t elem, void *free_key)
 {
   element_free_fun fun = free_key;
@@ -106,6 +128,8 @@ bool tree_delete_keys(tree_key_t key, elem_t elem, void *free_key)
   return true;
 }
 
+/// \brief hjälpfunktion för tree_delete. frigör en nod och dess subträd
+/// \param node dubbelpekare till en nod
 void tree_delete_nodes(node_t **node)
 {
   if (*node)
@@ -154,6 +178,7 @@ int max(int a, int b)
   return a > b ? a : b;
 }
 
+/// \brief hjälpfunktion för  tree_depth
 int tree_depth_aux(node_t *node)
 {
   if (node && (node->right || node->left))
@@ -200,11 +225,19 @@ node_t **tree_traverse(tree_t *tree, elem_t key)
   return c;
 }
 
-
-int get_balance(tree_t *tree)
+bool get_balance_aux(node_t *node)
 {
-  node_t *node = tree->root;
-  return(tree_depth_aux(node->left) - tree_depth_aux(node->right));
+  if (node)
+    {
+      return(abs(tree_depth_aux(node->left) - tree_depth_aux(node->right)) < 2 && get_balance_aux(node->left) && get_balance_aux(node->right));    
+    }
+  return true;
+
+}
+
+bool get_balance(tree_t *tree)
+{
+  return(get_balance_aux(tree->root));
 }
 
 // Balanserar ett träd
@@ -352,10 +385,12 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
     {
       if ((*to_remove)->right && (*to_remove)->left)
         {
-          node_t **minimum   = find_smallest_successor(to_remove); // Elementet att ersätta med
+          node_t **minimum   = find_smallest_successor(&(*to_remove)->right); // Elementet att ersätta med
+          *result = Copy((*to_remove)->elem); 
           (*to_remove)->elem = Copy((*minimum)->elem); // Kopiera data
           Free_key((*to_remove)->key);
-          (*to_remove)->key  = Copy((*minimum)->elem);
+          (*to_remove)->key  = (*minimum)->key;
+          free(*minimum);
           *minimum = NULL; // Nolla pekaren till den minsta efterföljaren (?)
         }
       else if ((*to_remove)->right)
@@ -389,6 +424,10 @@ bool tree_remove(tree_t *tree, tree_key_t key, elem_t *result)
   return false;
 }
 
+/// HJälpfunktion för tree_keys
+/// \param node den aktuella noden vars key läggs till i keys inorder
+/// \param keys en array av samma storlek som antal element i trädet där nycklar läggs till
+/// \param index heltalspekare som anger indexplatsen att lägga till på i keys
 void tree_keys_aux(node_t *node, elem_t *keys, int *index)
 {
   if (!node) return; 
@@ -415,6 +454,10 @@ tree_key_t *tree_keys(tree_t *tree)
   return keys;
 }
 
+/// Hjälpfunktion för tree_elements
+/// \param node den aktuella noden vars element läggs till i elems inorder
+/// \param elems en array av samma storlek som antal element i trädet där element läggs till
+/// \param index heltalspekare som anger indexplatsen att lägga till på i elems
 void tree_elements_aux(node_t *node, elem_t *elems, int *index)
 {
   if (!node) return; 
@@ -441,6 +484,12 @@ elem_t *tree_elements(tree_t *tree)
   return elems;
 }
 
+
+/// Hjälpfunktion för tree_apply. Applicerar en key_elem_apply_fun på nycklar och element i en nod och dess subträd.
+/// \param node den aktuella noden
+/// \tree_order enum som avgör i vilken ordning funktionen ska appliceras på noden, dess vänstra samt högra subträd.
+/// \fun funktionen som ska appliceras
+/// \success boolpekare som sätts till true om funktionen lyckas genomföra sitt arbete på noden eller på någon av noderna i subträden
 bool node_apply(node_t *node, enum tree_order order, key_elem_apply_fun fun, bool *success, void *data)
 {
   if (node) {

@@ -46,70 +46,53 @@ elem_t item_copy(219,3578
 elem_t shelf_deep_copy(225,3629
 elem_t item_deep_copy(239,3909
 
-lager.c,2050
-#define MainMenuChoice 11,175
-#define AskName 12,258
-#define AskDescription 13,309
-#define AskPrice 14,374
-#define AskShelf 15,423
-#define AskAmount 16,480
-#define ConfirmAddition 17,542
-#define AskRemoveShelf 18,650
-#define ShelfIsInList 19,728
-#define AskWhatToEdit 20,792
-typedef enum last_action 26,1249
-typedef enum last_action {NOTHING,NOTHING26,1249
-typedef enum last_action {NOTHING, ADD,26,1249
-typedef enum last_action {NOTHING, ADD, REMOVE,26,1249
-typedef enum last_action {NOTHING, ADD, REMOVE, EDIT}EDIT26,1249
-typedef enum last_action {NOTHING, ADD, REMOVE, EDIT} last_action_t;26,1249
-typedef struct undo_action28,1319
-  elem_t added;30,1348
-  elem_t removed;31,1364
-  elem_t edit_old;32,1382
-  elem_t edit_new;33,1401
-  last_action_t last_action;34,1420
-} undo_action_t;35,1449
-void undo_reset(43,1714
-void undo_free(84,2679
-undo_action_t *undo_new(undo_new101,3034
-void print_main_menu(109,3196
-bool print_shelf(122,3622
-void print_shelves(130,3810
-void print_item(139,4001
-int select_existing_shelf(156,4482
-bool shelf_is_equal(183,5144
-bool shelf_is_in_list(204,5747
-char *find_available_shelf(find_available_shelf221,6245
-void merge_shelves(246,6810
-void edit_shelf_name(269,7543
-void edit_shelves(290,8096
-void edit_description(312,8677
-void edit_price(322,9061
-void edit_name(332,9423
-void edit_item_aux(343,9846
-void remove_shelves(383,10772
-void db_remove_item(403,11312
-void add_existing_item(447,12475
-int ask_new_amount(480,13314
-int ask_new_price(492,13504
-void db_add_item(506,13897
-void undo_last_action(575,15677
-void list_20_items(623,16918
-bool list_db(636,17253
-int *index_menu_choices(index_menu_choices673,18072
-bool valid_index(683,18395
-elem_t select_by_index(694,18693
-void list_and_select_item(724,19277
-void edit_item(735,19467
-void edit_db(753,19860
-void db_check_sorting(766,20088
-int db_size(782,20376
-bool write_item_to_file(789,20460
-void save_db(811,21087
-tree_t *load_db(load_db830,21387
-void event_loop(882,22668
-int main(913,23414
+lager.c,1385
+#define MainMenuChoice 12,193
+#define AskName 13,277
+#define AskDescription 14,328
+#define AskPrice 15,393
+#define AskShelf 16,442
+#define AskAmount 17,499
+#define ConfirmAddition 18,561
+#define AskRemoveShelf 19,669
+#define ShelfIsInList 20,747
+#define AskWhatToEdit 21,811
+void print_main_menu(34,1475
+bool print_shelf(48,1999
+void print_shelves(56,2190
+void print_item(65,2381
+int select_existing_shelf(82,2862
+bool shelf_is_equal(109,3524
+bool shelf_is_in_list(130,4127
+char *find_available_shelf(find_available_shelf147,4625
+void merge_shelves(172,5190
+void edit_shelf_name(196,6055
+void edit_shelves(216,6583
+void edit_description(238,7164
+void edit_price(248,7548
+void edit_name(258,7910
+void edit_item_aux(270,8334
+void remove_shelves(314,9464
+void db_remove_item(334,10004
+void add_existing_item(384,11470
+int ask_new_amount(417,12309
+int ask_new_price(429,12499
+void db_add_item(443,12892
+void list_20_items(518,15066
+bool list_db(531,15401
+int *index_menu_choices(index_menu_choices568,16220
+bool valid_index(578,16543
+elem_t select_by_index(589,16841
+void list_and_select_item(619,17429
+void edit_item(630,17619
+void edit_db(650,18106
+void db_check_sorting(663,18334
+int db_size(679,18601
+bool write_item_to_file(686,18685
+void save_db(708,19321
+tree_t *load_db(load_db727,19621
+void event_loop(779,20902
+int main(811,21705
 
 list.c,839
 typedef struct link link_t;3,19
@@ -131,17 +114,17 @@ int adjust_index_get(76,1598
 link_t **list_find(list_find97,2025
 void make_singleton(109,2264
 void list_insert(128,2973
-bool empty_list(154,3562
-void list_append(166,3941
-void list_prepend(192,4755
-bool list_get(203,5128
-bool list_first(225,5687
-bool list_last(232,5854
-int list_length(247,6288
-void list_remove(263,6782
-void list_delete(285,7272
-bool list_apply(302,7758
-int list_contains(326,8367
+bool empty_list(154,3592
+void list_append(166,3971
+void list_prepend(192,4797
+bool list_get(203,5170
+bool list_first(225,5753
+bool list_last(232,5920
+int list_length(247,6354
+void list_remove(263,6848
+void list_delete(285,7356
+bool list_apply(302,7842
+int list_contains(326,8471
 
 shelfinfo.c,495
 struct shelf_info 3,24
@@ -161,43 +144,46 @@ void set_info_name(48,868
 void set_info_id(52,950
 void set_shelf_owner(56,1025
 
-test.c,1157
-int tree_compare_int(10,139
-elem_t string_copy(18,268
-int comp_fun_string(25,351
-void list_insert_test(32,475
-void list_new_test(57,1154
-void list_append_test(63,1256
-void list_prepend_test(82,1765
-void list_get_test(106,2285
-void list_first_test(127,2769
-void list_last_test(146,3223
-void list_remove_test(162,3672
-bool list_apply_fun(185,4371
-void list_apply_test(193,4478
-void list_contains_test(207,4782
-void tree_new_test(225,5304
-void tree_insert_test(231,5413
-void tree_height_test(249,5790
-void tree_get_test(278,6494
-void tree_remove_test(307,7275
-void tree_elements_test(345,8235
-void tree_keys_test(350,8276
-void tree_delete_test(355,8314
-    void tree_balance_test(387,9137
-void item_new_test(428,10201
-void item_set_name_test(449,10825
-void item_set_description_test(456,11006
-void item_set_price_test(463,11202
-void shelf_new_test(470,11367
-void item_set_shelf_test(477,11533
-void shelf_add_amount_test(491,11844
-void item_set_shelves_test(498,11996
-void shelf_compare_test(519,12768
-void item_compare_test(529,13052
-void shelf_deep_copy_test(539,13283
-void item_deep_copy_test(548,13553
-int main(571,14424
+test.c,1253
+int tree_compare_int(10,156
+elem_t string_copy(18,285
+int comp_fun_string(25,368
+void list_insert_test(32,492
+void list_new_test(57,1171
+void list_append_test(63,1273
+void list_prepend_test(82,1782
+void list_get_test(106,2302
+void list_first_test(127,2786
+void list_last_test(146,3240
+void list_remove_test(162,3689
+bool list_apply_fun(185,4388
+void list_apply_test(193,4495
+void list_contains_test(207,4799
+void tree_new_test(225,5321
+void tree_insert_test(231,5430
+void tree_height_test(249,5807
+void tree_get_test(278,6511
+void tree_remove_test(307,7292
+void tree_elements_test(345,8252
+void tree_keys_test(381,9120
+void tree_delete_test(414,10002
+void tree_balance_test(446,10825
+void item_new_test(486,11823
+void item_set_name_test(507,12447
+void item_set_description_test(514,12628
+void item_set_price_test(521,12824
+void shelf_new_test(528,12989
+void item_set_shelf_test(535,13155
+void shelf_add_amount_test(549,13466
+void item_set_shelves_test(556,13618
+void shelf_compare_test(577,14390
+void item_compare_test(587,14674
+void shelf_deep_copy_test(597,14905
+void item_deep_copy_test(606,15175
+void undo_new_test(629,16046
+void undo_reset_test(635,16141
+void shelf_is_equal_test(641,16216
+int main(651,16420
 
 tree.c,1606
 #define Compare(4,39
@@ -228,34 +214,56 @@ struct tree27,765
   size_t size;34,902
 void *get_root_elem(get_root_elem38,922
 elem_t tree_no_copy(43,992
-void tree_no_free(48,1047
-int tree_no_compare(53,1093
-node_t *node_new(node_new63,1257
-tree_t *tree_new(tree_new76,1674
-bool tree_delete_elems(95,2177
-bool tree_delete_keys(102,2315
-void tree_delete_nodes(109,2449
-void tree_delete(128,2908
-int tree_size(146,3323
-int max(152,3420
-int tree_depth_aux(157,3471
-int tree_depth(170,3739
-node_t **tree_traverse(tree_traverse183,4091
-int get_balance(204,4421
-void build_tree_aux(211,4577
-void tree_balance(229,5022
-bool tree_insert(261,6084
-bool tree_has_key(296,6874
-bool tree_get(308,7262
-void free_node(324,7509
-node_t **find_smallest_successor(find_smallest_successor332,7685
-bool tree_remove(347,8092
-void tree_keys_aux(392,9384
-tree_key_t *tree_keys(tree_keys409,9790
-void tree_elements_aux(418,9992
-elem_t *tree_elements(tree_elements435,10474
-bool node_apply(444,10676
-bool tree_apply(496,11991
+void tree_no_free(48,1045
+int tree_no_compare(53,1091
+node_t *node_new(node_new63,1255
+tree_t *tree_new(tree_new76,1672
+bool tree_delete_elems(95,2175
+bool tree_delete_keys(102,2313
+void tree_delete_nodes(109,2447
+void tree_delete(128,2906
+int tree_size(146,3321
+int max(152,3418
+int tree_depth_aux(157,3469
+int tree_depth(170,3737
+node_t **tree_traverse(tree_traverse183,4089
+int get_balance(204,4419
+void build_tree_aux(211,4575
+void tree_balance(229,5020
+bool tree_insert(261,6082
+bool tree_has_key(296,6872
+bool tree_get(308,7260
+void free_node(324,7507
+node_t **find_smallest_successor(find_smallest_successor332,7683
+bool tree_remove(347,8090
+void tree_keys_aux(392,9382
+tree_key_t *tree_keys(tree_keys409,9788
+void tree_elements_aux(418,9990
+elem_t *tree_elements(tree_elements435,10472
+bool node_apply(444,10674
+bool tree_apply(496,11989
+
+undo.c,613
+struct undo_action4,20
+  elem_t added;6,41
+  elem_t removed;7,57
+  elem_t edit_old;8,75
+  elem_t edit_new;9,94
+  last_action_t last_action;10,113
+undo_action_t *undo_new(undo_new14,197
+void undo_reset(22,400
+void undo_free(64,1362
+last_action_t undo_get_last_action(79,1665
+void undo_set_last_action(84,1754
+elem_t undo_get_edit_old(89,1858
+void undo_set_edit_old(94,1934
+elem_t undo_get_edit_new(99,2039
+void undo_set_edit_new(104,2115
+elem_t undo_get_removed(109,2220
+void undo_set_removed(114,2294
+elem_t undo_get_added(119,2397
+void undo_set_added(124,2467
+void undo_last_action(130,2601
 
 utils.c,790
   int   i;4,36
