@@ -7,6 +7,14 @@
 *.obj
 *.elf
 
+<<<<<<< HEAD
+=======
+# Linker output
+*.ilk
+*.map
+*.exp
+
+>>>>>>> fbcfb8584f4b89b35fd056091a3558254b27a102
 # Precompiled Headers
 *.gch
 *.pch
@@ -34,3 +42,14 @@
 # Debug files
 *.dSYM/
 *.su
+*.idb
+*.pdb
+
+# Kernel Module Compile Results
+*.mod*
+*.cmd
+.tmp_versions/
+modules.order
+Module.symvers
+Mkfile.old
+dkms.conf

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # [Ditt namn här]s repo
 
 Den här filen är automatgenererad tillsammans med nedanstående
