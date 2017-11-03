@@ -132,10 +132,8 @@ public class Server {
         }
 
         private void updateName(Account old, Account neu) {
+
             updateAccount(old, neu);
-            for(Account a : this.server.knownUsers) {
-                
-            }
         }
 
         private void sync() {

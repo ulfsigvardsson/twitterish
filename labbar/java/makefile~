@@ -1,0 +1,28 @@
+run: Simulator.class
+	java Simulator
+
+debug:
+	jdb Simulation
+
+Simulator.class: Simulator.java Simulation.class
+	javac Simulator.java
+
+Simulation.class: Simulation.java Store.class
+	javac Simulation.java
+
+Store.class: Store.java Register.class
+	javac Store.java
+
+Register.class: Register.java Queue.class
+	javac Register.java
+
+Queue.class: Queue.java Customer.class
+	javac Queue.java
+
+Customer.class: Customer.java
+	javac Customer.java
+
+clean:
+	rm -f *~
+	rm -f ´#
+	rm -f *.class

@@ -66,7 +66,7 @@ public class Account implements Serializable, Comparable<Account> {
     public int compareTo(Account a) {
         return a.userId.compareTo(this.userId);
     }
-
+    
     public boolean hasFriends() {
         return this.friends.size() > 0;
     }
