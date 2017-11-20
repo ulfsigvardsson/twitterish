@@ -1,4 +1,4 @@
-CC=gcc
+CC=afl-gcc
 FLAGS= -Wall -g
 TESTFLAGS= -Wall -g -fprofile-arcs -ftest-coverage -fPIC
 

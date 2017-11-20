@@ -131,10 +131,11 @@ public class Server {
             server.addAccount(neu);
         }
 
-        private void updateName(Account old, Account neu) {
-            updateAccount(old, neu);
-            for(Account a : this.server.knownUsers) {
-                
+        private void updateName(Account neu) {
+            for(Account user : this.knownUsers) {
+                if(user.getUserId().equals(neu.getUserId())) {
+                    user.setName(neu.getName());
+                }
             }
         }
 
@@ -158,7 +159,7 @@ public class Server {
                     // o instanceof Account checks if o is an account
                     // (Account) o type casts o into an Account so that it can be used as one
                     if (o instanceof NameChange) {
-                        this.updateName(this.account, ((NameChange) o).getNewAccount()); 
+                        this.updateName( ((NameChange) o).getAccount()); 
                     }
                     if (o instanceof Account) {
                         this.updateAccount(this.account, (Account) o); 

@@ -1,13 +1,14 @@
 public class NameChange implements java.io.Serializable {
-    private Account newAccount;
+    private Account account;
+
+    public NameChange(Account account) {
+        this.account = account;
+    }
     
-    public NameChange(Account newAccount) {
-        this.newAccount = newAccount;
+    public Account getAccount() {
+        return this.account;
     }
 
-    public Account getNewAccount() {
-        return this.newAccount;
-    }
 }
 
 

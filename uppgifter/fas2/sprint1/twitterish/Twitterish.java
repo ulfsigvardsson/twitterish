@@ -191,7 +191,8 @@ public class Twitterish {
                     this.sendMessage(new Account(userid, password, name));    
                 }
                 else {
-                    this.sendMessage(new NameChange(new Account(userid, password, name))); 
+                    this.loggedInUser.setName(name);
+                    this.sendMessage(new NameChange(this.loggedInUser)); 
                 }
 
             } else {
@@ -209,11 +210,14 @@ public class Twitterish {
         }
 
         private void updateFeed() {
+            this.feed = new Feed();
             this.sendMessage(new SyncRequest());
             Object o = this.receiveMessage();
-            for (Post p : ((SyncResponse) o).getPosts())
-                System.out.println(p.render());
-            return;
+            for (Post p : ((SyncResponse) o).getPosts()) {
+                this.feed.addPost(p);
+            }
+            System.out.print(this.feed.renderAll());
+            return; 
         }
 
         private void syncWithServer() {
@@ -224,12 +228,10 @@ public class Twitterish {
                     // TODO
                     // Go through all known users on this side of the fence
                     // and update them if their name has changed
-
+                    
                     // TODO
                     // Only print the posts that I am interested in
 
-                    // TODO
-                    // Use the feed object for this
                  
 
                 } else {
@@ -277,16 +279,16 @@ public class Twitterish {
 
         private boolean action() {
             System.out.println("Actions:");
-            System.out.print("[P]ost message     |  ");
-            System.out.print("[S]ync with server |  ");
-            System.out.print("[U]pdate feed      |  ");
-            System.out.print("[A]dd friend       |  ");
-            System.out.print("[R]emove friend    |  ");
+            System.out.print("[P]ost message    | ");
+            System.out.print("[S]ync with server | ");
+            System.out.print("[U]pdate feed     | ");
+            System.out.print("[A]dd friend      | ");
+            System.out.print("[R]emove friend   | ");
             System.out.println();
-            System.out.print("[I]gnore friend    |  ");
-            System.out.print("Uni[g]nore friend    |  ");
-            System.out.print("[L]ist friends     |  ");
-            System.out.print("[E]dit account     |  ");
+            System.out.print("[I]gnore friend   | ");
+            System.out.print("Uni[g]nore friend  | ");
+            System.out.print("[L]ist friends    | ");
+            System.out.print("[E]dit account    | ");
             System.out.print("[Q]uit");
             System.out.println();
 

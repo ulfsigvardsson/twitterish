@@ -22,6 +22,15 @@ Queue.class: Queue.java Customer.class
 Customer.class: Customer.java
 	javac Customer.java
 
+test: TestFile.class
+	java -cp .:/usr/share/java/junit4.jar TestFile
+
+TestFile.class: TestFile.java TestCustomer.class
+	javac -cp .:/usr/share/java/junit4.jar TestFile.java
+
+TestCustomer.class: TestCustomer.java Customer.class
+	javac -cp .:/usr/share/java/junit4.jar TestCustomer.java
+
 clean:
 	rm -f *~
 	rm -f ´#

@@ -7,24 +7,24 @@ public class Account 5,78
     private boolean passwordReset;Account.passwordReset9,227
     private Set<Account> friends Account.friends10,262
     private Set<Account> ignoredFriends Account.ignoredFriends11,321
-    public Account(Account.Account13,388
-    public Account(Account.Account18,514
-    public String getName(Account.getName23,645
-    public void setName(Account.setName26,707
-    public String getPassword(Account.getPassword29,778
-    public void setPassword(Account.setPassword32,848
-    public String getUserId(Account.getUserId35,935
-    public void setUserId(Account.setUserId38,1001
-    public void addFriend(Account.addFriend42,1081
-    public void removeFriend(Account.removeFriend46,1156
-    public void ignoreFriend(Account.ignoreFriend50,1237
-    public void unIgnoreFriend(Account.unIgnoreFriend54,1349
-    public boolean isFriendsWith(Account.isFriendsWith58,1466
-    public boolean isCurrentlyIgnoring(Account.isCurrentlyIgnoring62,1560
-    public int compareTo(Account.compareTo66,1667
-    public boolean hasFriends(Account.hasFriends70,1764
-    public Account[] getFriends(Account.getFriends74,1845
-    public boolean equals(Account.equals78,1953
+    public Account(Account.Account13,389
+    public Account(Account.Account18,515
+    public String getName(Account.getName23,646
+    public void setName(Account.setName26,708
+    public String getPassword(Account.getPassword29,779
+    public void setPassword(Account.setPassword32,849
+    public String getUserId(Account.getUserId35,936
+    public void setUserId(Account.setUserId38,1002
+    public void addFriend(Account.addFriend42,1082
+    public void removeFriend(Account.removeFriend46,1157
+    public void ignoreFriend(Account.ignoreFriend50,1238
+    public void unIgnoreFriend(Account.unIgnoreFriend54,1350
+    public boolean isFriendsWith(Account.isFriendsWith58,1467
+    public boolean isCurrentlyIgnoring(Account.isCurrentlyIgnoring62,1561
+    public int compareTo(Account.compareTo66,1668
+    public boolean hasFriends(Account.hasFriends70,1765
+    public Account[] getFriends(Account.getFriends74,1846
+    public boolean equals(Account.equals78,1954
 
 AddFriend.java,202
 public class AddFriend 3,30
@@ -55,11 +55,11 @@ public class Logout 1,0
 Message.java,26
 public class Message 1,0
 
-NameChange.java,203
+NameChange.java,191
 public class NameChange 1,0
-    private Account newAccount;NameChange.newAccount2,58
-    public NameChange(NameChange.NameChange4,95
-    public Account getNewAccount(NameChange.getNewAccount8,184
+    private Account account;NameChange.account2,58
+    public NameChange(NameChange.NameChange4,88
+    public Account getAccount(NameChange.getAccount8,172
 
 Post.java,300
 public class Post 3,30
@@ -108,8 +108,8 @@ public class Server 5,58
         private void removeFriend(Server.ClientProxy.removeFriend124,4621
         private void updateAccount(Server.ClientProxy.updateAccount129,4763
         private void updateName(Server.ClientProxy.updateName134,4912
-        private void sync(Server.ClientProxy.sync141,5165
-        public void run(Server.ClientProxy.run153,5637
+        private void sync(Server.ClientProxy.sync142,5164
+        public void run(Server.ClientProxy.run154,5636
 
 SyncRequest.java,30
 public class SyncRequest 1,0
@@ -146,10 +146,10 @@ public class Twitterish 5,58
         private void ignoreFriend(Twitterish.Client.ignoreFriend153,5354
         private void quit(Twitterish.Client.quit172,6054
         private void editAccount(Twitterish.Client.editAccount177,6206
-        private void listFriends(Twitterish.Client.listFriends202,7222
-        private void updateFeed(Twitterish.Client.updateFeed211,7563
-        private void syncWithServer(Twitterish.Client.syncWithServer219,7830
-        private void loginOrCreateUser(Twitterish.Client.loginOrCreateUser242,8609
-        private void displaySplashScreen(Twitterish.Client.displaySplashScreen266,9687
-        private boolean action(Twitterish.Client.action278,10368
-        public void start(Twitterish.Client.start336,12228
+        private void listFriends(Twitterish.Client.listFriends203,7257
+        private void updateFeed(Twitterish.Client.updateFeed212,7598
+        private void syncWithServer(Twitterish.Client.syncWithServer223,7961
+        private void loginOrCreateUser(Twitterish.Client.loginOrCreateUser244,8680
+        private void displaySplashScreen(Twitterish.Client.displaySplashScreen268,9758
+        private boolean action(Twitterish.Client.action280,10439
+        public void start(Twitterish.Client.start338,12281
