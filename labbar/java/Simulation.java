@@ -1,6 +1,6 @@
 import java.util.Random;
 
-public class Simulation {
+public class Simulation implements Steppable {
     private Store store;
     private int time;
     private int intensity;
@@ -21,7 +21,7 @@ public class Simulation {
         this.averageWaitingTime = 0;
     }
 
-    void step() {
+    public void step() {
         Random rand = new Random();
         
         if(rand.nextInt(100) < this.intensity) {

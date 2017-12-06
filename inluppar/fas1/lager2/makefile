@@ -1,6 +1,6 @@
-CC=afl-gcc
-FLAGS= -Wall -g
-TESTFLAGS= -Wall -g -fprofile-arcs -ftest-coverage -fPIC
+CC=gcc
+FLAGS= -Wall -pg
+TESTFLAGS= -Wall -pg -fprofile-arcs -ftest-coverage -fPIC
 
 lager: lager.c list.o tree.o item.o utils.o shelfinfo.o undo.o
 	$(CC) $(FLAGS) -O0 $^ -o $@
@@ -26,8 +26,8 @@ undo.o: undo.c undo.h common.h tree.o item.o
 test:	test.c list.o tree.o item.o undo.o shelfinfo.o utils.o
 	$(CC) $(FLAGS) test.c list.c tree.c item.c utils.c shelfinfo.c undo.c -o test -lcunit
 
-analysis: analysis.c list.o tree.o common.o
-	$(CC) $(FLAGS) $^ -o $@
+analysis: analysis.c list.o tree.o
+	$(CC) $(TESTFLAGS) $^ -o $@
 
 run : lager
 	./lager test.txt

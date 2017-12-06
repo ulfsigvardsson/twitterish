@@ -1,4 +1,4 @@
-public class Register {
+public class Register implements Steppable {
     private boolean open;
     private Queue queue;
 

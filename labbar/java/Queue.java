@@ -1,4 +1,4 @@
-public class Queue {
+public class Queue implements Steppable {
     private Node first;
     private Node last;
     private int length;

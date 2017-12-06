@@ -1,4 +1,4 @@
-public class Store {
+public class Store implements Steppable {
     private Register registers[];
 
     public Store(int numberOfRegisters) {
