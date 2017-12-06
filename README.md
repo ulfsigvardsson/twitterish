@@ -26,7 +26,7 @@ mappar (till exempel `inluppar/fas1/lager1/src` och
 `inluppar/fas1/lager1/bin`), men undvik att lägga lösa kodfiler i
 rotmappen.
 
-Inlupp 1: 8de1a57
-Inlupp 2: 36972bf
-Inlupp 3: 9944014 
-Unlupp 4:
+# Inlupp 1: 8de1a57
+# Inlupp 2: 36972bf
+# Inlupp 3: 9944014 
+# Inlupp 4: 4d363d0 
