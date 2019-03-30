@@ -1,4 +1,4 @@
-# Twitterish - A Terrible Chat Application
+# Twitterish - A Vintage Style Chat Application
 
 Are You tired of Messenger, Snapchat and Twitter with all their distracting colours and fanciness? Then Twitterish is the social media app for You! 
 
