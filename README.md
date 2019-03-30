@@ -9,5 +9,7 @@ java -cp ./bin/ Twitterish <ip> 8082
 ``` 
 
 where <ip> is the IP address of the machine running the server.
-  
+
+![Alt text](/screenshot.png?raw=true "Twitterish UI")
+
 As user control is the keyword for Twitterish, the chat feed is not being updated in realtime. To refresh the feed, enter `U` to see what has been going on. Add friends, comment on posts or ignore the meanies with the corresponding commands at the bottom of the screen.
