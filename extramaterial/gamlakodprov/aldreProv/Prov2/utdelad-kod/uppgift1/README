@@ -1,7 +1,0 @@
-kompilera med 
-
-    javac -d . *.java 
-
-kör med
-
-    java graph.Driver
