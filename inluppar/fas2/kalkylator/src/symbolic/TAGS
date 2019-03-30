@@ -1,0 +1,46 @@
+
+Parser.java,1886
+public class Parser 19,450
+  private StreamTokenizer tokenizer;Parser.tokenizer23,511
+  private int endSymbol;Parser.endSymbol29,647
+  private TreeSet<String> unaries Parser.unaries33,736
+  private TreeSet<String> commands Parser.commands37,859
+  public Parser(Parser.Parser43,1070
+  public Parser(Parser.Parser56,1541
+  private void setUp(Parser.setUp65,1799
+  public boolean clear(Parser.clear82,2212
+  public SymbolicExpression start(Parser.start102,2652
+  public SymbolicExpression statement(Parser.statement125,3236
+  public SymbolicExpression command(Parser.command141,3625
+  public SymbolicExpression assignment(Parser.assignment159,4090
+  public SymbolicExpression expression(Parser.expression177,4527
+  public SymbolicExpression term(Parser.term203,5128
+  public SymbolicExpression factor(Parser.factor229,5734
+  public SymbolicExpression primary(Parser.primary238,5948
+  public SymbolicExpression unary(Parser.unary270,6786
+  private SymbolicExpression number(Parser.number293,7566
+  private SymbolicExpression identifier(Parser.identifier306,7907
+  private boolean currentTokenIsWord(Parser.currentTokenIsWord319,8295
+  private boolean currentTokenIsNumber(Parser.currentTokenIsNumber328,8591
+  private boolean currentTokenIsACommand(Parser.currentTokenIsACommand337,8887
+  private boolean currentTokenIsAUnary(Parser.currentTokenIsAUnary347,9260
+  private boolean currentTokenIs(Parser.currentTokenIs360,9706
+  private boolean currentTokenIs(Parser.currentTokenIs375,10095
+  private int consumeToken(Parser.consumeToken384,10355
+  private void pushBack(Parser.pushBack392,10587
+  private String readString(Parser.readString401,10888
+  private double readNumber(Parser.readNumber410,11200
+  private int currentToken(Parser.currentToken419,11541
+  private void didGetSyntaxError(Parser.didGetSyntaxError423,11629
+
+Symbolic.java,611
+public class Symbolic 12,263
+    public static SymbolicExpression sin(Symbolic.sin21,590
+    public static SymbolicExpression cos(Symbolic.cos35,1119
+    public static SymbolicExpression exp(Symbolic.exp49,1673
+    public static SymbolicExpression log(Symbolic.log63,2216
+    public static SymbolicExpression negation(Symbolic.negation77,2737
+    public static SymbolicExpression add(Symbolic.add92,3370
+    public static SymbolicExpression sub(Symbolic.sub107,4075
+    public static SymbolicExpression mult(Symbolic.mult122,4798
+    public static SymbolicExpression div(Symbolic.div137,5509

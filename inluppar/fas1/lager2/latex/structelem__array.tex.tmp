@@ -1,0 +1,20 @@
+\hypertarget{structelem__array}{}\section{elem\+\_\+array Struct Reference}
+\label{structelem__array}\index{elem\+\_\+array@{elem\+\_\+array}}
+
+
+Collaboration diagram for elem\+\_\+array\+:
+% FIG 0
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{unionelement}{elem\+\_\+t} $\ast$ {\bfseries elems}\hypertarget{structelem__array_a4650993ac67ead08b2a2b6f868620bdd}{}\label{structelem__array_a4650993ac67ead08b2a2b6f868620bdd}
+
+\item 
+int {\bfseries index}\hypertarget{structelem__array_a3ea10e880a08d85132e5a8e4167a8643}{}\label{structelem__array_a3ea10e880a08d85132e5a8e4167a8643}
+
+\end{DoxyCompactItemize}
+
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+tree.\+c\end{DoxyCompactItemize}

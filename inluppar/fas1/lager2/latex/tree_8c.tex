@@ -1,0 +1,480 @@
+\hypertarget{tree_8c}{}\section{tree.\+c filreferens}
+\label{tree_8c}\index{tree.\+c@{tree.\+c}}
+{\ttfamily \#include \char`\"{}tree.\+h\char`\"{}}\\*
+{\ttfamily \#include $<$assert.\+h$>$}\\*
+Include-\/beroendediagram för tree.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=228pt]{tree_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Datastrukturer}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structnode}{node}
+\item 
+struct \hyperlink{structtree}{tree}
+\end{DoxyCompactItemize}
+\subsection*{Definitioner}
+\begin{DoxyCompactItemize}
+\item 
+\#define \hyperlink{tree_8c_aa2d9c51fd1b1f86f2de713f38f652844}{Compare}(a,  b)~($\ast$\hyperlink{structtree}{tree})-\/$>$cmp\+\_\+f(a, b)
+\item 
+\#define \hyperlink{tree_8c_a44569a0aaecb8b2f26cdfd35eb26c77f}{Compare\+\_\+keys}~\hyperlink{structtree}{tree}-\/$>$cmp\+\_\+f(($\ast$c)-\/$>$key, key)
+\item 
+\#define \hyperlink{tree_8c_a2c9be02d44624c984febcba59f7eb101}{Comp}~\hyperlink{structtree}{tree}-\/$>$cmp\+\_\+f
+\item 
+\#define \hyperlink{tree_8c_ad6dfbe7c499930d81d8dd29607062b0f}{Copy}~\hyperlink{structtree}{tree}-\/$>$copy\+\_\+f
+\item 
+\#define \hyperlink{tree_8c_ac856d5ae6b81b6022943ae2841533784}{Free\+\_\+elem}~\hyperlink{structtree}{tree}-\/$>$e\+\_\+free\+\_\+f
+\item 
+\#define \hyperlink{tree_8c_a05af143e8f8ad431361116a4b6e083a3}{Free\+\_\+key}~\hyperlink{structtree}{tree}-\/$>$k\+\_\+free\+\_\+f
+\item 
+\#define \hyperlink{tree_8c_a3d4d2358e753bfe0c44b4c561836a6f0}{Apply\+\_\+key}~fun(\hyperlink{structnode}{node}-\/$>$key, \hyperlink{structnode}{node}-\/$>$elem, data)
+\item 
+\#define \hyperlink{tree_8c_a382d64a33d13cb1fd532b6398e407333}{Apply\+\_\+left}~\hyperlink{tree_8c_aa8eb706ced981304743a08a0d4296584}{node\+\_\+apply}(\hyperlink{structnode}{node}-\/$>$left, order, fun, data)
+\item 
+\#define \hyperlink{tree_8c_a2ecf02f6074ab5f7828833a2d7cbe038}{Apply\+\_\+right}~\hyperlink{tree_8c_aa8eb706ced981304743a08a0d4296584}{node\+\_\+apply}(\hyperlink{structnode}{node}-\/$>$right, order, fun, data)
+\item 
+\#define \hyperlink{tree_8c_a9de93adc92ebf79fd260b4dc33770262}{Leaf}~!(($\ast$to\+\_\+remove)-\/$>$right $\vert$$\vert$ ($\ast$to\+\_\+remove)-\/$>$left)
+\item 
+\#define \hyperlink{tree_8c_a1f947702aeadd9130df6ba052cb9b33c}{Full}~($\ast$to\+\_\+remove)-\/$>$right \&\& ($\ast$to\+\_\+remove)-\/$>$left
+\item 
+\#define \hyperlink{tree_8c_aa0e2fff3ba3947166baa01fec3e727cf}{Right}~($\ast$to\+\_\+remove)-\/$>$right
+\item 
+\#define \hyperlink{tree_8c_a3f4088077127a9c0f58e9e527966c32f}{Left}~($\ast$to\+\_\+remove)-\/$>$left
+\end{DoxyCompactItemize}
+\subsection*{Funktioner}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} \hyperlink{tree_8c_a48b1cfc038c8d314df14ffcd6a2942a5}{tree\+\_\+no\+\_\+copy} (\hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} elem)
+\item 
+void \hyperlink{tree_8c_a4eefb12a7da6444db3cee572fdcddc5c}{tree\+\_\+no\+\_\+free} (\hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} elem)
+\item 
+\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$ \hyperlink{tree_8c_ae589ee838703db9f636f7f89278afcb3}{node\+\_\+new} ()
+\item 
+\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$ \hyperlink{tree_8c_a6a795c729d8a09e5877f7f1ddfb7c91c}{tree\+\_\+new} (\hyperlink{common_8h_a0ca91ee5ad428d2cb3161e07618bd21c}{element\+\_\+copy\+\_\+fun} element\+\_\+copy, \hyperlink{tree_8h_aa6e72bc7040d433d1054d4f89e0b3493}{key\+\_\+free\+\_\+fun} key\+\_\+free, \hyperlink{common_8h_a66551bc5a869ff55fd6e97cdf83f9e27}{element\+\_\+free\+\_\+fun} \hyperlink{test_8c_a06928f6db1213c0a2e410fd6693383d4}{elem\+\_\+free}, \hyperlink{common_8h_a1ae319bacbeb687146c87de665a96b35}{element\+\_\+comp\+\_\+fun} compare)
+\item 
+void \hyperlink{tree_8c_afc9838326212e7731f31dcf237e7b76d}{tree\+\_\+delete} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, bool delete\+\_\+keys, bool delete\+\_\+elements)
+\item 
+int \hyperlink{tree_8c_a13827cc121c0826bccee80991ac7dd04}{tree\+\_\+size} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree})
+\item 
+int \hyperlink{tree_8c_af082905f7eac6d03e92015146bbc1925}{max} (int a, int b)
+\begin{DoxyCompactList}\small\item\em Returnerar det största av två heltal. \end{DoxyCompactList}\item 
+int \hyperlink{tree_8c_a05550415053ea0ee132de3ffde485b90}{tree\+\_\+depth\+\_\+aux} (\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$\hyperlink{structnode}{node})
+\item 
+int \hyperlink{tree_8c_ac892293edb990109e99f00807f1a9fcd}{tree\+\_\+depth} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree})
+\item 
+\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$$\ast$ \hyperlink{tree_8c_ab82af4facd62ce121a5c29172a91b6b3}{tree\+\_\+traverse} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} const key)
+\item 
+bool \hyperlink{tree_8c_ab7d2e892ded2ae3fca90b1f7fbcd0f07}{tree\+\_\+insert} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, \hyperlink{tree_8h_af42dd67b55ffc67649d20c46e9cbf84f}{tree\+\_\+key\+\_\+t} key, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} elem)
+\item 
+bool \hyperlink{tree_8c_a102b066d4b37f6d31765118d39e39202}{tree\+\_\+has\+\_\+key} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, \hyperlink{tree_8h_af42dd67b55ffc67649d20c46e9cbf84f}{tree\+\_\+key\+\_\+t} key)
+\item 
+bool \hyperlink{tree_8c_a678b7a8152b3ec50963dd2529950a016}{tree\+\_\+get} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, \hyperlink{tree_8h_af42dd67b55ffc67649d20c46e9cbf84f}{tree\+\_\+key\+\_\+t} key, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} $\ast$result)
+\item 
+void \hyperlink{tree_8c_ab933e8f4f079460d5c52f94d29db1929}{free\+\_\+node} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, \hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$\hyperlink{structnode}{node})
+\item 
+\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$$\ast$ \hyperlink{tree_8c_afe3d108251031a18ddb04d03bdf68248}{find\+\_\+smallest\+\_\+successor} (\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$$\ast$\hyperlink{structnode}{node})
+\item 
+\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$ \hyperlink{tree_8c_acca718ff8fe02cd81412a4e598f47539}{tree\+\_\+balance} (\hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} elems\mbox{[}$\,$\mbox{]}, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} keys\mbox{[}$\,$\mbox{]}, int start, int end)
+\item 
+bool \hyperlink{tree_8c_a509c042f786ab4f4c3991947d7f98a8a}{tree\+\_\+remove} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, \hyperlink{tree_8h_af42dd67b55ffc67649d20c46e9cbf84f}{tree\+\_\+key\+\_\+t} key, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} $\ast$result)
+\item 
+void \hyperlink{tree_8c_ad0d8b471332b726b14c0995e09fe3782}{tree\+\_\+keys\+\_\+aux} (\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$\hyperlink{structnode}{node}, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} $\ast$keys, int $\ast$index)
+\item 
+\hyperlink{tree_8h_af42dd67b55ffc67649d20c46e9cbf84f}{tree\+\_\+key\+\_\+t} $\ast$ \hyperlink{tree_8c_a2e86ac9f939bfc474c8026be870adadb}{tree\+\_\+keys} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree})
+\item 
+void \hyperlink{tree_8c_ad9608752b954235102b99c24220e17a9}{tree\+\_\+elements\+\_\+aux} (\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$\hyperlink{structnode}{node}, \hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} $\ast$elems, int $\ast$index)
+\item 
+\hyperlink{common_8h_a7fdd31df4fac71b8c34af47c7d45226a}{elem\+\_\+t} $\ast$ \hyperlink{tree_8c_a1428bfa67d419b8bf13824adfc3458f8}{tree\+\_\+elements} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree})
+\item 
+bool \hyperlink{tree_8c_aa8eb706ced981304743a08a0d4296584}{node\+\_\+apply} (\hyperlink{tree_8h_a7c02633e18d6aa5f58539b75f08753d9}{node\+\_\+t} $\ast$\hyperlink{structnode}{node}, enum \hyperlink{tree_8h_abe996c0b99220479aa7355185109749f}{tree\+\_\+order} order, \hyperlink{tree_8h_a7da81ed45282293e2728c4e80c10e634}{key\+\_\+elem\+\_\+apply\+\_\+fun} fun, void $\ast$data)
+\item 
+bool \hyperlink{tree_8c_a78a81f99c6b5a1014726bd91d0fda32e}{tree\+\_\+apply} (\hyperlink{tree_8h_aabd08cfd7893b1b0d401ce689de8c1b7}{tree\+\_\+t} $\ast$\hyperlink{structtree}{tree}, enum \hyperlink{tree_8h_abe996c0b99220479aa7355185109749f}{tree\+\_\+order} order, \hyperlink{tree_8h_a7da81ed45282293e2728c4e80c10e634}{key\+\_\+elem\+\_\+apply\+\_\+fun} fun, void $\ast$data)
+\end{DoxyCompactItemize}
+
+
+\subsection{Dokumentation över definitioner}
+\index{tree.\+c@{tree.\+c}!Apply\+\_\+key@{Apply\+\_\+key}}
+\index{Apply\+\_\+key@{Apply\+\_\+key}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Apply\+\_\+key}{Apply_key}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Apply\+\_\+key~fun({\bf node}-\/$>$key, {\bf node}-\/$>$elem, data)}\hypertarget{tree_8c_a3d4d2358e753bfe0c44b4c561836a6f0}{}\label{tree_8c_a3d4d2358e753bfe0c44b4c561836a6f0}
+\index{tree.\+c@{tree.\+c}!Apply\+\_\+left@{Apply\+\_\+left}}
+\index{Apply\+\_\+left@{Apply\+\_\+left}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Apply\+\_\+left}{Apply_left}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Apply\+\_\+left~{\bf node\+\_\+apply}({\bf node}-\/$>$left, order, fun, data)}\hypertarget{tree_8c_a382d64a33d13cb1fd532b6398e407333}{}\label{tree_8c_a382d64a33d13cb1fd532b6398e407333}
+\index{tree.\+c@{tree.\+c}!Apply\+\_\+right@{Apply\+\_\+right}}
+\index{Apply\+\_\+right@{Apply\+\_\+right}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Apply\+\_\+right}{Apply_right}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Apply\+\_\+right~{\bf node\+\_\+apply}({\bf node}-\/$>$right, order, fun, data)}\hypertarget{tree_8c_a2ecf02f6074ab5f7828833a2d7cbe038}{}\label{tree_8c_a2ecf02f6074ab5f7828833a2d7cbe038}
+\index{tree.\+c@{tree.\+c}!Comp@{Comp}}
+\index{Comp@{Comp}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Comp}{Comp}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Comp~{\bf tree}-\/$>$cmp\+\_\+f}\hypertarget{tree_8c_a2c9be02d44624c984febcba59f7eb101}{}\label{tree_8c_a2c9be02d44624c984febcba59f7eb101}
+\index{tree.\+c@{tree.\+c}!Compare@{Compare}}
+\index{Compare@{Compare}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Compare}{Compare}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Compare(
+\begin{DoxyParamCaption}
+\item[{}]{a, }
+\item[{}]{b}
+\end{DoxyParamCaption}
+)~($\ast${\bf tree})-\/$>$cmp\+\_\+f(a, b)}\hypertarget{tree_8c_aa2d9c51fd1b1f86f2de713f38f652844}{}\label{tree_8c_aa2d9c51fd1b1f86f2de713f38f652844}
+\index{tree.\+c@{tree.\+c}!Compare\+\_\+keys@{Compare\+\_\+keys}}
+\index{Compare\+\_\+keys@{Compare\+\_\+keys}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Compare\+\_\+keys}{Compare_keys}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Compare\+\_\+keys~{\bf tree}-\/$>$cmp\+\_\+f(($\ast$c)-\/$>$key, key)}\hypertarget{tree_8c_a44569a0aaecb8b2f26cdfd35eb26c77f}{}\label{tree_8c_a44569a0aaecb8b2f26cdfd35eb26c77f}
+\index{tree.\+c@{tree.\+c}!Copy@{Copy}}
+\index{Copy@{Copy}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Copy}{Copy}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Copy~{\bf tree}-\/$>$copy\+\_\+f}\hypertarget{tree_8c_ad6dfbe7c499930d81d8dd29607062b0f}{}\label{tree_8c_ad6dfbe7c499930d81d8dd29607062b0f}
+\index{tree.\+c@{tree.\+c}!Free\+\_\+elem@{Free\+\_\+elem}}
+\index{Free\+\_\+elem@{Free\+\_\+elem}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Free\+\_\+elem}{Free_elem}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Free\+\_\+elem~{\bf tree}-\/$>$e\+\_\+free\+\_\+f}\hypertarget{tree_8c_ac856d5ae6b81b6022943ae2841533784}{}\label{tree_8c_ac856d5ae6b81b6022943ae2841533784}
+\index{tree.\+c@{tree.\+c}!Free\+\_\+key@{Free\+\_\+key}}
+\index{Free\+\_\+key@{Free\+\_\+key}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Free\+\_\+key}{Free_key}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Free\+\_\+key~{\bf tree}-\/$>$k\+\_\+free\+\_\+f}\hypertarget{tree_8c_a05af143e8f8ad431361116a4b6e083a3}{}\label{tree_8c_a05af143e8f8ad431361116a4b6e083a3}
+\index{tree.\+c@{tree.\+c}!Full@{Full}}
+\index{Full@{Full}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Full}{Full}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Full~($\ast$to\+\_\+remove)-\/$>$right \&\& ($\ast$to\+\_\+remove)-\/$>$left}\hypertarget{tree_8c_a1f947702aeadd9130df6ba052cb9b33c}{}\label{tree_8c_a1f947702aeadd9130df6ba052cb9b33c}
+\index{tree.\+c@{tree.\+c}!Leaf@{Leaf}}
+\index{Leaf@{Leaf}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Leaf}{Leaf}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Leaf~!(($\ast$to\+\_\+remove)-\/$>$right $\vert$$\vert$ ($\ast$to\+\_\+remove)-\/$>$left)}\hypertarget{tree_8c_a9de93adc92ebf79fd260b4dc33770262}{}\label{tree_8c_a9de93adc92ebf79fd260b4dc33770262}
+\index{tree.\+c@{tree.\+c}!Left@{Left}}
+\index{Left@{Left}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Left}{Left}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Left~($\ast$to\+\_\+remove)-\/$>$left}\hypertarget{tree_8c_a3f4088077127a9c0f58e9e527966c32f}{}\label{tree_8c_a3f4088077127a9c0f58e9e527966c32f}
+\index{tree.\+c@{tree.\+c}!Right@{Right}}
+\index{Right@{Right}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{Right}{Right}}]{\setlength{\rightskip}{0pt plus 5cm}\#define Right~($\ast$to\+\_\+remove)-\/$>$right}\hypertarget{tree_8c_aa0e2fff3ba3947166baa01fec3e727cf}{}\label{tree_8c_aa0e2fff3ba3947166baa01fec3e727cf}
+
+
+\subsection{Dokumentation över funktioner}
+\index{tree.\+c@{tree.\+c}!find\+\_\+smallest\+\_\+successor@{find\+\_\+smallest\+\_\+successor}}
+\index{find\+\_\+smallest\+\_\+successor@{find\+\_\+smallest\+\_\+successor}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{find\+\_\+smallest\+\_\+successor(node\+\_\+t $\ast$$\ast$node)}{find_smallest_successor(node_t **node)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf node\+\_\+t}$\ast$$\ast$ find\+\_\+smallest\+\_\+successor (
+\begin{DoxyParamCaption}
+\item[{{\bf node\+\_\+t} $\ast$$\ast$}]{node}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_afe3d108251031a18ddb04d03bdf68248}{}\label{tree_8c_afe3d108251031a18ddb04d03bdf68248}
+\index{tree.\+c@{tree.\+c}!free\+\_\+node@{free\+\_\+node}}
+\index{free\+\_\+node@{free\+\_\+node}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{free\+\_\+node(tree\+\_\+t $\ast$tree, node\+\_\+t $\ast$node)}{free_node(tree_t *tree, node_t *node)}}]{\setlength{\rightskip}{0pt plus 5cm}void free\+\_\+node (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{{\bf node\+\_\+t} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_ab933e8f4f079460d5c52f94d29db1929}{}\label{tree_8c_ab933e8f4f079460d5c52f94d29db1929}
+\index{tree.\+c@{tree.\+c}!max@{max}}
+\index{max@{max}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{max(int a, int b)}{max(int a, int b)}}]{\setlength{\rightskip}{0pt plus 5cm}int max (
+\begin{DoxyParamCaption}
+\item[{int}]{a, }
+\item[{int}]{b}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_af082905f7eac6d03e92015146bbc1925}{}\label{tree_8c_af082905f7eac6d03e92015146bbc1925}
+
+
+Returnerar det största av två heltal. 
+
+\index{tree.\+c@{tree.\+c}!node\+\_\+apply@{node\+\_\+apply}}
+\index{node\+\_\+apply@{node\+\_\+apply}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{node\+\_\+apply(node\+\_\+t $\ast$node, enum tree\+\_\+order order, key\+\_\+elem\+\_\+apply\+\_\+fun fun, void $\ast$data)}{node_apply(node_t *node, enum tree_order order, key_elem_apply_fun fun, void *data)}}]{\setlength{\rightskip}{0pt plus 5cm}bool node\+\_\+apply (
+\begin{DoxyParamCaption}
+\item[{{\bf node\+\_\+t} $\ast$}]{node, }
+\item[{enum {\bf tree\+\_\+order}}]{order, }
+\item[{{\bf key\+\_\+elem\+\_\+apply\+\_\+fun}}]{fun, }
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_aa8eb706ced981304743a08a0d4296584}{}\label{tree_8c_aa8eb706ced981304743a08a0d4296584}
+\index{tree.\+c@{tree.\+c}!node\+\_\+new@{node\+\_\+new}}
+\index{node\+\_\+new@{node\+\_\+new}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{node\+\_\+new()}{node_new()}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf node\+\_\+t}$\ast$ node\+\_\+new (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_ae589ee838703db9f636f7f89278afcb3}{}\label{tree_8c_ae589ee838703db9f636f7f89278afcb3}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+apply@{tree\+\_\+apply}}
+\index{tree\+\_\+apply@{tree\+\_\+apply}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+apply(tree\+\_\+t $\ast$tree, enum tree\+\_\+order order, key\+\_\+elem\+\_\+apply\+\_\+fun fun, void $\ast$data)}{tree_apply(tree_t *tree, enum tree_order order, key_elem_apply_fun fun, void *data)}}]{\setlength{\rightskip}{0pt plus 5cm}bool tree\+\_\+apply (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{enum {\bf tree\+\_\+order}}]{order, }
+\item[{{\bf key\+\_\+elem\+\_\+apply\+\_\+fun}}]{fun, }
+\item[{void $\ast$}]{data}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a78a81f99c6b5a1014726bd91d0fda32e}{}\label{tree_8c_a78a81f99c6b5a1014726bd91d0fda32e}
+Applies a function to all elements in the tree in a specified order. Example (using shelf as key)\+: \begin{DoxyVerb}tree_t *t = tree_new();
+tree_insert(t, "A25", some_item);
+int number = 0;
+tree_apply(t, inorder, print_item, &number);
+\end{DoxyVerb}
+
+
+where print\+\_\+item is a function that prints the number and increments it, and prints the item passed to it.
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & the tree \\
+\hline
+{\em order} & the order in which the elements will be visited \\
+\hline
+{\em fun} & the function to apply to all elements \\
+\hline
+{\em data} & an extra argument passed to each call to fun (may be N\+U\+LL) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+the result of all fun calls, combined with OR ($\vert$$\vert$) 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+balance@{tree\+\_\+balance}}
+\index{tree\+\_\+balance@{tree\+\_\+balance}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+balance(elem\+\_\+t elems[], elem\+\_\+t keys[], int start, int end)}{tree_balance(elem_t elems[], elem_t keys[], int start, int end)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf node\+\_\+t}$\ast$ tree\+\_\+balance (
+\begin{DoxyParamCaption}
+\item[{{\bf elem\+\_\+t}}]{elems\mbox{[}$\,$\mbox{]}, }
+\item[{{\bf elem\+\_\+t}}]{keys\mbox{[}$\,$\mbox{]}, }
+\item[{int}]{start, }
+\item[{int}]{end}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_acca718ff8fe02cd81412a4e598f47539}{}\label{tree_8c_acca718ff8fe02cd81412a4e598f47539}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+delete@{tree\+\_\+delete}}
+\index{tree\+\_\+delete@{tree\+\_\+delete}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+delete(tree\+\_\+t $\ast$tree, bool delete\+\_\+keys, bool delete\+\_\+elements)}{tree_delete(tree_t *tree, bool delete_keys, bool delete_elements)}}]{\setlength{\rightskip}{0pt plus 5cm}void tree\+\_\+delete (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{bool}]{delete\+\_\+keys, }
+\item[{bool}]{delete\+\_\+elements}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_afc9838326212e7731f31dcf237e7b76d}{}\label{tree_8c_afc9838326212e7731f31dcf237e7b76d}
+Remove a tree along with all elem\+\_\+t elements.
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & the tree \\
+\hline
+{\em delete\+\_\+keys} & if true, run tree\textquotesingle{}s key\+\_\+free function on all keys \\
+\hline
+{\em delete\+\_\+elements} & if true, run tree\textquotesingle{}s elem\+\_\+free function on all elements \\
+\hline
+\end{DoxyParams}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+depth@{tree\+\_\+depth}}
+\index{tree\+\_\+depth@{tree\+\_\+depth}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+depth(tree\+\_\+t $\ast$tree)}{tree_depth(tree_t *tree)}}]{\setlength{\rightskip}{0pt plus 5cm}int tree\+\_\+depth (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_ac892293edb990109e99f00807f1a9fcd}{}\label{tree_8c_ac892293edb990109e99f00807f1a9fcd}
+Get the depth of the tree
+
+\begin{DoxyReturn}{Returnerar}
+\+: the depth of the deepest subtree 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+depth\+\_\+aux@{tree\+\_\+depth\+\_\+aux}}
+\index{tree\+\_\+depth\+\_\+aux@{tree\+\_\+depth\+\_\+aux}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+depth\+\_\+aux(node\+\_\+t $\ast$node)}{tree_depth_aux(node_t *node)}}]{\setlength{\rightskip}{0pt plus 5cm}int tree\+\_\+depth\+\_\+aux (
+\begin{DoxyParamCaption}
+\item[{{\bf node\+\_\+t} $\ast$}]{node}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a05550415053ea0ee132de3ffde485b90}{}\label{tree_8c_a05550415053ea0ee132de3ffde485b90}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+elements@{tree\+\_\+elements}}
+\index{tree\+\_\+elements@{tree\+\_\+elements}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+elements(tree\+\_\+t $\ast$tree)}{tree_elements(tree_t *tree)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf elem\+\_\+t}$\ast$ tree\+\_\+elements (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a1428bfa67d419b8bf13824adfc3458f8}{}\label{tree_8c_a1428bfa67d419b8bf13824adfc3458f8}
+Returns an array holding all the elements in the tree in ascending order of their keys (which are not part of the value).
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & pointer to the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+\+: array of \hyperlink{tree_8c_a13827cc121c0826bccee80991ac7dd04}{tree\+\_\+size()} elements 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+elements\+\_\+aux@{tree\+\_\+elements\+\_\+aux}}
+\index{tree\+\_\+elements\+\_\+aux@{tree\+\_\+elements\+\_\+aux}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+elements\+\_\+aux(node\+\_\+t $\ast$node, elem\+\_\+t $\ast$elems, int $\ast$index)}{tree_elements_aux(node_t *node, elem_t *elems, int *index)}}]{\setlength{\rightskip}{0pt plus 5cm}void tree\+\_\+elements\+\_\+aux (
+\begin{DoxyParamCaption}
+\item[{{\bf node\+\_\+t} $\ast$}]{node, }
+\item[{{\bf elem\+\_\+t} $\ast$}]{elems, }
+\item[{int $\ast$}]{index}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_ad9608752b954235102b99c24220e17a9}{}\label{tree_8c_ad9608752b954235102b99c24220e17a9}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+get@{tree\+\_\+get}}
+\index{tree\+\_\+get@{tree\+\_\+get}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+get(tree\+\_\+t $\ast$tree, tree\+\_\+key\+\_\+t key, elem\+\_\+t $\ast$result)}{tree_get(tree_t *tree, tree_key_t key, elem_t *result)}}]{\setlength{\rightskip}{0pt plus 5cm}bool tree\+\_\+get (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{{\bf tree\+\_\+key\+\_\+t}}]{key, }
+\item[{{\bf elem\+\_\+t} $\ast$}]{result}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a678b7a8152b3ec50963dd2529950a016}{}\label{tree_8c_a678b7a8152b3ec50963dd2529950a016}
+Finds the element for a given key in tree.
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & pointer to the tree \\
+\hline
+{\em key} & the key of elem to be removed \\
+\hline
+{\em result} & a pointer to where result can be stored (only defined when result is true) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+\+: true if key is a key in the tree 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+has\+\_\+key@{tree\+\_\+has\+\_\+key}}
+\index{tree\+\_\+has\+\_\+key@{tree\+\_\+has\+\_\+key}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+has\+\_\+key(tree\+\_\+t $\ast$tree, tree\+\_\+key\+\_\+t key)}{tree_has_key(tree_t *tree, tree_key_t key)}}]{\setlength{\rightskip}{0pt plus 5cm}bool tree\+\_\+has\+\_\+key (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{{\bf tree\+\_\+key\+\_\+t}}]{key}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a102b066d4b37f6d31765118d39e39202}{}\label{tree_8c_a102b066d4b37f6d31765118d39e39202}
+Checks whether a key is used in a tree
+
+Uses the tree\textquotesingle{}s compare function to compare keys.
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & pointer to the tree \\
+\hline
+{\em key} & the key to check for inclusion in the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+\+: true if key is a key in the tree 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+insert@{tree\+\_\+insert}}
+\index{tree\+\_\+insert@{tree\+\_\+insert}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+insert(tree\+\_\+t $\ast$tree, tree\+\_\+key\+\_\+t key, elem\+\_\+t elem)}{tree_insert(tree_t *tree, tree_key_t key, elem_t elem)}}]{\setlength{\rightskip}{0pt plus 5cm}bool tree\+\_\+insert (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{{\bf tree\+\_\+key\+\_\+t}}]{key, }
+\item[{{\bf elem\+\_\+t}}]{elem}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_ab7d2e892ded2ae3fca90b1f7fbcd0f07}{}\label{tree_8c_ab7d2e892ded2ae3fca90b1f7fbcd0f07}
+Insert element into the tree. Returns false if the key is already used.
+
+Uses the tree\textquotesingle{}s compare function to compare keys.
+
+If tree\textquotesingle{}s copy function is non-\/\+N\+U\+LL, it will be applied to elem and its result stored in the tree. Otherwise, elem will be stored in the tree. Note that keys are never copied and are assumed to be immutable. (They may however be freed by the tree.)
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & pointer to the tree \\
+\hline
+{\em key} & the key of element to be appended -- this is assumed to be an immutable value \\
+\hline
+{\em elem} & the element \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+\+: true if successful, else false 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+keys@{tree\+\_\+keys}}
+\index{tree\+\_\+keys@{tree\+\_\+keys}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+keys(tree\+\_\+t $\ast$tree)}{tree_keys(tree_t *tree)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf tree\+\_\+key\+\_\+t}$\ast$ tree\+\_\+keys (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a2e86ac9f939bfc474c8026be870adadb}{}\label{tree_8c_a2e86ac9f939bfc474c8026be870adadb}
+Returns an array holding all the keys in the tree in ascending order.
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & pointer to the tree \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+\+: array of \hyperlink{tree_8c_a13827cc121c0826bccee80991ac7dd04}{tree\+\_\+size()} keys 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+keys\+\_\+aux@{tree\+\_\+keys\+\_\+aux}}
+\index{tree\+\_\+keys\+\_\+aux@{tree\+\_\+keys\+\_\+aux}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+keys\+\_\+aux(node\+\_\+t $\ast$node, elem\+\_\+t $\ast$keys, int $\ast$index)}{tree_keys_aux(node_t *node, elem_t *keys, int *index)}}]{\setlength{\rightskip}{0pt plus 5cm}void tree\+\_\+keys\+\_\+aux (
+\begin{DoxyParamCaption}
+\item[{{\bf node\+\_\+t} $\ast$}]{node, }
+\item[{{\bf elem\+\_\+t} $\ast$}]{keys, }
+\item[{int $\ast$}]{index}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_ad0d8b471332b726b14c0995e09fe3782}{}\label{tree_8c_ad0d8b471332b726b14c0995e09fe3782}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+new@{tree\+\_\+new}}
+\index{tree\+\_\+new@{tree\+\_\+new}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+new(element\+\_\+copy\+\_\+fun element\+\_\+copy, key\+\_\+free\+\_\+fun key\+\_\+free, element\+\_\+free\+\_\+fun elem\+\_\+free, element\+\_\+comp\+\_\+fun compare)}{tree_new(element_copy_fun element_copy, key_free_fun key_free, element_free_fun elem_free, element_comp_fun compare)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf tree\+\_\+t}$\ast$ tree\+\_\+new (
+\begin{DoxyParamCaption}
+\item[{{\bf element\+\_\+copy\+\_\+fun}}]{element\+\_\+copy, }
+\item[{{\bf key\+\_\+free\+\_\+fun}}]{key\+\_\+free, }
+\item[{{\bf element\+\_\+free\+\_\+fun}}]{elem\+\_\+free, }
+\item[{{\bf element\+\_\+comp\+\_\+fun}}]{compare}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a6a795c729d8a09e5877f7f1ddfb7c91c}{}\label{tree_8c_a6a795c729d8a09e5877f7f1ddfb7c91c}
+Creates a new tree
+
+
+\begin{DoxyParams}{Parametrar}
+{\em copy} & (may be N\+U\+LL) a function applied to all elements when stored in the tree \\
+\hline
+{\em key\+\_\+free} & (may be N\+U\+LL) used to free keys in tree\+\_\+delete \\
+\hline
+{\em elem\+\_\+free} & (may be N\+U\+LL) used to free elements in tree\+\_\+delete \\
+\hline
+{\em compare} & (may be N\+U\+LL) used to compare keys \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+\+: empty tree 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+no\+\_\+copy@{tree\+\_\+no\+\_\+copy}}
+\index{tree\+\_\+no\+\_\+copy@{tree\+\_\+no\+\_\+copy}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+no\+\_\+copy(elem\+\_\+t elem)}{tree_no_copy(elem_t elem)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf elem\+\_\+t} tree\+\_\+no\+\_\+copy (
+\begin{DoxyParamCaption}
+\item[{{\bf elem\+\_\+t}}]{elem}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a48b1cfc038c8d314df14ffcd6a2942a5}{}\label{tree_8c_a48b1cfc038c8d314df14ffcd6a2942a5}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+no\+\_\+free@{tree\+\_\+no\+\_\+free}}
+\index{tree\+\_\+no\+\_\+free@{tree\+\_\+no\+\_\+free}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+no\+\_\+free(elem\+\_\+t elem)}{tree_no_free(elem_t elem)}}]{\setlength{\rightskip}{0pt plus 5cm}void tree\+\_\+no\+\_\+free (
+\begin{DoxyParamCaption}
+\item[{{\bf elem\+\_\+t}}]{elem}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a4eefb12a7da6444db3cee572fdcddc5c}{}\label{tree_8c_a4eefb12a7da6444db3cee572fdcddc5c}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+remove@{tree\+\_\+remove}}
+\index{tree\+\_\+remove@{tree\+\_\+remove}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+remove(tree\+\_\+t $\ast$tree, tree\+\_\+key\+\_\+t key, elem\+\_\+t $\ast$result)}{tree_remove(tree_t *tree, tree_key_t key, elem_t *result)}}]{\setlength{\rightskip}{0pt plus 5cm}bool tree\+\_\+remove (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{{\bf tree\+\_\+key\+\_\+t}}]{key, }
+\item[{{\bf elem\+\_\+t} $\ast$}]{result}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a509c042f786ab4f4c3991947d7f98a8a}{}\label{tree_8c_a509c042f786ab4f4c3991947d7f98a8a}
+Removes the element for a given key in tree.
+
+
+\begin{DoxyParams}{Parametrar}
+{\em tree} & pointer to the tree \\
+\hline
+{\em key} & the key of elem to be removed \\
+\hline
+{\em result} & a pointer to where result can be stored (only defined when result is true) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returnerar}
+\+: true if key is a key in the tree 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+size@{tree\+\_\+size}}
+\index{tree\+\_\+size@{tree\+\_\+size}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+size(tree\+\_\+t $\ast$tree)}{tree_size(tree_t *tree)}}]{\setlength{\rightskip}{0pt plus 5cm}int tree\+\_\+size (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_a13827cc121c0826bccee80991ac7dd04}{}\label{tree_8c_a13827cc121c0826bccee80991ac7dd04}
+Get the size of the tree
+
+\begin{DoxyReturn}{Returnerar}
+\+: the number of nodes in the tree 
+\end{DoxyReturn}
+\index{tree.\+c@{tree.\+c}!tree\+\_\+traverse@{tree\+\_\+traverse}}
+\index{tree\+\_\+traverse@{tree\+\_\+traverse}!tree.\+c@{tree.\+c}}
+\subsubsection[{\texorpdfstring{tree\+\_\+traverse(tree\+\_\+t $\ast$tree, elem\+\_\+t const key)}{tree_traverse(tree_t *tree, elem_t const key)}}]{\setlength{\rightskip}{0pt plus 5cm}{\bf node\+\_\+t}$\ast$$\ast$ tree\+\_\+traverse (
+\begin{DoxyParamCaption}
+\item[{{\bf tree\+\_\+t} $\ast$}]{tree, }
+\item[{{\bf elem\+\_\+t} const}]{key}
+\end{DoxyParamCaption}
+)}\hypertarget{tree_8c_ab82af4facd62ce121a5c29172a91b6b3}{}\label{tree_8c_ab82af4facd62ce121a5c29172a91b6b3}
+Returnerar en dubbelpekare till ett träd som antingen är det som matchar \textquotesingle{}key\textquotesingle{} eller ett tomt subträd där vi borde ha hittat den. 
