@@ -1,19 +1,18 @@
 import java.io.Serializable;
 
-
 /**
- * The FriendRequestResponse class is used to allow a client to 
+ * The FriendRequestResponse class is used to allow a client to
  * communicate an answer to a friend request to the server wich in turn conveys this information
  * to the requester.
  *
  * @author  Ulf Sigvardsson
  * @version 1.0
- * @since   2017-11-09 
+ * @since   2017-11-09
  */
 public class FriendRequestResponse implements Serializable, Comparable<FriendRequestResponse>{
     private Account respondingUser;
     private Account askingUser;
-    private boolean requestAccepted; 
+    private boolean requestAccepted;
     private boolean requestTimedOut;
 
     /**
@@ -44,14 +43,14 @@ public class FriendRequestResponse implements Serializable, Comparable<FriendReq
      * Accepts a friend request
      */
     public void accept() {
-        this.requestAccepted = true; 
+        this.requestAccepted = true;
     }
 
     /**
      * Rejects a friend request
      */
     public void decline() {
-        this.requestAccepted = false; 
+        this.requestAccepted = false;
     }
 
     /**
@@ -88,10 +87,10 @@ public class FriendRequestResponse implements Serializable, Comparable<FriendReq
 
     public int compareTo(FriendRequestResponse f) {
         if(f.getAskingUser().getUserId().compareTo(this.getAskingUser().getUserId()) == 0) {
-            return f.getRespondingUser().getUserId().compareTo(this.getRespondingUser().getUserId()); 
+            return f.getRespondingUser().getUserId().compareTo(this.getRespondingUser().getUserId());
         }
         else {
-            return f.getAskingUser().getUserId().compareTo(this.getAskingUser().getUserId());           
+            return f.getAskingUser().getUserId().compareTo(this.getAskingUser().getUserId());
         }
 
     }

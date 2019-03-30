@@ -2,6 +2,7 @@ import java.io.Serializable;
 
 public class AddFriend implements Serializable {
     private Account friendToBeAdded;
+
     /**
      * Constructor for AddFriend
      * @param friendToBeAdded Account to befriend.

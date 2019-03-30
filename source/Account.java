@@ -53,7 +53,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Set-function for an instance's name
      * @param name The new name
-     */ 
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -61,7 +61,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Get-function for an instance's user id
      * @return The instance's uder id.
-     */ 
+     */
     public String getUserId() {
         return this.userId;
     }
@@ -69,7 +69,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Set-function for an instance's user id.
      * @param userId String containing the new user id.
-     */ 
+     */
     public void setUserId(String userId) {
         this.userId = userId;
     }
@@ -77,7 +77,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Adds a friend to the instance's list of friends
      * @param a Account to befriend.
-     */ 
+     */
     public void addFriend(Account a) {
         this.friends.add(a);
     }
@@ -102,7 +102,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Removes an account from this instance's list of ignored friends.
      * @param a Account to unignore
-     */ 
+     */
     public void unIgnoreFriend(Account a) {
         if (this.isFriendsWith(a)) this.ignoredFriends.remove(a);
     }
@@ -111,7 +111,7 @@ public class Account implements Serializable, Comparable<Account> {
      * Determines if this instance is friends with another account.
      * @param a Account to determine friendship for
      * @return boolean True if this account is friends with a, otherwise false
-     */ 
+     */
     public boolean isFriendsWith(Account a) {
         return this.friends.contains(a);
     }
@@ -120,7 +120,7 @@ public class Account implements Serializable, Comparable<Account> {
      * Determines if this instance is currently ignoring  another account.
      * @param a Account to determine ignoreship for
      * @return boolean True if this account is ignoring a, otherwise false
-     */ 
+     */
     public boolean isCurrentlyIgnoring(Account a) {
         return this.ignoredFriends.contains(a);
     }
@@ -128,9 +128,9 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Compares this instance to another account
      * @param a Account to compare with
-     * @return int A negative integer, zero, or a positive integer as this object's user id 
+     * @return int A negative integer, zero, or a positive integer as this object's user id
      * is less than, equal to, or greater than the specified object's user id.
-     */ 
+     */
     public int compareTo(Account a) {
         return a.userId.compareTo(this.userId);
     }
@@ -138,7 +138,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Determines whether this instance has any friends or not
      * @return boolean True if this instance has at least one friend, otherwise false
-     */ 
+     */
     public boolean hasFriends() {
         return this.friends.size() > 0;
     }
@@ -146,7 +146,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Retrieves all of this instance's friends
      * @return Account[] Array of all accounts in this intance's friends list.
-     */ 
+     */
     public Account[] getFriends() {
         return (Account[]) this.friends.toArray(new Account[0]);
     }
@@ -154,7 +154,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Retrieves the number of PostActions on the server side at the last sync
      * @return int Number of posts at the last sync
-     */  
+     */
     public int getPostActionsAtLastSync() {
         return this.postActionsAtLastSync;
     }
@@ -162,7 +162,7 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Sets the current number of PostActions on the server side
      * @param postActions The current number of PostActions on the server.
-     */   
+     */
     public void setPostActionsAtLastSync(int postActions) {
         this.postActionsAtLastSync = postActions;
     }
@@ -170,15 +170,15 @@ public class Account implements Serializable, Comparable<Account> {
     /**
      * Retrieves the number of PostActions on the server side at the last sync
      * @return int Number of posts at the last sync
-     */   
+     */
     public int getPostAtLastSync() {
         return this.postsAtLastSync;
     }
-    
+
     /**
      * Sets the current number of posts on the server side
      * @param posts The number of posts currently on the server.
-     */   
+     */
     public void setPostAtLastSync(int posts) {
         this.postsAtLastSync = posts;
     }
@@ -187,7 +187,7 @@ public class Account implements Serializable, Comparable<Account> {
      * Compares two Account object and determines if they are equal or not.
      * @param o Object to compare to this instance.
      * @return boolean True if o is equal to this instance, otherwise false.
-     */       
+     */
     public boolean equals(Object o) {
         if (o instanceof Account) {
             return ((Account) o).userId.equals(this.userId);

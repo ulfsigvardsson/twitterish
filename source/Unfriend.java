@@ -1,3 +1,4 @@
+
 import java.io.Serializable;
 
 public class Unfriend implements Serializable, Comparable<Unfriend> {
@@ -19,10 +20,10 @@ public class Unfriend implements Serializable, Comparable<Unfriend> {
 
     public int compareTo(Unfriend u) {
         if(u.getUnfriender().getUserId().compareTo(this.getUnfriender().getUserId()) == 0) {
-            return u.getToUnfriend().getUserId().compareTo(this.getToUnfriend().getUserId()); 
+            return u.getToUnfriend().getUserId().compareTo(this.getToUnfriend().getUserId());
         }
         else {
-            return u.getUnfriender().getUserId().compareTo(this.getUnfriender().getUserId());           
+            return u.getUnfriender().getUserId().compareTo(this.getUnfriender().getUserId());
         }
     }
 }

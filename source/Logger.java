@@ -7,7 +7,7 @@ public class Logger {
 
     public Logger(String path) {
         try {
-            this.logger = new PrintWriter(path);            
+            this.logger = new PrintWriter(path);
         }
         catch (FileNotFoundException e) {
             System.out.println(e.getMessage());

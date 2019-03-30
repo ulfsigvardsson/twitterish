@@ -1,12 +1,11 @@
 import java.io.Serializable;
-
 /**
- * The Comment class extends the PostAction class. 
+ * The Comment class extends the PostAction class.
  * It is used within instances of Post to signify comments made by users.
  *
  * @author  Ulf Sigvardsson
  * @version 1.0
- * @since   2017-11-09 
+ * @since   2017-11-09
  */
 
 public class Comment extends PostAction implements Serializable {
@@ -30,4 +29,4 @@ public class Comment extends PostAction implements Serializable {
     public String toString() {
         return "\t" + this.madeBy.getName() + ": " + comment;
     }
-} 
+}

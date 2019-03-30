@@ -1,12 +1,11 @@
 import java.io.Serializable;
-
 /**
- * The CommentMessage class is used to allow a client to 
+ * The CommentMessage class is used to allow a client to
  * notify the server that it has commented on a post.
  *
  * @author  Ulf Sigvardsson
  * @version 1.0
- * @since   2017-11-09 
+ * @since   2017-11-09
  */
 
 public class CommentMessage implements Serializable {
@@ -33,7 +32,7 @@ public class CommentMessage implements Serializable {
     /**
      * Get-method for the post id of the post stored in an instance's Comment member.
      * @return int The post id
-     */    
+     */
     public int getPostId() {
         return this.postId;
     }

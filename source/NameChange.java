@@ -1,9 +1,11 @@
+
+
 /**
  * The NameCHange class is used to signal to the server that a client has changed its name.
  *
  * @author  Ulf Sigvardsson
  * @version 1.0
- * @since   2017-11-09 
+ * @since   2017-11-09
  */
 public class NameChange implements java.io.Serializable {
     private String name;

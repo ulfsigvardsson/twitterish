@@ -1,3 +1,5 @@
+
+
 public class Login implements java.io.Serializable, Comparable<Login>{
     private Account account;
     private String password;
@@ -35,7 +37,7 @@ public class Login implements java.io.Serializable, Comparable<Login>{
         this.password = password;
     }
 
-    
+
     public int compareTo(Login l) {
         return l.getAccount().getUserId().compareTo(this.getAccount().getUserId());
     }

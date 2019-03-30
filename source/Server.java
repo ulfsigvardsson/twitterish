@@ -1,3 +1,4 @@
+
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -12,7 +13,7 @@ public class Server extends Logger {
     private List<PostAction> postActions = new LinkedList<PostAction>();
     private int globalPostIdCounter = 0;
     private int globalActionIdCounter = 0;
-    
+
     public static void main(String[] args) {
         try {
             ServerSocket socket = new ServerSocket(args.length > 0 ? Integer.parseInt(args[0]) : 8080);
@@ -55,7 +56,7 @@ public class Server extends Logger {
      * Retrieves the account in the servers known accounts that corresponds to a user id.
      * @param userId The user id to match with
      * @return Account The account associated with the provided user id or, if not found, null.
-     */    
+     */
     private Login getLoginFor(String userId) {
         for (Login a : this.knownLogins)
             if (a.getAccount().getUserId().equals(userId)) return a;
@@ -121,11 +122,11 @@ public class Server extends Logger {
      * @return List<Post> List of new posts made by friends
      */
     public synchronized List<Post> getNewFriendPosts(Account account) {
-        List<Post> result = new LinkedList<Post>(); 
+        List<Post> result = new LinkedList<Post>();
         for (Post p : this.getNewPosts(account)) {
             if (p.getPoster().isFriendsWith(account)){
-                result.add(p);  
-            } 
+                result.add(p);
+            }
         }
 
         return result;
@@ -144,7 +145,7 @@ public class Server extends Logger {
         this.log("Antal posts nu: "+this.posts.size());
         //        System.out.println("Antal posts nu: "+this.posts.size());
 
-        return new ArrayList<Post>(this.posts.subList(since, this.posts.size())); 
+        return new ArrayList<Post>(this.posts.subList(since, this.posts.size()));
     }
 
     /**
@@ -195,7 +196,7 @@ public class Server extends Logger {
 
         /**
          * Connects a new or existing user to the server
-         * @param socket 
+         * @param socket
          * @param server
          */
         public static void attemptEstablishConnection(Socket socket, Server server) throws IOException, ClassNotFoundException {
@@ -208,12 +209,12 @@ public class Server extends Logger {
                 Account knownAccount = server.getAccountFor(account.getUserId()); //Tries to retrieve existing account for this login attempt
 
                 if (knownLogin == null) {
-                    System.out.println("Lägger till ett nytt Login till servern");
+                    System.out.println("Adding new user "+account.getName());
                     server.addAccount(account);
-                    server.addLogin((Login) handShake); 
+                    server.addLogin((Login) handShake);
                     new ClientProxy(account, socket, server, incoming).start();
                 }
-                
+
                 else {
                     if (knownLogin.getPassword().equals(((Login) handShake).getPassword()) == false){
                         throw new RuntimeException("Wrong password");
@@ -228,14 +229,14 @@ public class Server extends Logger {
             }
         }
 
-      
-        
+
+
         // The synchronised keyword is required on all methods which may
         // be called in parallel on the server from multiple clients at
         // the same time.
-        
+
         /**
-         * Increments and returns the servers post counter. Used as identification for posts. 
+         * Increments and returns the servers post counter. Used as identification for posts.
              * @return int The current post counter
                  */
         private synchronized int getUniqueGlobalPostId() {
@@ -243,7 +244,7 @@ public class Server extends Logger {
         }
 
         /**
-         * Increments and returns the servers post action counter. Used as identification for comments and likes. 
+         * Increments and returns the servers post action counter. Used as identification for comments and likes.
          * @return int The current post action counter
          */
         private synchronized int getUniqueGlobalActionId() {
@@ -260,7 +261,7 @@ public class Server extends Logger {
             System.out.println("!! " + a.getUserId() + " left the building");
             try {
                 this.outgoing.close();
-                this.incoming.close(); 
+                this.incoming.close();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
@@ -274,7 +275,7 @@ public class Server extends Logger {
         private Post getPostFor(int postId) {
             for(Post p : this.server.posts) {
                 if(postId == p.getPostId())
-                    return p; 
+                    return p;
             }
             return null;
         }
@@ -285,7 +286,7 @@ public class Server extends Logger {
          */
         private void addComment(CommentMessage c) {
             Comment comment = c.getComment();
-            Post post = getPostFor(c.getPostId()); 
+            Post post = getPostFor(c.getPostId());
             comment.setActionId(this.getUniqueGlobalActionId());
             this.server.addPostAction(comment);
         }
@@ -296,7 +297,7 @@ public class Server extends Logger {
          */
         private void addLike(LikeMessage l) {
             Like like = l.getLike();
-            Post post = getPostFor(l.getPostId()); 
+            Post post = getPostFor(l.getPostId());
             like.setActionId(this.getUniqueGlobalActionId());
             this.server.addPostAction(like);
         }
@@ -343,7 +344,7 @@ public class Server extends Logger {
          * @param name The new name
          */
         private void updateName(String name) {
-            this.account.setName(name); 
+            this.account.setName(name);
         }
 
         /**
@@ -352,7 +353,7 @@ public class Server extends Logger {
          * @param password The new password
          */
         private void updatePassword(Account account, String password) {
-            Login l = this.server.getLoginFor(account.getUserId()); 
+            Login l = this.server.getLoginFor(account.getUserId());
             l.setPassword(password);
         }
 
@@ -371,7 +372,7 @@ public class Server extends Logger {
 
             return unfriends;
         }
-        
+
         /**
          * Retrieves all new friend requests for the ClientProxy's associated account
          * @return Set<FriendRequest> All new FriendRequests for the user.
@@ -398,14 +399,14 @@ public class Server extends Logger {
             this.server.friendRequestResponses.add(response);
         }
 
-        /** 
+        /**
          * Retrieves all new friend requests responses adressed to the ClientProxy's associated account
          * @return Set<FriendRequestResponse> All new responses adressed to the user.
          */
         private Set<FriendRequestResponse> getFriendRequestResponses() {
             Set<FriendRequestResponse> responses = new TreeSet<FriendRequestResponse>();
             String userId = this.account.getUserId();
-            
+
             for(FriendRequestResponse r : this.server.friendRequestResponses) {
                 String askingUserId = r.getAskingUser().getUserId();
                 if(askingUserId.equals(userId)) {
@@ -424,7 +425,7 @@ public class Server extends Logger {
             return responses;
         }
 
-        /** 
+        /**
          * Adds a friend request to the servers list of pending friend requests.
          * @param request The friend request to be queued.
          */
@@ -432,7 +433,7 @@ public class Server extends Logger {
             this.server.pendingFriendRequests.add(request);
         }
 
-        /** 
+        /**
          * Synchronizes a client with the server
          */
         private void sync() {
@@ -445,7 +446,7 @@ public class Server extends Logger {
                                                  new TreeSet<FriendRequestResponse>(this.getFriendRequestResponses()),
                                                  new TreeSet<FriendRequest>(this.getFriendRequests()),
                                                  new LinkedList<PostAction>(this.server.getPostActions(this.account)),
-                                                 new TreeSet<Unfriend>(this.getUnfriends()))); 
+                                                 new TreeSet<Unfriend>(this.getUnfriends())));
                 this.outgoing.flush();
             } catch (IOException ioe) {
                 ioe.printStackTrace();
@@ -466,11 +467,11 @@ public class Server extends Logger {
                     } else if (o instanceof PasswordChange) {
                         updatePassword(this.account, ((PasswordChange) o).getPassword());
                     } else if (o instanceof NameChange) {
-                        this.updateName( ((NameChange) o).getName()); 
+                        this.updateName( ((NameChange) o).getName());
                     } else if (o instanceof Account) {
                         this.updateAccount(this.account, (Account) o);
                     } else if (o instanceof CommentMessage) {
-                        this.addComment((CommentMessage)o); 
+                        this.addComment((CommentMessage)o);
                     } else if (o instanceof LikeMessage){
                         this.addLike((LikeMessage)o);
                     } else if (o instanceof PostMessage) {

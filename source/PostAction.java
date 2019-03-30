@@ -1,3 +1,4 @@
+
 import java.io.Serializable;
 
 /**
@@ -5,10 +6,10 @@ import java.io.Serializable;
  *
  * @author  Ulf Sigvardsson
  * @version 1.0
- * @since   2017-11-09 
+ * @since   2017-11-09
  */
 public class PostAction implements Serializable {
-    protected Account madeBy; 
+    protected Account madeBy;
     protected Post madeTo;
     protected int postId;
     protected int actionId;
@@ -60,4 +61,4 @@ public class PostAction implements Serializable {
         this.actionId = id;
     }
 
-} 
+}

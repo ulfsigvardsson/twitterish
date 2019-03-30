@@ -1,3 +1,4 @@
+
 public class UserPassword {
 
     private String password;

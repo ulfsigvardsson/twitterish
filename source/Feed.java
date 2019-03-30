@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.LinkedList;
-
 /**
  * The Feed class holds the message feed for an Account
  */
@@ -57,7 +56,7 @@ public class Feed {
 
         for (Post p : this.posts) {
             if(!this.account.isCurrentlyIgnoring(p.getPoster())) {
-                result = result + p.render();                                
+                result = result + p.render();
             }
             if (--n < 0) break;
         }

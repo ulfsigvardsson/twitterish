@@ -1,11 +1,11 @@
 
 /**
  * The PostActionMessage class is used to allow the server to broadcast to clients that a Post
- * has been liked or commented. 
+ * has been liked or commented.
  *
  * @author  Ulf Sigvardsson
  * @version 1.0
- * @since   2017-11-09 
+ * @since   2017-11-09
  */
 public class PostActionMessage {
     private PostAction action;
@@ -24,7 +24,7 @@ public class PostActionMessage {
 
     /**
      * Get-method for an instance's PostAction object.
-     * @return PostAction The instance's PostAction member. 
+     * @return PostAction The instance's PostAction member.
      */
     public PostAction getAction() {
         return this.action;
@@ -32,7 +32,7 @@ public class PostActionMessage {
 
     /**
      * Get-method for the post that has been liked or commented.
-     * @return PostAction The instance's Post member. 
+     * @return PostAction The instance's Post member.
      */
     public Post getPost() {
         return this.post;

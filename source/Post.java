@@ -1,3 +1,4 @@
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -11,8 +12,8 @@ public class Post implements Serializable {
     private List<Comment> comments;
     private int likes;
     private List<Like> whoLikes;
-    
-  
+
+
     /**
      * Constructor for Post
      * @param globalPostId Unique ID-number associated with this Post
@@ -36,7 +37,7 @@ public class Post implements Serializable {
     public int getNumberOfLikes() {
         return this.likes;
     }
-    
+
     public Account getPoster() {
         return this.poster;
     }
@@ -51,7 +52,7 @@ public class Post implements Serializable {
         if(this.likes>0 || this.comments.size()>0) {
             result += this.renderLikes() + this.renderComments() + "\n\t-----------------------------\n";
         }
-        return result; 
+        return result;
     }
 
     /**
@@ -69,7 +70,7 @@ public class Post implements Serializable {
     /**
      * Adds a comment to the posts list of comments.
      * @param comment The Comment-object to be added.
-     */    
+     */
     public void addComment(Comment comment) {
         this.comments.add(comment);
     }
@@ -77,7 +78,7 @@ public class Post implements Serializable {
     /**
      * Returns the unique ID of the calling post.
      * @return int The ID-number of the calling post.
-     */ 
+     */
     public int getPostId() {
         return this.globalPostId;
     }
@@ -85,7 +86,7 @@ public class Post implements Serializable {
     /**
      * Adds a Like to the posts list of likes and increments the like-counter by one.
      * @param like The Like-object to add.
-     */    
+     */
     public void like(Like like) {
         this.whoLikes.add(like);
         this.likes += 1;
@@ -93,8 +94,8 @@ public class Post implements Serializable {
 
     /**
      * Renders the amount of likes in a post as a string.
-     * @return String The calling posts like count as a string if greater than 0, otherwise an empty string. 
-     */    
+     * @return String The calling posts like count as a string if greater than 0, otherwise an empty string.
+     */
     private String renderLikes() {
         String result = "";
         if(this.likes>0)

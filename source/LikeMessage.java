@@ -1,11 +1,10 @@
 import java.io.Serializable;
-
 /**
  * The LikeMessage class is used to signal to the server that a client has liked a post.
  *
  * @author  Ulf Sigvardsson
  * @version 1.0
- * @since   2017-11-09 
+ * @since   2017-11-09
  */
 public class LikeMessage implements Serializable {
     private Like like;
@@ -35,7 +34,7 @@ public class LikeMessage implements Serializable {
     public Like getLike() {
         return this.like;
     }
-} 
+}
 
 
 
