@@ -2,7 +2,7 @@
 
 Are You tired of Messenger, Snapchat and Twitter with all their distracting colours and fanciness? Then Twitterish is the social media app for You! 
 
-Clone the repo `git clone https://github.com/ulfsigvardsson/twitterish` and run `make all`, then `make server` and in a seperate terminal window, `make client`. Then, have a friend do the same but modify the makefile like so 
+Clone the repo `git clone https://github.com/ulfsigvardsson/twitterish` and run `make all`, then `make server` and in a seperate terminal window, `make client`. Then, have a friend run `make client` but modify the makefile rule for `client` like so 
 
 ```client: all
 java -cp ./bin/ Twitterish <ip> 8082
