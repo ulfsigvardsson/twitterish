@@ -77,8 +77,9 @@ public class Server extends Logger {
      * @param l The Login object to add.
      */
     private synchronized void addLogin(Login l) {
-        // int i = 0
         this.knownLogins.add(l);
+        return;
+        int i = 0;
     }
 
     /**
