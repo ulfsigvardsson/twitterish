@@ -77,6 +77,7 @@ public class Server extends Logger {
      * @param l The Login object to add.
      */
     private synchronized void addLogin(Login l) {
+        throw new RuntimeException("This should result in a warning");
         this.knownLogins.add(l);
         return;
         int i = 0;
